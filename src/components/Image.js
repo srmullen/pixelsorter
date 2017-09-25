@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import paper from "paper";
-import {sortBy, prop} from "ramda";
+import {prop} from "ramda";
 import {timeFunc} from "utils/time";
+import {ramdaSort} from "../sort";
 
 class Image extends Component {
     render () {
@@ -28,14 +29,14 @@ class Image extends Component {
 }
 
 function pixelSort (raster) {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
         sortRow(raster, i);
     }
 }
 
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
-    const sorted = sortBy(prop("green"), row);
+    const sorted = ramdaSort(prop("green"), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });
