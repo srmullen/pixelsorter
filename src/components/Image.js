@@ -19,8 +19,8 @@ class Image extends Component {
         const raster = new paper.Raster(this.props.image);
         const rowIndex = 10;
         raster.onLoad = () => {
-            const {time} = timeFunc(() => pixelSort(raster));
-            console.log(time);
+            // const {time} = timeFunc(() => pixelSort(raster));
+            // console.log(time);
             raster.translate((raster.width / 2) + 20, (raster.height / 2) + 20);
             paper.view.update();
         }

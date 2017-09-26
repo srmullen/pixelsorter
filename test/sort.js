@@ -78,10 +78,10 @@ describe("Sorting", () => {
         });
     });
 
-    xdescribe("Selection Sort", () => {
+    describe("Selection Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            sort.selection(compare.number, rands);
+            sort.selection((a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < rands.length; i++) {
                 expect(rands[i].val).to.equal(expected[i].val);
             }
