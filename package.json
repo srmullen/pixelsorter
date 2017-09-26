@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dashboard -- webpack-dev-server --config webpack.config.dev.js",
+    "browser-test": "webpack-dashboard -p 5051 -- webpack-dev-server --config webpack.config.test.js",
     "test": "mocha --compilers js:babel-register"
   },
   "author": "Sean Mullen",

@@ -1,6 +1,20 @@
 import {sortBy} from "ramda";
 
 /*
+ * return the minimum item in a list according to a comparator.
+ */
+export function min (compare, list) {
+    return list.reduce((min, el) => {
+        const comparison = compare(min, el);
+        if (comparison <= 0) {
+            return min;
+        } else {
+            return el;
+        }
+    }, Infinity);
+}
+
+/*
  * Exchange position of two elements in an array.
  */
 export function exchange (arr, a, b) {

@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {prop, map, identity} from "ramda";
-import {ramdaSort, exchange} from "../src/sort";
+import * as sort from "../src/sort";
 import * as compare from "../src/compare";
 
 function listOf (randFn, length) {
@@ -27,10 +27,18 @@ const getRands = (() => {
     }
 })();
 
+describe("min", () => {
+    it("should return the lowest value according to a comparator", () => {
+        expect(sort.min(compare.number, [5, 3, 2, 7, 1])).to.equal(1);
+        expect(sort.min(compare.number, [1.4, 10.5, 0.4, 0.001])).to.equal(0.001);
+        expect(sort.min(compare.number, [-5, -3, -2, -7, -1, 0])).to.equal(-7);
+    });
+});
+
 describe("exchange", () => {
     it("should switch the elements at the given indices", () => {
         const list = [1,2,3];
-        exchange(list, 0, 2);
+        sort.exchange(list, 0, 2);
         expect(list[0]).to.equal(3);
         expect(list[1]).to.equal(2);
         expect(list[2]).to.equal(1);
@@ -52,7 +60,7 @@ describe("getRands", () => {
 
     it("shouldn't be affected by exchange calls", () => {
         const rands1 = getRands();
-        exchange(rands1, 0, 1);
+        sort.exchange(rands1, 0, 1);
         const rands2 = getRands();
         expect(rands2[0]).to.equal(rands1[1]);
         expect(rands2[1]).to.equal(rands1[0]);
@@ -60,12 +68,22 @@ describe("getRands", () => {
 });
 
 const rands = getRands();
-const expected = ramdaSort(prop("val"), rands);
+const expected = sort.ramdaSort(prop("val"), rands);
 describe("Sorting", () => {
     describe("ramda sort", () => {
         it("should sort", function () {
             for (let i = 0; i < rands.length-1; i++) {
                 expect(expected[i].val <= expected[i+1].val).to.be.ok;
+            }
+        });
+    });
+
+    xdescribe("Selection Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            sort.selection(compare.number, rands);
+            for(let i = 0; i < rands.length; i++) {
+                expect(rands[i].val).to.equal(expected[i].val);
             }
         });
     });
