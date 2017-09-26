@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import paper from "paper";
 import {prop} from "ramda";
 import {timeFunc} from "utils/time";
-import {ramdaSort} from "../sort";
+import * as compare from "../compare";
+import * as sort from "../sort";
 
 class Image extends Component {
     render () {
@@ -19,8 +20,8 @@ class Image extends Component {
         const raster = new paper.Raster(this.props.image);
         const rowIndex = 10;
         raster.onLoad = () => {
-            // const {time} = timeFunc(() => pixelSort(raster));
-            // console.log(time);
+            const {time} = timeFunc(() => pixelSort(raster));
+            console.log(time);
             raster.translate((raster.width / 2) + 20, (raster.height / 2) + 20);
             paper.view.update();
         }
@@ -36,7 +37,8 @@ function pixelSort (raster) {
 
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
-    const sorted = ramdaSort(prop("green"), row);
+    // const sorted = sort.ramdaSort(prop("green"), row);
+    const sorted = sort.selection((a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });

@@ -45,6 +45,18 @@ describe("exchange", () => {
     });
 });
 
+describe("insert", () => {
+    it("should place the item in the list at index. Items to the right should shift over", () => {
+        const list = [1, 2, 3, 4, 5];
+        sort.insert(list, "hello", 0);
+        expect(list).to.eql(["hello", 1, 2, 3, 4, 5]);
+        sort.insert(list, "goodbye", 6);
+        expect(list).to.eql(["hello", 1, 2, 3, 4, 5, "goodbye"]);
+        sort.insert(list, "middle", 3);
+        expect(list).to.eql(["hello", 1, 2, "middle", 3, 4, 5, "goodbye"]);
+    });
+});
+
 describe("getRands", () => {
     it("should return a list of 20 objects", () => {
         expect(getRands().length).to.equal(20);
@@ -81,9 +93,19 @@ describe("Sorting", () => {
     describe("Selection Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            sort.selection((a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < rands.length; i++) {
-                expect(rands[i].val).to.equal(expected[i].val);
+            const sorted = sort.selection((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    describe("Insertion Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = sort.insertion((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
             }
         });
     });

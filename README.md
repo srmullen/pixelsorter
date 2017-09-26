@@ -3,6 +3,7 @@ pixelsorter
 
 TODO
 ----
+- Count comparison and exchange calls.
 - Visualize Sort Process
 - Sort Analysis.
 - Upload pictures.

@@ -13,7 +13,12 @@ import * as sort from "../src/sort";
 
 export const selection = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    // sort.selection(compose(compare.number, prop("val")), list);
-    sort.selection((a, b) => compare.number(a.val, b.val), list);
-    return list;
+    const sorted = sort.selection((a, b) => compare.number(a.val, b.val), list);
+    return sorted;
+}
+
+export const insertion = () => {
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    const sorted = sort.insertion((a, b) => compare.number(a.val, b.val), list);
+    return sorted;
 }

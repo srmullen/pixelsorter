@@ -51,9 +51,34 @@ export function selection (compare, list) {
         // Exchange positions if not already in the correct location.
         if (min !== i) exchange(list, min, i);
     }
+    // Return the list even though it's mutatated so algorithms can be easily interchanged in pixel sorter.
+    return list;
 }
 
 // Insertion Sort
+// Iterate through the list. For each element place it in the correct place in a new list.
+// Insertions are expensive because it requires shifting elements in the list.
+export function insert (list, el, index) {
+    for (let i = list.length - 1; i >= index; i--) {
+        list[i + 1] = list[i];
+    }
+    list[index] = el;
+};
+
+export function insertion (compare, list) {
+    // Create an array that will hold the sorted elements. The first element of
+    // the list will always start at sorted[0].
+    const sorted = [list[0]];
+    for (let i = 1; i < list.length; i++) {
+        // Element tthat will be insterted into the sorted list.
+        const el = list[i];
+        // find the position to insert;
+        const sortedIndex = sorted.findIndex(s => compare(el, s) < 0);
+        // Insert item at the end of list if not smaller than any already sorted elements.
+        insert(sorted, el, sortedIndex === -1 ? sorted.length : sortedIndex);
+    }
+    return sorted;
+}
 
 // Shell Sort
 
