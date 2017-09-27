@@ -121,4 +121,14 @@ describe("Sorting", () => {
             }
         });
     });
+
+    describe("Shell Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = sort.shell((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
 });

@@ -29,3 +29,9 @@ export const bubble = () => {
     const sorted = sort.bubble((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
+
+export const shell = () => {
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    const sorted = sort.shell((a, b) => compare.number(a.val, b.val), list);
+    return sorted;
+}
