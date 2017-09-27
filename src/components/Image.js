@@ -18,7 +18,6 @@ class Image extends Component {
     componentDidMount () {
         paper.setup(this.refs.canvas);
         const raster = new paper.Raster(this.props.image);
-        const rowIndex = 10;
         raster.onLoad = () => {
             const {time} = timeFunc(() => pixelSort(raster));
             console.log(time);
@@ -38,7 +37,9 @@ function pixelSort (raster) {
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
     // const sorted = sort.ramdaSort(prop("green"), row);
-    const sorted = sort.selection((a, b) => compare.number(a.green, b.green), row);
+    // const sorted = sort.selection((a, b) => compare.number(a.green, b.green), row);
+    const sorted = sort.insertion((a, b) => compare.number(a.green, b.green), row);
+    // const sorted = sort.bubble((a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });

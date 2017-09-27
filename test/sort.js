@@ -11,6 +11,8 @@ function listOf (randFn, length) {
     return ret;
 }
 
+const RANDS_LENGTH = 20;
+
 const getRands = (() => {
     // Save the list in a closure to avoid modifying it.
     let list = null;
@@ -21,7 +23,7 @@ const getRands = (() => {
             return map(identity, list);
         } else {
             // Assign the list and return a copy.
-            list = listOf(() => ({val: Math.floor(Math.random() * 10)}), 20);
+            list = listOf(() => ({val: Math.floor(Math.random() * 10)}), RANDS_LENGTH);
             return map(identity, list);
         }
     }
@@ -58,8 +60,8 @@ describe("insert", () => {
 });
 
 describe("getRands", () => {
-    it("should return a list of 20 objects", () => {
-        expect(getRands().length).to.equal(20);
+    it(`should return a list of ${RANDS_LENGTH} objects`, () => {
+        expect(getRands().length).to.equal(RANDS_LENGTH);
     });
 
     it("should return identical lists every time it is called", () => {
@@ -104,6 +106,16 @@ describe("Sorting", () => {
         it("should sort", () => {
             const rands = getRands();
             const sorted = sort.insertion((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    describe("Bubble Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = sort.bubble((a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

@@ -58,6 +58,9 @@ export function selection (compare, list) {
 // Insertion Sort
 // Iterate through the list. For each element place it in the correct place in a new list.
 // Insertions are expensive because it requires shifting elements in the list.
+
+// Helper function for inserting elements. How to measure cost? Number of items shifted?
+// Maybe implement in terms of exchange to keep counting consistent.
 export function insert (list, el, index) {
     for (let i = list.length - 1; i >= index; i--) {
         list[i + 1] = list[i];
@@ -65,7 +68,8 @@ export function insert (list, el, index) {
     list[index] = el;
 };
 
-export function insertion (compare, list) {
+// without mutation
+export function _insertion (compare, list) {
     // Create an array that will hold the sorted elements. The first element of
     // the list will always start at sorted[0].
     const sorted = [list[0]];
@@ -80,7 +84,53 @@ export function insertion (compare, list) {
     return sorted;
 }
 
+// Insertion sort with mutation.
+export function insertion (compare, list) {
+    for (let i = 0; i < list.length; i++) {
+        // Move backwards over the already sorted elements and continue swaping until
+        // newest element is in the correct location.
+        for (let j = i; j > 0 && compare(list[j], list[j-1]) < 0; j--) {
+            exchange(list, j, j-1);
+        }
+    }
+    return list;
+}
+
+// Bubble Sort
+// I wasn't going to include this originally because Obama says it's not
+// the way to go (https://www.youtube.com/watch?v=k4RRi_ntQc8), but it could be
+// an interesting visualization.
+//
+// Start by comparing the first two elements of the list. Swap them if needed.
+// Continue through the list swapping adjacent elements whenever need.
+// When the end of the list is reached, if no swaps occured then the list is sorted.
+// If there were swaps go back to the beginning of the list and repeat the process until
+// the list is passed over with no swaps.
+//
+// Bubble sort isn't doing as bad as I thought it would compared to
+// selection/insertion sort in initial tests during implementation.
+// Image being tested on has a 576 pixel width. Sorting one row takes ~269ms.
+// Insertion sort ~236ms.
+// Selection sort ~245ms.
+export function bubble (compare, list) {
+    let sorted = false;
+    while (!sorted) {
+        let exchanges = 0;
+        for (let i = 0; i < list.length-1; i++) {
+            if (compare(list[i], list[i+1]) > 0) {
+                exchange(list, i, i+1);
+                exchanges++;
+            }
+        }
+        if (exchanges === 0) sorted = true;
+    }
+    return list;
+}
+
 // Shell Sort
+export function shell (compare, list) {
+
+}
 
 /*
  * Efficient Sorts
