@@ -37,9 +37,7 @@ function pixelSort (raster) {
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
     // const sorted = sort.ramdaSort(prop("green"), row);
-    // const sorted = sort.selection((a, b) => compare.number(a.green, b.green), row);
-    const sorted = sort.insertion((a, b) => compare.number(a.green, b.green), row);
-    // const sorted = sort.bubble((a, b) => compare.number(a.green, b.green), row);
+    const sorted = sort.merge((a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });
