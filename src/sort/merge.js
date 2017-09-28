@@ -32,6 +32,7 @@ function _merge (compare, list) {
     }
 }
 
+// Not-in-place
 export function sort (compare, list) {
     if (list.length <= 1) {
         // If list requires no sorting just return it as a new list.
@@ -41,3 +42,7 @@ export function sort (compare, list) {
         return _merge(compare, list);
     }
 }
+
+// export function sort (compare, list) {
+//
+// }
