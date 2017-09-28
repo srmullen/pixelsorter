@@ -9,35 +9,39 @@
 // mocha.run();
 import {prop, map, identity, compose} from "ramda";
 import * as compare from "../src/compare";
-import * as sort from "../src/sort";
+import * as selection from "../src/sort/selection";
+import * as insertion from "../src/sort/insertion";
+import * as bubble from "../src/sort/bubble";
+import * as shell from "../src/sort/shell";
+import * as merge from "../src/sort/merge";
 
-export const selection = () => {
+export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = sort.selection((a, b) => compare.number(a.val, b.val), list);
+    const sorted = selection.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
-export const insertion = () => {
+export const insertionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = sort.insertion((a, b) => compare.number(a.val, b.val), list);
+    const sorted = insertion.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
 
-export const bubble = () => {
+export const bubblesort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = sort.bubble((a, b) => compare.number(a.val, b.val), list);
+    const sorted = bubble.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
-export const shell = () => {
+export const shellsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = sort.shell((a, b) => compare.number(a.val, b.val), list);
+    const sorted = shell.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
-export const merge = () => {
+export const mergesort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = sort.merge((a, b) => compare.number(a.val, b.val), list);
+    const sorted = merge.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }

@@ -4,7 +4,11 @@ import paper from "paper";
 import {prop} from "ramda";
 import {timeFunc} from "utils/time";
 import * as compare from "../compare";
-import * as sort from "../sort";
+import * as selection from "sort/selection";
+import * as insertion from "sort/insertion";
+import * as bubble from "sort/bubble";
+import * as shell from "sort/shell";
+import * as merge from "sort/merge";
 
 class Image extends Component {
     render () {
@@ -37,7 +41,7 @@ function pixelSort (raster) {
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
     // const sorted = sort.ramdaSort(prop("green"), row);
-    const sorted = sort.merge((a, b) => compare.number(a.green, b.green), row);
+    const sorted = merge.sort((a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });
