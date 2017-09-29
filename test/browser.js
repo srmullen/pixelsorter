@@ -41,7 +41,28 @@ export const shellsort = () => {
 }
 
 export const mergesort = () => {
-    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    // const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    // const list = [{val: 4}, {val: 3}, {val: 7}, {val: 2}];
+    const list = [ { val: 2 },
+                  { val: 7 },
+                  { val: 2 },
+                  { val: 2 },
+                  { val: 2 },
+                  { val: 3 },
+                  { val: 4 },
+                  { val: 8 },
+                  { val: 1 },
+                  { val: 2 },
+                  { val: 4 },
+                  { val: 9 },
+                  { val: 2 },
+                  { val: 4 },
+                  { val: 6 },
+                  { val: 9 },
+                  { val: 2 },
+                  { val: 5 },
+                  { val: 5 },
+                  { val: 9 } ];
     const sorted = merge.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
