@@ -9,6 +9,7 @@ import * as insertion from "sort/insertion";
 import * as bubble from "sort/bubble";
 import * as shell from "sort/shell";
 import * as merge from "sort/merge";
+import * as quick from "sort/quick";
 
 class Image extends Component {
     render () {
@@ -41,7 +42,7 @@ function pixelSort (raster) {
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
     // const sorted = sort.ramdaSort(prop("green"), row);
-    const sorted = merge.sort((a, b) => compare.number(a.green, b.green), row);
+    const sorted = quick.sort((a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });

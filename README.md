@@ -12,7 +12,7 @@ TODO
 
 Sorts
 -----
-- Heap Sort
+- Heap Sort - Not sure this will produce good visualizations.
 - Quick Sort
 Distributed Sorts
 Maybe demo using web workers.

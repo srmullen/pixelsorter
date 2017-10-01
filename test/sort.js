@@ -8,6 +8,7 @@ import * as bubble from "../src/sort/bubble";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
+import * as quick from "../src/sort/quick";
 
 function listOf (randFn, length) {
     const ret = [];
@@ -139,6 +140,16 @@ describe("Sorting", () => {
         it("should sort", () => {
             const rands = getRands();
             const sorted = merge.sort((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    describe("Quick Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = quick.sort((a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

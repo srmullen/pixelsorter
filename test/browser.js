@@ -15,6 +15,7 @@ import * as bubble from "../src/sort/bubble";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
+import * as quick from "../src/sort/quick";
 
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
@@ -71,5 +72,31 @@ export const mergesort = () => {
 export const heapsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
     const sorted = heap.sort((a, b) => compare.number(a.val, b.val), list);
+    return sorted;
+}
+
+export const quicksort = () => {
+    // const list = [{val: 4}, {val: 3}, {val: 8}, {val: 7}, {val: 10}, {val: 2}, {val: 7}];
+    const list = [{ val: 9 },
+                  { val: 2 },
+                  { val: 2 },
+                  { val: 2 },
+                  { val: 9 },
+                  { val: 0 },
+                  { val: 2 },
+                  { val: 8 },
+                  { val: 7 },
+                  { val: 4 },
+                  { val: 0 },
+                  { val: 9 },
+                  { val: 1 },
+                  { val: 8 },
+                  { val: 1 },
+                  { val: 7 },
+                  { val: 1 },
+                  { val: 7 },
+                  { val: 5 },
+                  { val: 3 }];
+    const sorted = quick.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
