@@ -1,6 +1,5 @@
 import {expect} from "chai";
 import {prop, map, identity, sortBy} from "ramda";
-// import * as sort from "../src/sort";
 import {exchange} from "../src/sort/exchange";
 import * as compare from "../src/compare";
 import * as selection from "../src/sort/selection";
@@ -8,6 +7,7 @@ import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
+import * as heap from "../src/sort/heap";
 
 function listOf (randFn, length) {
     const ret = [];
@@ -84,7 +84,7 @@ describe("getRands", () => {
 });
 
 const rands = getRands();
-console.log(rands);
+// console.log(rands);
 const expected = ramdaSort(prop("val"), rands);
 describe("Sorting", () => {
     describe("ramda sort", () => {
@@ -139,6 +139,16 @@ describe("Sorting", () => {
         it("should sort", () => {
             const rands = getRands();
             const sorted = merge.sort((a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    xdescribe("Heap Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = heap.sort((a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

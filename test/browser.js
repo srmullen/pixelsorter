@@ -14,6 +14,7 @@ import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
+import * as heap from "../src/sort/heap";
 
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
@@ -64,5 +65,11 @@ export const mergesort = () => {
                   { val: 5 },
                   { val: 9 } ];
     const sorted = merge.sort((a, b) => compare.number(a.val, b.val), list);
+    return sorted;
+}
+
+export const heapsort = () => {
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    const sorted = heap.sort((a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }

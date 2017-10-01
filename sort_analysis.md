@@ -8,3 +8,4 @@ Outline
 - Describe testing Method to be used.
 - Algorithm Descriptions.
 - Visualization of Sort processes.
+- Sort Stability - Discuss with comparators.
