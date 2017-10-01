@@ -18,7 +18,6 @@ export const sort = curry((exchange, compare, list) => {
         // I'll just use the last item of the list as the pivot.
         // May explore other ways of choosing the pivot.
         let pivot = high;
-        // let loop = true;
         let i = low;
         let j = high - 1;
         while (true) {
