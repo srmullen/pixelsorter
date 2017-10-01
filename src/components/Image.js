@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import paper from "paper";
 import {prop} from "ramda";
-import {timeFunc} from "utils/time";
+import * as record from "utils/record";
 import * as compare from "../compare";
 import * as selection from "sort/selection";
 import * as insertion from "sort/insertion";
@@ -10,6 +10,8 @@ import * as bubble from "sort/bubble";
 import * as shell from "sort/shell";
 import * as merge from "sort/merge";
 import * as quick from "sort/quick";
+// import {exchange} from "sort/exchange";
+const exchange = record.calls(require("sort/exchange").exchange);
 
 class Image extends Component {
     render () {
@@ -24,8 +26,8 @@ class Image extends Component {
         paper.setup(this.refs.canvas);
         const raster = new paper.Raster(this.props.image);
         raster.onLoad = () => {
-            const {time} = timeFunc(() => pixelSort(raster));
-            console.log(time);
+            record.time(() => pixelSort(raster));
+            record.log(exchange);
             raster.translate((raster.width / 2) + 20, (raster.height / 2) + 20);
             paper.view.update();
         }
@@ -41,8 +43,7 @@ function pixelSort (raster) {
 
 function sortRow (raster, rowIndex) {
     const row = getRow(rowIndex, raster);
-    // const sorted = sort.ramdaSort(prop("green"), row);
-    const sorted = quick.sort((a, b) => compare.number(a.green, b.green), row);
+    const sorted = shell.sort(exchange, (a, b) => compare.number(a.green, b.green), row);
     sorted.map((color, i) => {
         raster.setPixel(i, rowIndex, color);
     });

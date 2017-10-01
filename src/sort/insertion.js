@@ -1,5 +1,4 @@
-import {exchange} from "./exchange";
-
+import {curry} from "ramda";
 
 // Insertion Sort
 // Iterate through the list. For each element place it in the correct place in a new list.
@@ -31,7 +30,7 @@ export function _insertion (compare, list) {
 }
 
 // Insertion sort with mutation.
-export function sort (compare, list) {
+export const sort = curry((exchange, compare, list) => {
     for (let i = 0; i < list.length; i++) {
         // Move backwards over the already sorted elements and continue swaping until
         // newest element is in the correct location.
@@ -40,4 +39,4 @@ export function sort (compare, list) {
         }
     }
     return list;
-}
+});

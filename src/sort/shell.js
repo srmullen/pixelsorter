@@ -1,4 +1,4 @@
-import {exchange} from "./exchange";
+import {curry} from "ramda";
 
 // Shell Sort
 // Similar to insertion sort but instead of only comparing adjacent elements it compares,
@@ -8,7 +8,7 @@ import {exchange} from "./exchange";
 // location with less exchanges. Will this hold true in experimentation?
 // Choosing gap sequences is a problem I won't look at. Try a couple popular ones and look
 // for asthetically pleasing sequences when animating the sort.
-export function sort (compare, list) {
+export const sort = curry((exchange, compare, list) => {
     // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
     const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
     // There's no need to sort gaps larger than the list so find the gap to use.
@@ -23,4 +23,4 @@ export function sort (compare, list) {
         gapIndex++;
     }
     return list;
-}
+});

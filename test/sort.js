@@ -99,7 +99,7 @@ describe("Sorting", () => {
     describe("Selection Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = selection.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = selection.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -109,7 +109,7 @@ describe("Sorting", () => {
     describe("Insertion Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = insertion.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = insertion.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -119,7 +119,7 @@ describe("Sorting", () => {
     describe("Bubble Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = bubble.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = bubble.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -129,7 +129,7 @@ describe("Sorting", () => {
     describe("Shell Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = shell.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = shell.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -139,7 +139,7 @@ describe("Sorting", () => {
     describe("Merge Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = merge.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = merge.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -149,7 +149,7 @@ describe("Sorting", () => {
     describe("Quick Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = quick.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = quick.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }
@@ -159,7 +159,7 @@ describe("Sorting", () => {
     xdescribe("Heap Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = heap.sort((a, b) => compare.number(a.val, b.val), rands);
+            const sorted = heap.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

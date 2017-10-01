@@ -1,4 +1,4 @@
-import {exchange} from "./exchange";
+import {curry} from "ramda";
 
 // Bubble Sort
 // I wasn't going to include this originally because Obama says it's not
@@ -16,7 +16,7 @@ import {exchange} from "./exchange";
 // Image being tested on has a 576 pixel width. Sorting one row takes ~269ms.
 // Insertion sort ~236ms.
 // Selection sort ~245ms.
-export function sort (compare, list) {
+export const sort = curry((exchange, compare, list) => {
     let sorted = false;
     while (!sorted) {
         let exchanges = 0;
@@ -29,4 +29,4 @@ export function sort (compare, list) {
         if (exchanges === 0) sorted = true;
     }
     return list;
-}
+});

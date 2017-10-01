@@ -14,8 +14,11 @@ Sorts
 -----
 - Heap Sort - Not sure this will produce good visualizations.
 - Quick Sort
+
 Distributed Sorts
+-----------------
 Maybe demo using web workers.
+Will use different type of comparator to place items into their correct sets.
 
 - Counting Sort
 - Bucket Sort
