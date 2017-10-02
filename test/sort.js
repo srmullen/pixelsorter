@@ -85,7 +85,7 @@ describe("getRands", () => {
 });
 
 const rands = getRands();
-// console.log(rands);
+console.log(rands);
 const expected = ramdaSort(prop("val"), rands);
 describe("Sorting", () => {
     describe("ramda sort", () => {

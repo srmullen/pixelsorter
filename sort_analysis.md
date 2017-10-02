@@ -9,3 +9,4 @@ Outline
 - Algorithm Descriptions.
 - Visualization of Sort processes.
 - Sort Stability - Discuss with comparators.
+- Demonstrate sorts by sorting html elements. Use animations.

@@ -13,7 +13,7 @@ import {curry} from "ramda";
 export const sort = curry((exchange, compare, list) => {
     function partition (list, low, high) {
         // Base case: List is too small to partition.
-        if (high - low <= 1) return;
+        if (high <= low) return;
 
         // I'll just use the last item of the list as the pivot.
         // May explore other ways of choosing the pivot.
@@ -45,6 +45,8 @@ export const sort = curry((exchange, compare, list) => {
 
         // Put the pivot between the partitions
         exchange(list, i, pivot);
+
+
 
         // Partition the list smaller than the pivot.
         partition(list, low, i-1);

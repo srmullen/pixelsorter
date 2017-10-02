@@ -9,6 +9,7 @@
 // mocha.run();
 import {prop, map, identity, compose} from "ramda";
 import * as compare from "../src/compare";
+import {exchange} from "../src/sort/exchange";
 import * as selection from "../src/sort/selection";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
@@ -77,26 +78,28 @@ export const heapsort = () => {
 
 export const quicksort = () => {
     // const list = [{val: 4}, {val: 3}, {val: 8}, {val: 7}, {val: 10}, {val: 2}, {val: 7}];
-    const list = [{ val: 9 },
-                  { val: 2 },
-                  { val: 2 },
-                  { val: 2 },
+    const list = [
+                  { val: 3 },
                   { val: 9 },
-                  { val: 0 },
-                  { val: 2 },
-                  { val: 8 },
-                  { val: 7 },
-                  { val: 4 },
-                  { val: 0 },
-                  { val: 9 },
-                  { val: 1 },
-                  { val: 8 },
-                  { val: 1 },
-                  { val: 7 },
-                  { val: 1 },
                   { val: 7 },
                   { val: 5 },
-                  { val: 3 }];
-    const sorted = quick.sort((a, b) => compare.number(a.val, b.val), list);
+                  { val: 3 },
+                  { val: 7 },
+                  { val: 8 },
+                  { val: 7 },
+                  { val: 5 },
+                  { val: 3 },
+                  { val: 3 },
+                  { val: 4 },
+                  { val: 5 },
+                  { val: 5 },
+                  { val: 8 },
+                  { val: 9 },
+                  { val: 9 },
+                  { val: 8 },
+                  { val: 5 },
+                  { val: 6 }
+              ];
+    const sorted = quick.sort(exchange, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
