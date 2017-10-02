@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {prop, map, identity, sortBy} from "ramda";
-import {exchange} from "../src/sort/exchange";
+import {indices as exchange} from "../src/sort/exchange";
 import * as compare from "../src/compare";
 import * as selection from "../src/sort/selection";
 import * as insertion from "../src/sort/insertion";

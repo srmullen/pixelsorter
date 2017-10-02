@@ -9,7 +9,7 @@
 // mocha.run();
 import {prop, map, identity, compose} from "ramda";
 import * as compare from "../src/compare";
-import {exchange} from "../src/sort/exchange";
+import * as exchange from "../src/sort/exchange";
 import * as selection from "../src/sort/selection";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
@@ -20,26 +20,26 @@ import * as quick from "../src/sort/quick";
 
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = selection.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = selection.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
 export const insertionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = insertion.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = insertion.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
 
 export const bubblesort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = bubble.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = bubble.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
 export const shellsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = shell.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = shell.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
@@ -66,13 +66,13 @@ export const mergesort = () => {
                   { val: 5 },
                   { val: 5 },
                   { val: 9 } ];
-    const sorted = merge.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = merge.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
 export const heapsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = heap.sort((a, b) => compare.number(a.val, b.val), list);
+    const sorted = heap.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }
 
@@ -100,6 +100,6 @@ export const quicksort = () => {
                   { val: 5 },
                   { val: 6 }
               ];
-    const sorted = quick.sort(exchange, (a, b) => compare.number(a.val, b.val), list);
+    const sorted = quick.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return sorted;
 }

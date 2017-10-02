@@ -5,27 +5,33 @@ import {prop} from "ramda";
 import * as record from "utils/record";
 import * as compare from "../compare";
 import * as pixel from "../pixelsorter";
-const exchange = record.calls(require("sort/exchange").exchange);
+import * as exchange from "sort/exchange";
+// const exchange = record.calls(require("sort/exchange").exchange);
 
 class Image extends Component {
     render () {
         return (
             <div className="w-100">
+                <button onClick={() => {
+                    record.time(() => pixel.sort(exchange.pixels(raster), (a, b) => compare.number(a.blue, b.blue), this.raster));
+                    record.log(exchange);
+                    paper.view.update();
+                }}>Sort</button>
                 <canvas ref="canvas" className="w-100"></canvas>
             </div>
         );
     }
 
+    raster: null
+
     componentDidMount () {
         paper.setup(this.refs.canvas);
-        const raster = new paper.Raster(this.props.image);
-        raster.onLoad = () => {
-            record.time(() => pixel.sort(exchange, (a, b) => compare.number(a.blue, b.blue), raster));
-            record.log(exchange);
-            raster.translate((raster.width / 2) + 20, (raster.height / 2) + 20);
+        this.raster = new paper.Raster(this.props.image);
+        this.raster.onLoad = () => {
+            this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
             paper.view.update();
         }
-        window.raster = raster;
+        window.raster = this.raster;
     }
 }
 
