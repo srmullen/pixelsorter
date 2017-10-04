@@ -16,8 +16,11 @@ class Main extends Component {
     render () {
         return (
             <div>
-                {/* <SortDemo sort={selection.sort(exchange.indices, compare.number)} /> */}
-                <Image image={image} />
+                <SortDemo
+                    exchange={exchange.indices}
+                    compare={compare.number}
+                    sort={selection.sort} />
+                {/* <Image image={image} /> */}
             </div>
         );
     }
