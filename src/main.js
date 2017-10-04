@@ -2,8 +2,11 @@ import "tachyons";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Image from "components/Image";
+import SortDemo from "components/SortDemo";
 import image from "images/tokyo_rain.jpg";
 import * as compare from "./compare";
+import * as selection from "sort/selection";
+import * as exchange from "sort/exchange";
 
 import * as browser from "../test/browser";
 
@@ -12,7 +15,10 @@ window.browser = browser;
 class Main extends Component {
     render () {
         return (
-            <Image image={image} />
+            <div>
+                {/* <SortDemo sort={selection.sort(exchange.indices, compare.number)} /> */}
+                <Image image={image} />
+            </div>
         );
     }
 }

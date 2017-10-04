@@ -4,7 +4,7 @@ import {curry} from "ramda";
 // Start by finding the element that should be the first in the sorted list and exchange it with the first element.
 // Next find what should be the second element of the sorted list and exchange it with the second element.
 // Continue until the list is sorted.
-export const sort = (exchange, compare, list) => {
+export const sort = curry((exchange, compare, list) => {
     for (let i = 0; i < list.length - 1; i++) {
         let min = i;
         for (let j = i + 1; j < list.length; j++) {
@@ -18,4 +18,4 @@ export const sort = (exchange, compare, list) => {
     }
     // Return the list even though it's mutatated so algorithms can be easily interchanged in pixel sorter.
     return list;
-}
+});
