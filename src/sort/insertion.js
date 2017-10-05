@@ -40,3 +40,17 @@ export const sort = curry((exchange, compare, list) => {
     }
     return list;
 });
+
+function* generator (exchange, compare, list) {
+    for (let i = 0; i < list.length; i++) {
+        // Move backwards over the already sorted elements and continue swaping until
+        // newest element is in the correct location.
+        for (let j = i; j > 0 && (yield {compare: [j, j-1]},  compare(list[j], list[j-1]) < 0); j--) {
+            exchange(list, j, j-1);
+            yield {list};
+        }
+    }
+    return list;
+}
+
+export const gen = curry(generator);
