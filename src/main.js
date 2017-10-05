@@ -1,5 +1,6 @@
 import "tachyons";
 import "./styles/styles.css";
+import "babel-polyfill";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Image from "components/Image";
@@ -20,7 +21,7 @@ class Main extends Component {
                 <SortDemo
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={selection.sort} />
+                    sort={selection.gen} />
                 {/* <Image image={image} /> */}
             </div>
         );

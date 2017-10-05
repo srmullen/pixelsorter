@@ -11,6 +11,7 @@
   "author": "Sean Mullen",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "paper": "^0.11.4",
     "ramda": "^0.24.1",
     "react": "^15.6.1",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",

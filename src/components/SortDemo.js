@@ -13,7 +13,6 @@ class SortDemo extends Component {
         this.state = {
             list
         };
-        console.log(this.state.list);
     }
 
     render () {
@@ -35,11 +34,12 @@ class SortDemo extends Component {
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                     // copy the list before sorting because sort is in-place.
-                    const sorted = this.props.sort(
+                    const sortGen = new this.props.sort(
                         this.props.exchange,
                         this.props.compare,
                         this.state.list.map(n => n));
-                    this.setState({list: sorted});
+                    const {value} = sortGen.next();
+                    this.setState({list: value});
                 }}>Sort</button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
