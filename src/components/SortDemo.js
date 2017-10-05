@@ -10,7 +10,7 @@ class SortDemo extends Component {
         super(props);
         let list;
         if (!props.list) {
-            list = range(0, 5);
+            list = range(0, 10);
             shuffle(list);
         } else {
             list = props.list;
@@ -59,7 +59,7 @@ class SortDemo extends Component {
                             clearInterval(interval);
                             this.setState({comparison: []});
                         }
-                    }, 1000);
+                    }, 500);
                 }}>Sort</button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"

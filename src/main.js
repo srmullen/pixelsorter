@@ -11,6 +11,7 @@ import * as exchange from "sort/exchange";
 import * as selection from "sort/selection";
 import * as bubble from "sort/bubble";
 import * as insertion from "sort/insertion";
+import * as shell from "sort/shell";
 
 import * as browser from "../test/browser";
 
@@ -35,6 +36,11 @@ class Main extends Component {
                     exchange={exchange.indices}
                     compare={compare.number}
                     sort={insertion.gen} />
+                <SortDemo
+                    title="Shell Sort"
+                    exchange={exchange.indices}
+                    compare={compare.number}
+                    sort={shell.gen} />
                 {/* <Image image={image} /> */}
             </div>
         );
