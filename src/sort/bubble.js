@@ -30,3 +30,22 @@ export const sort = curry((exchange, compare, list) => {
     }
     return list;
 });
+
+function* generator (exchange, compare, list) {
+    let sorted = false;
+    while (!sorted) {
+        let exchanges = 0;
+        for (let i = 0; i < list.length-1; i++) {
+            yield {compare: [i, i+1]};
+            if (compare(list[i], list[i+1]) > 0) {
+                exchange(list, i, i+1);
+                yield {list};
+                exchanges++;
+            }
+        }
+        if (exchanges === 0) sorted = true;
+    }
+    return list;
+};
+
+export const gen = curry(generator);

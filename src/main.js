@@ -8,6 +8,7 @@ import SortDemo from "components/SortDemo";
 import image from "images/tokyo_rain.jpg";
 import * as compare from "./compare";
 import * as selection from "sort/selection";
+import * as bubble from "sort/bubble";
 import * as exchange from "sort/exchange";
 
 import * as browser from "../test/browser";
@@ -18,10 +19,20 @@ class Main extends Component {
     render () {
         return (
             <div>
-                <SortDemo
-                    exchange={exchange.indices}
-                    compare={compare.number}
-                    sort={selection.gen} />
+                <div>
+                    <SortDemo
+                        title="Bubble Sort"
+                        exchange={exchange.indices}
+                        compare={compare.number}
+                        sort={bubble.gen} />
+                </div>
+                <div>
+                    <SortDemo
+                        title="Selection Sort"
+                        exchange={exchange.indices}
+                        compare={compare.number}
+                        sort={selection.gen} />
+                </div>
                 {/* <Image image={image} /> */}
             </div>
         );

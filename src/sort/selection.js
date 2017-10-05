@@ -25,6 +25,7 @@ function* generator (exchange, compare, list) {
     for (let i = 0; i < list.length - 1; i++) {
         let min = i;
         for (let j = i + 1; j < list.length; j++) {
+            yield {compare: [min, j]};
             const comparison = compare(list[min], list[j]);
             if (comparison > 0) {
                 min = j;
@@ -33,7 +34,7 @@ function* generator (exchange, compare, list) {
         // Exchange positions if not already in the correct location.
         if (min !== i) {
             exchange(list, min, i);
-            yield list;
+            yield {list};
         }
     }
     // Return the list even though it's mutatated so algorithms can be easily interchanged in pixel sorter.

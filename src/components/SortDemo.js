@@ -8,19 +8,27 @@ const REMS = 4;
 class SortDemo extends Component {
     constructor (props) {
         super(props);
-        const list = range(0, 5);
-        shuffle(list);
+        let list;
+        if (!props.list) {
+            list = range(0, 5);
+            shuffle(list);
+        } else {
+            list = props.list;
+        }
         this.state = {
-            list
+            list,
+            comparison: []
         };
     }
 
     render () {
         const blocks = this.state.list.map((n, i) => {
             return (
-                <Motion key={n} defaultStyle={{left: i * 200}} style={{left: spring(i * 200)}}>
+                <Motion key={n} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
                     {styles => (
-                        <div className={`m1 w4 h${REMS} ba absolute`} style={{left: styles.left}}>
+                        <div
+                            className={`m1 f2 pa4 ba absolute dib ${this.state.comparison.includes(i) ? 'bg-blue' : ''}`}
+                            style={{left: styles.left}}>
                             {n}
                         </div>
                     )}
@@ -30,6 +38,7 @@ class SortDemo extends Component {
 
         return (
             <div className="ma3 pa2">
+                <h1>{this.props.title}</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -38,18 +47,29 @@ class SortDemo extends Component {
                         this.props.exchange,
                         this.props.compare,
                         this.state.list.map(n => n));
-                    const {value} = sortGen.next();
-                    this.setState({list: value});
+
+                    const interval = setInterval(() => {
+                        const {value, done} = sortGen.next();
+                        if (value.compare) {
+                            this.setState({comparison: value.compare});
+                        } else if (value.list) {
+                            this.setState({list: value.list});
+                        }
+                        if (done) {
+                            clearInterval(interval);
+                            this.setState({comparison: []});
+                        }
+                    }, 1000);
                 }}>Sort</button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                     this.setState(({list}) => {
                         shuffle(list);
-                        return {list} ;
+                        return {list, comparison: []};
                     });
                 }}>Shuffle</button>
-                <div className="ma3 relative">
+                <div className="ma3 h4 relative">
                     {blocks}
                 </div>
             </div>
@@ -67,7 +87,9 @@ function shuffle (a) {
 SortDemo.propTypes = {
     exchange: PropTypes.func.isRequired,
     compare: PropTypes.func.isRequired,
-    sort: PropTypes.func.isRequired
+    sort: PropTypes.func.isRequired,
+    list: PropTypes.array,
+    title: PropTypes.string
 };
 
 export default SortDemo;
