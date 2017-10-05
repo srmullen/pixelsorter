@@ -6,7 +6,6 @@ import * as record from "utils/record";
 import * as compare from "../compare";
 import * as pixel from "../pixelsorter";
 import * as exchange from "sort/exchange";
-// const exchange = record.calls(require("sort/exchange").exchange);
 
 class Image extends Component {
     render () {
