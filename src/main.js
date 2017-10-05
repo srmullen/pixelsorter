@@ -1,4 +1,5 @@
 import "tachyons";
+import "./styles/styles.css";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Image from "components/Image";
