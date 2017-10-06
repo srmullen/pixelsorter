@@ -6,20 +6,27 @@ import * as merge from "sort/merge";
 import * as quick from "sort/quick";
 
 // Why does this run faster with a timeout than with a 'for' loop?
-export function sort (exchange, compare, raster) {
+export function sort (exchange, compare, raster, options={}) {
     let row = 0;
     const interval = setInterval(() => {
         sortRow(exchange(row), compare, raster, row);
         if (row > raster.height) {
-            clearInterval(interval)
+            clearInterval(interval);
         }
         row++;
-    }, 10);
+    }, 1);
 }
 
 function sortRow (exchange, compare, raster, rowIndex) {
     const row = getRow(rowIndex, raster);
-    selection.sort(exchange, compare, row);
+    // selection.sort(exchange, compare, row);
+    const gen = new selection.step(exchange, compare, row);
+    const interval = setInterval(() => {
+        const {done} = gen.next();
+        if (done) {
+            clearInterval(interval);
+        }
+    }, 1);
 }
 
 function getRow (row, raster) {

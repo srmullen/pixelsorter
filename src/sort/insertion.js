@@ -41,7 +41,8 @@ export const sort = curry((exchange, compare, list) => {
     return list;
 });
 
-function* generator (exchange, compare, list) {
+// Demo gen can yield any values that are useful for animating and explaing the sort Algorithm.
+function* demo_gen (exchange, compare, list) {
     for (let i = 0; i < list.length; i++) {
         // Move backwards over the already sorted elements and continue swaping until
         // newest element is in the correct location.
@@ -53,4 +54,18 @@ function* generator (exchange, compare, list) {
     return list;
 }
 
-export const gen = curry(generator);
+// Step gen yields only when the list changes.
+function* step_gen (exchange, compare, list) {
+    for (let i = 0; i < list.length; i++) {
+        // Move backwards over the already sorted elements and continue swaping until
+        // newest element is in the correct location.
+        for (let j = i; j > 0 && compare(list[j], list[j-1]) < 0; j--) {
+            exchange(list, j, j-1);
+            yield {list};
+        }
+    }
+    return list;
+}
+
+export const demo = curry(demo_gen);
+export const step = curry(step_gen);

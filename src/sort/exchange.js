@@ -14,3 +14,10 @@ export const pixels = curry((raster, row, arr, a, b) => {
     raster.setPixel(a, row, raster.getPixel(b, row));
     raster.setPixel(b, row, temp);
 });
+
+export function step (exchange) {
+    return function* (arr, a, b) {
+        exchange(arr, a, b);
+        yield {list: arr};
+    }
+}

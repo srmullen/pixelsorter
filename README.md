@@ -9,6 +9,8 @@ TODO
 - Upload pictures.
 - Use picture URLs.
 - Investigate Ads.
+- Implement Sort options
+    Direction, sortRate, area, algorithm. What else?
 
 Sorts
 -----

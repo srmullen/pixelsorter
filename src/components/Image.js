@@ -10,12 +10,19 @@ import * as exchange from "sort/exchange";
 class Image extends Component {
     render () {
         return (
-            <div className="w-100">
-                <button onClick={() => {
-                    record.time(() => pixel.sort(exchange.pixels(raster), (a, b) => compare.number(a.blue, b.blue), this.raster));
-                    record.log(exchange);
-                    paper.view.update();
-                }}>Sort</button>
+            <div className="w-100 mt3">
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={() => {
+                        record.time(() => pixel.sort(exchange.pixels(raster), (a, b) => compare.number(a.blue, b.blue), this.raster));
+                        record.log(exchange);
+                        paper.view.update();
+                    }}>Sort</button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={() => {
+                        console.log("Implement me");
+                    }}>Reset</button>
                 <canvas ref="canvas" className="w-100"></canvas>
             </div>
         );

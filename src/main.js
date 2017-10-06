@@ -23,35 +23,41 @@ class Main extends Component {
     render () {
         return (
             <div>
-                <QuickSort
-                    exchange={exchange.indices}
-                    compare={compare.number} />
-                <SortDemo
-                    title="Merge Sort"
-                    exchange={exchange.indices}
-                    compare={compare.number}
-                    sort={merge.gen} />
-                <SortDemo
+                {/* <SortDemo
                     title="Bubble Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={bubble.gen} />
-                <SortDemo
+                    sort={bubble.demo} /> */}
+
+                <QuickSort
+                    exchange={exchange.indices}
+                    compare={compare.number} />
+
+                {/* <SortDemo
+                    title="Merge Sort"
+                    exchange={exchange.indices}
+                    compare={compare.number}
+                    sort={merge.gen} /> */}
+
+                {/* <SortDemo
                     title="Selection Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={selection.gen} />
-                <SortDemo
+                    sort={selection.demo} /> */}
+
+                {/* <SortDemo
                     title="Insertion Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={insertion.gen} />
-                <SortDemo
+                    sort={insertion.demo} /> */}
+
+                {/* <SortDemo
                     title="Shell Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={shell.gen} />
-                {/* <Image image={image} /> */}
+                    sort={shell.demo} /> */}
+
+                <Image image={image} />
             </div>
         );
     }

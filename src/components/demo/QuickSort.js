@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {range} from "ramda";
 import {Motion, spring} from "react-motion";
-import {gen as sort} from "sort/quick";
+import * as quick from "sort/quick";
 import {shuffle} from "utils/sort";
 
 class QuickSort extends Component {
@@ -52,7 +52,7 @@ class QuickSort extends Component {
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                     // copy the list before sorting because sort is in-place.
-                    const sortGen = new sort(
+                    const sortGen = new quick.demo(
                         this.props.exchange,
                         this.props.compare,
                         this.state.list.map(n => n));
