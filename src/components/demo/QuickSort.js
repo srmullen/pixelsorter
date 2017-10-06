@@ -1,12 +1,11 @@
 import React, {Component} from "react";
-import {TransitionMotion, Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range} from "ramda";
+import {Motion, spring} from "react-motion";
+import {gen as sort} from "sort/quick";
 import {shuffle} from "utils/sort";
 
-const REMS = 4;
-
-class SortDemo extends Component {
+class QuickSort extends Component {
     constructor (props) {
         super(props);
         let list;
@@ -18,8 +17,17 @@ class SortDemo extends Component {
         }
         this.state = {
             list,
+            pivot: null,
             compare: []
         };
+    }
+
+    blockColor (i) {
+        if (i === this.state.pivot) {
+            return "bg-red";
+        } else {
+            return this.state.compare.includes(i) ? 'bg-blue' : '';
+        }
     }
 
     render () {
@@ -28,7 +36,7 @@ class SortDemo extends Component {
                 <Motion key={n} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
                     {styles => (
                         <div
-                            className={`m1 f2 pa4 ba absolute dib ${this.state.compare.includes(i) ? 'bg-blue' : ''}`}
+                            className={`m1 f2 pa4 ba absolute dib ${this.blockColor(i)}`}
                             style={{left: styles.left}}>
                             {n}
                         </div>
@@ -39,12 +47,12 @@ class SortDemo extends Component {
 
         return (
             <div className="ma3 pa2">
-                <h1 className="ml3">{this.props.title}</h1>
+                <h1 className="ml3">Quick Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                     // copy the list before sorting because sort is in-place.
-                    const sortGen = new this.props.sort(
+                    const sortGen = new sort(
                         this.props.exchange,
                         this.props.compare,
                         this.state.list.map(n => n));
@@ -75,12 +83,9 @@ class SortDemo extends Component {
     }
 }
 
-SortDemo.propTypes = {
-    exchange: PropTypes.func.isRequired,
+QuickSort.propTypes = {
     compare: PropTypes.func.isRequired,
-    sort: PropTypes.func.isRequired,
-    list: PropTypes.array,
-    title: PropTypes.string
+    exchange: PropTypes.func.isRequired
 };
 
-export default SortDemo;
+export default QuickSort;
