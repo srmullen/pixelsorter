@@ -8,11 +8,32 @@ export function indices (arr, a, b) {
     arr[b] = temp;
 }
 
-export const pixels = curry((raster, row, arr, a, b) => {
-    indices(arr, a, b);
-    const temp = raster.getPixel(a, row);
-    raster.setPixel(a, row, raster.getPixel(b, row));
-    raster.setPixel(b, row, temp);
+/*
+ * Copys the index from one list into another list.
+ * Does not mutate the copy list.
+ */
+export function copyFromList(copy, into, copyIndex, intoIndex) {
+    into[intoIndex] = copy[copyIndex];
+}
+
+/*
+ * Wrap the exchange function so that the pixel of the raster change everytime there
+ * is and exchange.
+ */
+export const pixels = curry((exchange, raster, row) => {
+    if (exchange === indices) {
+        return (arr, a, b) => {
+            exchange(arr, a, b);
+            const temp = raster.getPixel(a, row);
+            raster.setPixel(a, row, raster.getPixel(b, row));
+            raster.setPixel(b, row, temp);
+        }
+    } else if (exchange === copyFromList) {
+        return (copy, arr, a, b) => {
+            exchange(copy, arr, a, b);
+            raster.setPixel(b, row, arr[b]);
+        }
+    }
 });
 
 export function step (exchange) {

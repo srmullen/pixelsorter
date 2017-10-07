@@ -57,19 +57,23 @@ export const sort = curry((exchange, compare, list) => {
         for (let i = low; i < high; i++) {
             // When the mid/high list is exhausted can just take the rest of the low/mid list...
             if (i2 >= high) {
-                list[i] = copy[i1];
+                // list[i] = copy[i1];
+                exchange(copy, list, i1, i);
                 i1++;
             // and viceversa.
             } else if (i1 >= mid) {
-                list[i] = copy[i2];
+                // list[i] = copy[i2];
+                exchange(copy, list, i2, i);
                 i2++;
             } else if (compare(copy[i1], copy[i2]) <= 0) {
                 // take the smaller element and place it at position i.
-                list[i] = copy[i1];
+                // list[i] = copy[i1];
+                exchange(copy, list, i1, i);
                 // The element from the first list is now used to increase its index.
                 i1++;
             } else {
-                list[i] = copy[i2];
+                // list[i] = copy[i2];
+                exchange(copy, list, i2, i);
                 i2++;
             }
         }
@@ -87,7 +91,7 @@ export const sort = curry((exchange, compare, list) => {
     return list;
 });
 
-function* generator (exchange, compare, list) {
+function* demo_gen (exchange, compare, list) {
     function* merge (list, low, mid, high) {
         // copy the relevant part of the list.
         const copy = [];
@@ -100,19 +104,19 @@ function* generator (exchange, compare, list) {
         for (let i = low; i < high; i++) {
             // When the mid/high list is exhausted can just take the rest of the low/mid list...
             if (i2 >= high) {
-                list[i] = copy[i1];
+                exchange(copy, list, i1, i);
                 i1++;
             // and viceversa.
             } else if (i1 >= mid) {
-                list[i] = copy[i2];
+                exchange(copy, list, i2, i);
                 i2++;
             } else if (yield {compare: [i1, i2]}, compare(copy[i1], copy[i2]) <= 0) {
                 // take the smaller element and place it at position i.
-                list[i] = copy[i1];
+                exchange(copy, list, i1, i);
                 // The element from the first list is now used to increase its index.
                 i1++;
             } else {
-                list[i] = copy[i2];
+                exchange(copy, list, i2, i);
                 i2++;
             }
         }
@@ -142,4 +146,60 @@ function* generator (exchange, compare, list) {
     return list;
 };
 
-export const gen = curry(generator);
+function* step_gen (exchange, compare, list) {
+    function* merge (list, low, mid, high) {
+        // copy the relevant part of the list.
+        const copy = [];
+        for (let i = low; i < high; i++) {
+            copy[i] = list[i];
+        }
+
+        let i1 = low; // first sorted list index.
+        let i2 = mid; // second sorted list index.
+        for (let i = low; i < high; i++) {
+            // When the mid/high list is exhausted can just take the rest of the low/mid list...
+            if (i2 >= high) {
+                exchange(copy, list, i1, i);
+                i1++;
+            // and viceversa.
+            } else if (i1 >= mid) {
+                exchange(copy, list, i2, i);
+                i2++;
+            } else if (compare(copy[i1], copy[i2]) <= 0) {
+                // take the smaller element and place it at position i.
+                exchange(copy, list, i1, i);
+                // The element from the first list is now used to increase its index.
+                i1++;
+            } else {
+                exchange(copy, list, i2, i);
+                i2++;
+            }
+            yield {list};
+        }
+    }
+
+    function* splitMerge (list, low, high) {
+        if (high <= low + 1) return;
+        const mid = low + Math.floor((high - low) / 2);
+
+        for (let v of splitMerge(list, low, mid)) {
+            yield v;
+        }
+
+        for (let v of splitMerge(list, mid, high)) {
+            yield v;
+        }
+
+        for (let v of merge(list, low, mid, high)) {
+            yield v;
+        }
+    }
+
+    for (let v of splitMerge(list, 0, list.length)) {
+        yield v;
+    }
+    return list;
+};
+
+export const demo = curry(demo_gen);
+export const step = curry(step_gen);

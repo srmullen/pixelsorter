@@ -24,7 +24,8 @@ module.exports = {
             components: path.resolve(__dirname, "src/components"),
             utils: path.resolve(__dirname, "src/utils"),
             sort: path.resolve(__dirname, "src/sort"),
-            images: path.resolve(__dirname, "images")
+            images: path.resolve(__dirname, "images"),
+            root: path.resolve(__dirname, "src")
         }
     },
     module: {

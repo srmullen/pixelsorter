@@ -10,7 +10,7 @@ TODO
 - Use picture URLs.
 - Investigate Ads.
 - Implement Sort options
-    Direction, sortRate, area, algorithm. What else?
+    Direction, sortRate, area, algorithm, scale. What else?
 
 Sorts
 -----

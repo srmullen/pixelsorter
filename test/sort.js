@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {prop, map, identity, sortBy} from "ramda";
-import {indices as exchange} from "../src/sort/exchange";
+import {indices as exchange, copyFromList} from "../src/sort/exchange";
 import * as compare from "../src/compare";
 import * as selection from "../src/sort/selection";
 import * as insertion from "../src/sort/insertion";
@@ -139,7 +139,7 @@ describe("Sorting", () => {
     describe("Merge Sort", () => {
         it("should sort", () => {
             const rands = getRands();
-            const sorted = merge.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
+            const sorted = merge.sort(copyFromList, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

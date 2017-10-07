@@ -6,6 +6,7 @@ import * as record from "utils/record";
 import * as compare from "../compare";
 import * as pixel from "../pixelsorter";
 import * as exchange from "sort/exchange";
+import {SELECTION, INSERTION, BUBBLE, SHELL, MERGE, QUICK} from "root/constants";
 
 class Image extends Component {
     render () {
@@ -14,7 +15,12 @@ class Image extends Component {
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                        record.time(() => pixel.sort(exchange.pixels(raster), (a, b) => compare.number(a.blue, b.blue), this.raster));
+                        record.time(() => (
+                            pixel.sort(
+                                (a, b) => compare.number(a.blue, b.blue),
+                                this.raster,
+                                {sort: MERGE}
+                            )));
                         record.log(exchange);
                         paper.view.update();
                     }}>Sort</button>
@@ -34,6 +40,7 @@ class Image extends Component {
         paper.setup(this.refs.canvas);
         this.raster = new paper.Raster(this.props.image);
         this.raster.onLoad = () => {
+            this.raster.size = this.raster.size.multiply(this.props.scale);
             this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
             paper.view.update();
         }
@@ -42,7 +49,12 @@ class Image extends Component {
 }
 
 Image.propTypes = {
-    src: PropTypes.string
+    src: PropTypes.string,
+    scale: PropTypes.number
+};
+
+Image.defaultProps = {
+    scale: 1
 };
 
 export default Image;
