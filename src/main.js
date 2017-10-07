@@ -30,19 +30,13 @@ class Main extends Component {
                     compare={compare.number}
                     sort={bubble.demo} /> */}
 
-                <MergeSort
+                {/* <MergeSort
                     exchange={exchange.copyFromList}
-                    compare={compare.number} />
+                    compare={compare.number} /> */}
 
-                <QuickSort
+                {/* <QuickSort
                     exchange={exchange.indices}
-                    compare={compare.number} />
-
-                {/* <SortDemo
-                    title="Merge Sort"
-                    exchange={exchange.indices}
-                    compare={compare.number}
-                    sort={merge.demo} /> */}
+                    compare={compare.number} /> */}
 
                 {/* <SortDemo
                     title="Selection Sort"

@@ -57,22 +57,18 @@ export const sort = curry((exchange, compare, list) => {
         for (let i = low; i < high; i++) {
             // When the mid/high list is exhausted can just take the rest of the low/mid list...
             if (i2 >= high) {
-                // list[i] = copy[i1];
                 exchange(copy, list, i1, i);
                 i1++;
             // and viceversa.
             } else if (i1 >= mid) {
-                // list[i] = copy[i2];
                 exchange(copy, list, i2, i);
                 i2++;
             } else if (compare(copy[i1], copy[i2]) <= 0) {
                 // take the smaller element and place it at position i.
-                // list[i] = copy[i1];
                 exchange(copy, list, i1, i);
                 // The element from the first list is now used to increase its index.
                 i1++;
             } else {
-                // list[i] = copy[i2];
                 exchange(copy, list, i2, i);
                 i2++;
             }

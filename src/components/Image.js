@@ -4,22 +4,27 @@ import paper from "paper";
 import {prop} from "ramda";
 import * as record from "utils/record";
 import * as compare from "../compare";
-import * as pixel from "../pixelsorter";
+// import PixelSorter, * as pixel from "../pixelsorter";
+import PixelSorter from "../pixelsorter";
 import * as exchange from "sort/exchange";
 import {SELECTION, INSERTION, BUBBLE, SHELL, MERGE, QUICK} from "root/constants";
 
 class Image extends Component {
+
+    pixel: null
+
     render () {
         return (
             <div className="w-100 mt3">
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
+                        this.pixel = new PixelSorter(this.raster);
                         record.time(() => (
-                            pixel.sort(
+                            this.pixel.sort(
                                 (a, b) => compare.number(a.blue, b.blue),
                                 this.raster,
-                                {sort: MERGE}
+                                {algorithm: SELECTION}
                             )));
                         record.log(exchange);
                         paper.view.update();
@@ -27,7 +32,14 @@ class Image extends Component {
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                        console.log("Implement me");
+                        this.pixel.stop();
+                        this.raster.remove();
+                        this.raster = new paper.Raster(this.props.image);
+                        this.raster.onLoad = () => {
+                            this.raster.size = this.raster.size.multiply(this.props.scale);
+                            this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
+                            paper.view.update();
+                        }
                     }}>Reset</button>
                 <canvas ref="canvas" className="w-100"></canvas>
             </div>
@@ -44,7 +56,6 @@ class Image extends Component {
             this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
             paper.view.update();
         }
-        window.raster = this.raster;
     }
 }
 
