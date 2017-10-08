@@ -16,29 +16,32 @@ const algorithms = {
     [QUICK]: quick
 };
 
+const ROW_INTERVAL = Symbol("ROW_INTERVAL");
+const STEP_INTERVALS = Symbol("STEP_INTERVALS");
+
 function PixelSorter (raster) {
     this.raster = raster;
-    this._row_interval = null;
-    this._step_intervals = [];
+    this[ROW_INTERVAL] = null;
+    this[STEP_INTERVALS] = [];
 }
 
 // Why does this run faster with a timeout than with a 'for' loop?
 PixelSorter.prototype.sort = function sort (compare, raster, options = {algorithm: INSERTION}) {
     let row = 0;
     const exchangeFn = options.algorithm === MERGE ? exchange.copyFromList : exchange.indices;
-    this._row_interval = setInterval(() => {
+    this[ROW_INTERVAL] = setInterval(() => {
         this.sortRow(options, exchange.pixels(exchangeFn, raster, row), compare, raster, row);
         if (row > raster.height) {
-            clearInterval(this._row_interval);
+            clearInterval(this[ROW_INTERVAL]);
         }
         row++;
     }, 1);
 }
 
 PixelSorter.prototype.stop = function stop () {
-    clearInterval(this._row_interval);
-    this._step_intervals.map(interval => clearInterval(interval));
-    this._step_intervals = [];
+    clearInterval(this[ROW_INTERVAL]);
+    this[STEP_INTERVALS].map(interval => clearInterval(interval));
+    this[STEP_INTERVALS] = [];
 };
 
 PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, rowIndex) {
@@ -51,7 +54,7 @@ PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, ro
             clearInterval(interval);
         }
     }, 1);
-    this._step_intervals.push(interval);
+    this[STEP_INTERVALS].push(interval);
 }
 
 function getRow (row, raster) {
