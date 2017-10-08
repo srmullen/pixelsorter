@@ -35,12 +35,13 @@ function* demo_gen (exchange, compare, list) {
     let sorted = false;
     while (!sorted) {
         let exchanges = 0;
+        yield {exchanges, compare: []};
         for (let i = 0; i < list.length-1; i++) {
             yield {compare: [i, i+1]};
             if (compare(list[i], list[i+1]) > 0) {
                 exchange(list, i, i+1);
-                yield {list};
                 exchanges++;
+                yield {list, exchanges};
             }
         }
         if (exchanges === 0) sorted = true;

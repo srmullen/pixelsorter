@@ -5,6 +5,7 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Image from "components/Image";
 import SortDemo from "components/SortDemo";
+import BubbleSort from "components/demo/BubbleSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
 import image from "images/six_pack_jason_walker.jpg";
@@ -24,11 +25,9 @@ class Main extends Component {
     render () {
         return (
             <div>
-                {/* <SortDemo
-                    title="Bubble Sort"
+                <BubbleSort
                     exchange={exchange.indices}
-                    compare={compare.number}
-                    sort={bubble.demo} /> */}
+                    compare={compare.number} />
 
                 {/* <MergeSort
                     exchange={exchange.copyFromList}
@@ -56,7 +55,7 @@ class Main extends Component {
                     compare={compare.number}
                     sort={shell.demo} /> */}
 
-                <Image image={image} scale={0.3} />
+                {/* <Image image={image} scale={0.3} /> */}
             </div>
         );
     }
