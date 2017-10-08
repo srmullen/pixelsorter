@@ -5,7 +5,7 @@ import {prop} from "ramda";
 import * as record from "utils/record";
 import * as compare from "../compare";
 // import PixelSorter, * as pixel from "../pixelsorter";
-import PixelSorter from "../pixelsorter";
+import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {SELECTION, INSERTION, BUBBLE, SHELL, MERGE, QUICK} from "root/constants";
 
@@ -29,6 +29,11 @@ class Image extends Component {
                         record.log(exchange);
                         paper.view.update();
                     }}>Sort</button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={() => {
+                        this.pixel.stop();
+                    }}>Stop</button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
