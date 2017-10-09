@@ -16,6 +16,8 @@ Sorts
 -----
 - Heap Sort - Not sure this will produce good visualizations.
 - Quick Sort
+- Cocktail Sort
+- Odd Even sort
 
 Distributed Sorts
 -----------------

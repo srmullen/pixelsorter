@@ -5,6 +5,7 @@ import * as compare from "../src/compare";
 import * as selection from "../src/sort/selection";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
+import * as cocktail from "../src/sort/cocktail";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
@@ -120,6 +121,16 @@ describe("Sorting", () => {
         it("should sort", () => {
             const rands = getRands();
             const sorted = bubble.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
+            for(let i = 0; i < expected.length; i++) {
+                expect(sorted[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    describe("Cocktail Sort", () => {
+        it("should sort", () => {
+            const rands = getRands();
+            const sorted = cocktail.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
             for(let i = 0; i < expected.length; i++) {
                 expect(sorted[i].val).to.equal(expected[i].val);
             }

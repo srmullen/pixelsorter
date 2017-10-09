@@ -1,4 +1,5 @@
 export const BUBBLE = Symbol("BUBBLE");
+export const COCKTAIL = Symbol("COCKTAIL");
 export const HEAP = Symbol("HEAP");
 export const INSERTION = Symbol("INSERTION");
 export const SELECTION = Symbol("SELECTION");

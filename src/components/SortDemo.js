@@ -38,7 +38,7 @@ class SortDemo extends Component {
         });
 
         return (
-            <div className="ma3 pa2">
+            <div className="ma3 pa2 avenir dark-gray">
                 <h1 className="ml3">{this.props.title}</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"

@@ -4,10 +4,9 @@ import paper from "paper";
 import {prop} from "ramda";
 import * as record from "utils/record";
 import * as compare from "../compare";
-// import PixelSorter, * as pixel from "../pixelsorter";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
-import {SELECTION, INSERTION, BUBBLE, SHELL, MERGE, QUICK} from "root/constants";
+import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, MERGE, QUICK} from "root/constants";
 
 class Image extends Component {
 
@@ -24,7 +23,7 @@ class Image extends Component {
                             this.pixel.sort(
                                 (a, b) => compare.number(a.blue, b.blue),
                                 this.raster,
-                                {algorithm: SELECTION}
+                                {algorithm: COCKTAIL}
                             )));
                         record.log(exchange);
                         paper.view.update();

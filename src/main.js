@@ -13,6 +13,7 @@ import * as compare from "./compare";
 import * as exchange from "sort/exchange";
 import * as selection from "sort/selection";
 import * as bubble from "sort/bubble";
+import * as cocktail from "sort/cocktail";
 import * as insertion from "sort/insertion";
 import * as shell from "sort/shell";
 import * as merge from "sort/merge";
@@ -28,6 +29,12 @@ class Main extends Component {
                 <BubbleSort
                     exchange={exchange.indices}
                     compare={compare.number} />
+
+                <SortDemo
+                    title="Cocktail Sort"
+                    exchange={exchange.indices}
+                    compare={compare.number}
+                    sort={cocktail.demo} />
 
                 {/* <MergeSort
                     exchange={exchange.copyFromList}
@@ -55,7 +62,7 @@ class Main extends Component {
                     compare={compare.number}
                     sort={shell.demo} /> */}
 
-                {/* <Image image={image} scale={0.3} /> */}
+                <Image image={image} scale={0.3} />
             </div>
         );
     }
