@@ -8,13 +8,31 @@ import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, MERGE, QUICK} from "root/constants";
 
+// Unfortunately symbols can't be passed as value to <select>.
+const algorithms = {
+    selection: SELECTION,
+    insertion: INSERTION,
+    bubble: BUBBLE,
+    cocktail: COCKTAIL,
+    shell: SHELL,
+    merge: MERGE,
+    quick: QUICK
+};
+
 class Image extends Component {
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            sortAlgorithm: "shell"
+        };
+    }
 
     pixel: null
 
     render () {
         return (
-            <div className="w-100 mt3">
+            <div className="w-100 mt3 avenir dark-gray">
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -23,7 +41,7 @@ class Image extends Component {
                             this.pixel.sort(
                                 (a, b) => compare.number(a.blue, b.blue),
                                 this.raster,
-                                {algorithm: COCKTAIL}
+                                {algorithm: algorithms[this.state.sortAlgorithm]}
                             )));
                         record.log(exchange);
                         paper.view.update();
@@ -36,7 +54,7 @@ class Image extends Component {
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                        this.pixel.stop();
+                        if (this.pixel) this.pixel.stop();
                         this.raster.remove();
                         this.raster = new paper.Raster(this.props.image);
                         this.raster.onLoad = () => {
@@ -45,6 +63,24 @@ class Image extends Component {
                             paper.view.update();
                         }
                     }}>Reset</button>
+                    <label>
+                        Algorithm
+                        <select
+                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                            value={this.state.sortAlgorithm}
+                            onChange={(e) => {
+                                this.setState({sortAlgorithm: e.target.value});
+                            }}
+                        >
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="cocktail">Cocktail Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="shell">Shell Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="quick">Quick Sort</option>
+                        </select>
+                    </label>
                 <canvas ref="canvas" className="w-100"></canvas>
             </div>
         );

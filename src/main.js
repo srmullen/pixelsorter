@@ -22,7 +22,7 @@ import * as browser from "../test/browser";
 
 window.browser = browser;
 
-class Main extends Component {
+class Main extends Component {    
     render () {
         return (
             <div>
