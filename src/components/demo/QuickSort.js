@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {range} from "ramda";
 import {Motion, spring} from "react-motion";
 import * as quick from "sort/quick";
-import {shuffle} from "utils/sort";
+import {shuffle} from "sort/exchange";
 
 class QuickSort extends Component {
     constructor (props) {

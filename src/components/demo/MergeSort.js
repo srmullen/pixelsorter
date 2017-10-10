@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {range} from "ramda";
 import {Motion, spring} from "react-motion";
 import * as merge from "sort/merge";
-import {shuffle} from "utils/sort";
+import {shuffle} from "sort/exchange";
 
 class MergeSort extends Component {
     constructor (props) {

@@ -17,6 +17,13 @@ import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
 import * as quick from "../src/sort/quick";
+import * as bogo from "../src/sort/bogo";
+
+export const bogosort = () => {
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    const sorted = bogo.sort(exchange.shuffle, (a, b) => compare.number(a.val, b.val), list);
+    return sorted;
+}
 
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];

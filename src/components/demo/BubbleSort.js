@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {TransitionMotion, Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range} from "ramda";
-import {shuffle} from "utils/sort";
+import {shuffle} from "sort/exchange";
 import * as bubble from "sort/bubble";
 
 const REMS = 4;

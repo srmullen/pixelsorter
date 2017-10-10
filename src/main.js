@@ -11,6 +11,7 @@ import MergeSort from "components/demo/MergeSort";
 import image from "images/six_pack_jason_walker.jpg";
 import * as compare from "./compare";
 import * as exchange from "sort/exchange";
+import * as bogo from "sort/bogo";
 import * as selection from "sort/selection";
 import * as bubble from "sort/bubble";
 import * as cocktail from "sort/cocktail";
@@ -22,10 +23,18 @@ import * as browser from "../test/browser";
 
 window.browser = browser;
 
-class Main extends Component {    
+class Main extends Component {
     render () {
         return (
             <div>
+                <SortDemo
+                    title="Bogo Sort"
+                    list={[4, 3, 2, 1]}
+                    exchange={exchange.shuffle}
+                    compare={compare.number}
+                    sort={bogo.demo}
+                 />
+
                 <BubbleSort
                     exchange={exchange.indices}
                     compare={compare.number} />
