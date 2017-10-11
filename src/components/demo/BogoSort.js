@@ -3,34 +3,28 @@ import {Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
-import * as bubble from "sort/bubble";
+import * as sort from "sort/bogo";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
 
-const list = [3, 2, 0, 4, 5, 1];
+const list = [2, 3, 1, 0];
 
-// Talk about sorted elements.
-// Talk about passes and swaps.
-// Talk about turtles.
 const descriptions = [
-    `We begin by comparing the first two elements of the list. 3 is larger
-    than two so they get swapped and our swap counter is incremented.`,
+    `Bogo Sort is a very rudimentary "algorithm". I use quotes around the word algorithm
+    because it is not gauranteed to run in a finite amount of time. It starts out by
+    checking if the list is already sorted. If elements are found to be out of order
+    then the whole list is randomly shuffled and checked for correct order again. This
+    process continues until a correct order is found.`,
 
-    `The algorithm then moves on and compares the next two numbers. 3 is larger
-    than one so again they get swapped. Look at that, The 3 is "bubbling" up!`,
+    `It starts by walking through the list comparing adjacent elements. Elements being compared
+    are highlighted in blue. 2 and 3 are in order so the algorithm moves on to the next adjacent elements.`,
 
-    `After the first pass through the list the largest element will have "bubbled" to the top.
-    No elements in the list will be higher than this one so it can be marked as sorted and won't need
-    to be compared anymore.`,
+    `Now it compares 3 and 1. These are not in order so the list will be shuffled randomly.
+    From this point on I cannot say how long until the list is sorted. There are only 4 elements
+    so chances are you won't be waiting until the end of time, but no promises.`,
 
-    `Now the algorithm will start again at the beginning of the list comparing adjacent elements`,
-
-    `Notice that elements in a position greater than where they should be are only able to move one step
-    closer to their correct position on each pass. This is called "turtling". Insert Dana Carvey in master of disguise here.
-    Mark the turtle as red.`,
-
-    `On this pass through the list there are no swaps that have occured, so the list is sorted and
-    the algorithm stops.`
+    `You made it! Bogo Sort is complete. Let's move on to more practical sorting algorithms
+    (or ones that are at least gauranteed to finish).`
 ];
 
 function defaultSortState () {
@@ -38,14 +32,13 @@ function defaultSortState () {
         list,
         exchanges: 0,
         compare: [],
-        description: descriptions[0],
-        bubbleTo: undefined,
+        description: descriptions[0]
     };
 }
 
 // copy the list before sorting because sort is in-place.
-const demo = new bubble.demo(
-    exchange.indices,
+const demo = new sort.demo(
+    shuffle,
     compare.number,
     list.map(n => n));
 
@@ -55,18 +48,21 @@ const sortStates = [...demo].reduce((acc, state) => {
     return acc.concat(nextState);
 }, [defaultSortState()]);
 
-class BubbleSort extends Component {
+console.log(sortStates);
+
+class BogoSort extends Component {
     constructor (props) {
         super(props);
         this.state = {
             running: false,
-            stateIndex: 0
+            stateIndex: 0,
+            sorted: false
         }
     }
 
-    blockColor ({compare, bubbleTo}, index) {
-        if (index > bubbleTo) {
-            return 'bg-green';
+    blockColor ({compare, sorted}, index) {
+        if (sorted) {
+            return "bg-green";
         } else {
             return compare.includes(index) ? 'bg-blue' : '';
         }
@@ -76,24 +72,25 @@ class BubbleSort extends Component {
         let state = sortStates[index];
         let additional = {};
 
-        if (index < 3) {
+        if (index < 1) {
             additional = {description: descriptions[0]};
-        } else if (index < 5) {
+        } else if (index < 2) {
             additional = {description: descriptions[1]};
-        }
-
-        if (index >= sortStates.length) {
-            additional = {bubbleTo: -1};
+        } else if (index < sortStates.length-1) {
+            additional = {description: descriptions[2]};
+        } else {
+            additional = {description: descriptions[3], sorted: true};
         }
 
         return {...state, ...additional};
     }
 
     incSortState () {
-        this.setState(previous => {
-            const stateIndex = previous.stateIndex < sortStates.length-1 ?
-                previous.stateIndex + 1 : previous.stateIndex;
-            return {stateIndex};
+        this.setState(({stateIndex}) => {
+            const state = stateIndex < sortStates.length - 1 ?
+                {stateIndex: stateIndex + 1 }
+                : {stateIndex};
+            return state;
         });
     }
 
@@ -125,7 +122,7 @@ class BubbleSort extends Component {
 
         return (
             <div className="ma3 pa2 avenir dark-gray">
-                <h1 className="ml3">Bubble Sort</h1>
+                <h1 className="ml3">Bogo Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -142,7 +139,6 @@ class BubbleSort extends Component {
                             clearInterval(this.interval);
                             this.setState({running: false})
                         }
-                        // this.setState(previous => ({running: !previous.running}));
                     }}
                 >
                     {this.state.running ? "Pause" : "Run"}
@@ -180,9 +176,9 @@ class BubbleSort extends Component {
     }
 }
 
-BubbleSort.propTypes = {
+BogoSort.propTypes = {
     showSortState: PropTypes.bool,
     list: PropTypes.array
 };
 
-export default BubbleSort;
+export default BogoSort;

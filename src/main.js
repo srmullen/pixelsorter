@@ -5,6 +5,7 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Image from "components/Image";
 import SortDemo from "components/SortDemo";
+import BogoSort from "components/demo/BogoSort";
 import BubbleSort from "components/demo/BubbleSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
@@ -34,9 +35,11 @@ class Main extends Component {
                     compare={compare.number}
                     sort={bogo.demo} /> */}
 
+                <BogoSort
+                    showSortState={true}/>
+
                 <BubbleSort
-                    exchange={exchange.indices}
-                    compare={compare.number} />
+                    showSortState={true} />
 
                 <SortDemo
                     title="Cocktail Sort"
