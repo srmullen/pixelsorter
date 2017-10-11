@@ -1,9 +1,13 @@
 import React, {Component} from "react";
 import {TransitionMotion, Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
-import {range} from "ramda";
+import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
 import * as bubble from "sort/bubble";
+import * as exchange from "sort/exchange";
+import * as compare from "../../compare";
+
+const list = [3, 2, 0, 4, 5, 1];
 
 // Talk about sorted elements.
 // Talk about passes and swaps.
@@ -29,47 +33,72 @@ const descriptions = [
     the algorithm stops.`
 ];
 
+function defaultSortState () {
+    return {
+        list,
+        exchanges: 0,
+        compare: [],
+        description: descriptions[0],
+        bubbleTo: undefined,
+    };
+}
+
+// copy the list before sorting because sort is in-place.
+const demo = new bubble.demo(
+    exchange.indices,
+    compare.number,
+    list.map(n => n));
+
+const sortStates = [...demo].reduce((acc, state) => {
+    const previousState = last(acc);
+    const nextState = Object.assign({}, previousState, state);
+    return acc.concat(nextState);
+}, [defaultSortState()]);
+
 class BubbleSort extends Component {
     constructor (props) {
         super(props);
-        this.state = this.defaultState();
+        this.state = {
+            running: false,
+            stateIndex: 0
+        }
     }
 
-    defaultState () {
-        return {
-            list: [3, 2, 0, 4, 5, 1],
-            exchanges: 0,
-            compare: [],
-            description: 0,
-            bubbleTo: undefined
-        };
-    }
-
-    blockColor (index) {
-        if (index > this.state.bubbleTo) {
+    blockColor ({compare, bubbleTo}, index) {
+        if (index > bubbleTo) {
             return 'bg-green';
         } else {
-            return this.state.compare.includes(index) ? 'bg-blue' : '';
+            return compare.includes(index) ? 'bg-blue' : '';
         }
     }
 
-    getDescription (state) {
-        if (state < 1) {
-            return 0;
+    getState (index) {
+        let state = sortStates[index];
+        let additional = {running: true};
+
+        if (index < 3) {
+            additional = {description: descriptions[0]};
+        } else if (index < 5) {
+            additional = {description: descriptions[1]};
         }
 
-        return 1;
+        if (index >= sortStates.length) {
+            additional = {bubbleTo: -1};
+        }
+
+        return {...state, ...additional};
     }
 
     interval: null
 
     render () {
-        const blocks = this.state.list.map((n, i) => {
+        const state = this.getState(this.state.stateIndex);
+        const blocks = state.list.map((n, i) => {
             return (
                 <Motion key={n} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
                     {styles => (
                         <div
-                            className={`m1 f2 pa4 ba absolute dib ${this.blockColor(i)}`}
+                            className={`m1 f2 pa4 ba absolute dib ${this.blockColor(state, i)}`}
                             style={{left: styles.left}}>
                             {n}
                         </div>
@@ -84,37 +113,35 @@ class BubbleSort extends Component {
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                    // copy the list before sorting because sort is in-place.
-                    const demo = new bubble.demo(
-                        this.props.exchange,
-                        this.props.compare,
-                        this.state.list.map(n => n));
-
-                    const states = [];
-                    for (let v of demo) {
-                        states.push(v);
-                    }
-                    let state = 0;
-                    this.interval = setInterval(() => {
-                        const description = this.getDescription(state);
-                        this.setState({description, ...states[state]});
-                        state++;
-                        if (state >= states.length) {
+                        if (!this.state.running) {
+                            this.interval = setInterval(() => {
+                                if (this.state.stateIndex >= sortStates.length) {
+                                    clearInterval(this.interval);
+                                }
+                                this.setState(previous => ({stateIndex: previous.stateIndex + 1}));
+                            }, 1000);
+                        } else {
                             clearInterval(this.interval);
                         }
-                    }, 1000);
-                }}>Sort</button>
+                        this.setState(previous => ({running: !previous.running}));
+                    }}
+                >
+                    {this.state.running ? "Pause" : "Run"}
+                </button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                         clearInterval(this.interval);
-                        this.setState(this.defaultState());
+                        this.setState({
+                            stateIndex: 0,
+                            running: false
+                        });
                     }}
                 >
                     Reset
                 </button>
                 Swaps: {this.state.exchanges}
-                <p className="mh3">{descriptions[this.state.description]}</p>
+                <p className="mh3">{state.description}</p>
                 <div className="ma3 h4 relative">
                     {blocks}
                 </div>
