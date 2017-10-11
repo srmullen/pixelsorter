@@ -89,6 +89,22 @@ class BubbleSort extends Component {
         return {...state, ...additional};
     }
 
+    incSortState () {
+        this.setState(previous => {
+            const stateIndex = previous.stateIndex < sortStates.length-1 ?
+                previous.stateIndex + 1 : previous.stateIndex;
+            return {stateIndex};
+        });
+    }
+
+    decSortState () {
+        this.setState(previous => {
+            const stateIndex = previous.stateIndex > 0 ?
+                previous.stateIndex - 1 : previous.stateIndex;
+            return {stateIndex};
+        });
+    }
+
     interval: null
 
     render () {
@@ -115,10 +131,12 @@ class BubbleSort extends Component {
                     onClick={() => {
                         if (!this.state.running) {
                             this.interval = setInterval(() => {
-                                if (this.state.stateIndex >= sortStates.length) {
+                                if (this.state.stateIndex >= sortStates.length-1) {
                                     clearInterval(this.interval);
+                                } else {
+                                    // this.setState(previous => ({stateIndex: previous.stateIndex + 1}));
+                                    this.incSortState();
                                 }
-                                this.setState(previous => ({stateIndex: previous.stateIndex + 1}));
                             }, 1000);
                         } else {
                             clearInterval(this.interval);
@@ -127,6 +145,16 @@ class BubbleSort extends Component {
                     }}
                 >
                     {this.state.running ? "Pause" : "Run"}
+                </button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={this.decSortState.bind(this)}>
+                    -
+                </button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={this.incSortState.bind(this)}>
+                    +
                 </button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
