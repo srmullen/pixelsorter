@@ -27,13 +27,12 @@ class Main extends Component {
     render () {
         return (
             <div>
-                <SortDemo
+                {/* <SortDemo
                     title="Bogo Sort"
                     list={[4, 3, 2, 1]}
                     exchange={exchange.shuffle}
                     compare={compare.number}
-                    sort={bogo.demo}
-                 />
+                    sort={bogo.demo} /> */}
 
                 <BubbleSort
                     exchange={exchange.indices}

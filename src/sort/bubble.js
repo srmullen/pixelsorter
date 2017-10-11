@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 
 // Bubble Sort
 // I wasn't going to include this originally because Obama says it's not
@@ -46,11 +46,13 @@ function* demo_gen (exchange, compare, list) {
             if (compare(list[i], list[i+1]) > 0) {
                 exchange(list, i, i+1);
                 exchanges++;
-                yield {list, exchanges};
+                // Copy the list before yielding so future changes don't affect saved list state.
+                yield {list: list.map(identity), exchanges};
             }
         }
         if (exchanges === 0) sorted = true;
         bubbleTo--;
+        yield {bubbleTo};
     }
     return list;
 };
