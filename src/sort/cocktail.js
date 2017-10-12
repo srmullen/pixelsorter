@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 
 // Cocktail Sort
 // Similar to bubble sort but bounces back and forth through the list (like a cocktail shaker I guess)
@@ -45,7 +45,6 @@ function* demo_gen (exchange, compare, list) {
     let sortedRight = list.length;
     while (!sorted) {
         let exchanges = 0;
-        yield {exchanges, compare: []};
         // Since i is moving both directions also need to make sure i doesn't pass the beginning of the list as well.
         for (let i = (dir > 0) ? sortedLeft+1 : sortedRight-1; i < sortedRight-dir && i > sortedLeft-dir; i += dir) {
             // Multiply * dir to normalize comparison.
@@ -54,7 +53,7 @@ function* demo_gen (exchange, compare, list) {
             if (dir * compare(list[i], list[i + dir]) > 0) {
                 exchange(list, i, i + dir);
                 exchanges++;
-                yield {list, exchanges};
+                yield {list: list.map(identity), exchanges};
             }
         }
         // update the known sorted items
@@ -63,12 +62,14 @@ function* demo_gen (exchange, compare, list) {
         } else {
             sortedLeft += 1;
         }
+        // update sorted indices for highlighting and reset swap counter and comparisons.
+        yield {sortedRight, sortedLeft, exchanges: 0, compare: []};
         // Switch direction.
         dir = -dir;
         // Check if the list is sorted.
         if (exchanges === 0) sorted = true;
     }
-    return list;
+    yield {list: list.map(identity)};
 }
 
 function* step_gen (exchange, compare, list) {

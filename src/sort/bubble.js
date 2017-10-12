@@ -40,7 +40,7 @@ function* demo_gen (exchange, compare, list) {
     let bubbleTo = list.length - 1;
     while (!sorted) {
         let exchanges = 0;
-        yield {exchanges, compare: []};
+        // yield {exchanges};
         for (let i = 0; i < bubbleTo; i++) {
             yield {compare: [i, i+1]};
             if (compare(list[i], list[i+1]) > 0) {
@@ -52,9 +52,9 @@ function* demo_gen (exchange, compare, list) {
         }
         if (exchanges === 0) sorted = true;
         bubbleTo--;
-        yield {bubbleTo};
+        yield {bubbleTo, exchanges: 0, compare: []};
     }
-    return list;
+    yield {list: list.map(identity)};
 };
 
 function* step_gen (exchange, compare, list) {

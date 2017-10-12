@@ -3,51 +3,21 @@ import {Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
-import * as bubble from "sort/bubble";
+import * as sort from "sort/cocktail";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
 
-const list = [3, 2, 5, 0, 4, 6, 1];
+const list = [3, 2, 6, 0, 4, 5, 1];
 
 // Talk about sorted elements.
 // Talk about passes and swaps.
 // Talk about turtles.
 const descriptions = [
-    <p>We begin by comparing the first two elements of the list. 3 is larger
-    than 2 so they get swapped and our swap counter is incremented.</p>,
+    `Cocktail sort begins the same way as bubble sort, by passing through the list
+    comparing adjacent elements and swapping when they are out of order.`,
 
-    <p>
-    The algorithm then moves on and compares the next two numbers. 3 is smaller
-    than 5 so this time they do not get swapped.
-    </p>,
-
-    <p>
-    Now watch the five. It will get swapped a couple times in a row giving it the appearence
-    of bubbling up, hence the name of the algorithm.
-    </p>,
-
-    <p>
-    After the first pass through the list the largest element will have "bubbled" to the top. In
-    this case the 6. No elements in the list will be higher than this one so it can be
-    marked as sorted (in green) and won't need to be compared anymore.
-    </p>,
-
-    <p>
-    Now the algorithm will start again at the beginning of the list comparing adjacent elements.
-    Notice that elements in a position greater than where they should be (such as the 1) are only able to move one step
-    closer to their correct position on each pass. This is called
-    "<a href="http://noiselesschatter.com/wp-content/uploads/2012/06/masterdisguise10.png"
-    alt="turtle" target="_blank">turtling</a>"
-    because of the slow pace
-    for the element to find its correct location in the list. Imagine a large list that is entirely
-    sorted except for one element which is a million steps away from its correct location. Bubble sort
-    would require a million passes over the list to get the element into place.
-    </p>,
-
-    <p>On this pass through the list there are no swaps that have occured, so the list is sorted and
-    the algorithm stops.</p>,
-
-    <p>Congratulations! Your list is sorted. Let's move on.</p>
+    `Now rather than going back to the beginning of the list to start the next pass, it
+    will work its way through the list in the opposite direction. Notice `
 ];
 
 function defaultSortState () {
@@ -56,12 +26,14 @@ function defaultSortState () {
         exchanges: 0,
         compare: [],
         description: descriptions[0],
-        bubbleTo: undefined,
+        sorted: false,
+        sortedRight: undefined,
+        sortedLeft: undefined
     };
 }
 
 // copy the list before sorting because sort is in-place.
-const demo = new bubble.demo(
+const demo = new sort.demo(
     exchange.indices,
     compare.number,
     list.map(n => n));
@@ -72,7 +44,7 @@ const sortStates = [...demo].reduce((acc, state) => {
     return acc.concat(nextState);
 }, [defaultSortState()]);
 
-class BubbleSort extends Component {
+class CocktailSort extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -81,8 +53,10 @@ class BubbleSort extends Component {
         }
     }
 
-    blockColor ({compare, bubbleTo}, index) {
-        if (index > bubbleTo) {
+    blockColor ({compare, sortedRight, sortedLeft, sorted}, index) {
+        if (sorted) {
+            return 'bg-green';
+        } else if (index >= sortedRight || index <= sortedLeft) {
             return 'bg-green';
         } else {
             return compare.includes(index) ? 'bg-blue' : '';
@@ -93,20 +67,14 @@ class BubbleSort extends Component {
         let state = sortStates[index];
         let additional = {};
 
-        if (index <= 3) {
+        if (index < 3) {
             additional = {description: descriptions[0]};
-        } else if (index <= 4) {
+        } else if (index < 5) {
             additional = {description: descriptions[1]};
-        } else if (index <= 10) {
-            additional = {description: descriptions[2]};
-        } else if (index <= 11) {
-            additional = {description: descriptions[3]};
-        } else if (index <= 35) {
-            additional = {description: descriptions[4]};
-        } else if (index <= 37) {
-            additional = {description: descriptions[5]};
-        } else {
-            additional = {description: last(descriptions), bubbleTo: -1};
+        }
+
+        if (index >= sortStates.length-1) {
+            additional = {sorted: true};
         }
 
         return {...state, ...additional};
@@ -148,7 +116,7 @@ class BubbleSort extends Component {
 
         return (
             <div className="ma3 pa2 avenir dark-gray">
-                <h1 className="ml3">Bubble Sort</h1>
+                <h1 className="ml3">Cocktail Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -193,7 +161,7 @@ class BubbleSort extends Component {
                 </button>
                 <span className="mh3">Swaps: {state.exchanges}</span>
                 {this.props.showSortState ? `Sort State: ${this.state.stateIndex}` : ""}
-                <div className="mh3">{state.description}</div>
+                <p className="mh3">{state.description}</p>
                 <div className="ma3 h4 relative">
                     {blocks}
                 </div>
@@ -202,9 +170,9 @@ class BubbleSort extends Component {
     }
 }
 
-BubbleSort.propTypes = {
+CocktailSort.propTypes = {
     showSortState: PropTypes.bool,
     list: PropTypes.array
 };
 
-export default BubbleSort;
+export default CocktailSort;

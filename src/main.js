@@ -7,6 +7,7 @@ import Image from "components/Image";
 import SortDemo from "components/SortDemo";
 import BogoSort from "components/demo/BogoSort";
 import BubbleSort from "components/demo/BubbleSort";
+import CocktailSort from "components/demo/CocktailSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
 import image from "images/six_pack_jason_walker.jpg";
@@ -28,24 +29,20 @@ class Main extends Component {
     render () {
         return (
             <div>
-                {/* <SortDemo
-                    title="Bogo Sort"
-                    list={[4, 3, 2, 1]}
-                    exchange={exchange.shuffle}
-                    compare={compare.number}
-                    sort={bogo.demo} /> */}
-
                 <BogoSort
                     showSortState={true}/>
 
                 <BubbleSort
                     showSortState={true} />
 
-                <SortDemo
+                <CocktailSort
+                    showSortState={true} />
+
+                {/* <SortDemo
                     title="Cocktail Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
-                    sort={cocktail.demo} />
+                    sort={cocktail.demo} /> */}
 
                 {/* <MergeSort
                     exchange={exchange.copyFromList}
