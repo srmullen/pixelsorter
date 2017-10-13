@@ -38,7 +38,6 @@ export const sort = curry((exchange, compare, list) => {
             exchange(list, j, j-1);
         }
     }
-    return list;
 });
 
 // Demo gen can yield any values that are useful for animating and explaing the sort Algorithm.

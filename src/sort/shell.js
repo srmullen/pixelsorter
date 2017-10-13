@@ -22,7 +22,6 @@ export const sort = curry((exchange, compare, list) => {
         }
         gapIndex++;
     }
-    return list;
 });
 
 function* demo_gen (exchange, compare, list) {

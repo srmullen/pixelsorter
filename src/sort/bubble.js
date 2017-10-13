@@ -30,7 +30,6 @@ export const sort = curry((exchange, compare, list) => {
         if (exchanges === 0) sorted = true;
         bubbleTo--;
     }
-    return list;
 });
 
 function* demo_gen (exchange, compare, list) {

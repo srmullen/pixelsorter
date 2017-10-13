@@ -55,7 +55,6 @@ export const sort = curry((exchange, compare, list) => {
     }
 
     partition(list, 0, list.length - 1);
-    return list;
 });
 
 function* demo_gen (exchange, compare, list) {

@@ -85,6 +85,16 @@ describe("getRands", () => {
     });
 });
 
+function testSort(sort) {
+    it("should sort", () => {
+        const list = getRands();
+        sort(exchange, (a, b) => compare.number(a.val, b.val), list);
+        for(let i = 0; i < expected.length; i++) {
+            expect(list[i].val).to.equal(expected[i].val);
+        }
+    });
+}
+
 const rands = getRands();
 console.log(rands);
 const expected = ramdaSort(prop("val"), rands);
@@ -98,73 +108,38 @@ describe("Sorting", () => {
     });
 
     describe("Selection Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = selection.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(selection.sort);
     });
 
     describe("Insertion Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = insertion.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(insertion.sort);
     });
 
     describe("Bubble Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = bubble.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(bubble.sort);
     });
 
     describe("Cocktail Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = cocktail.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(cocktail.sort);
     });
 
     describe("Shell Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = shell.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(shell.sort);
     });
 
     describe("Merge Sort", () => {
+        // Merge sort uses a different exchange function.
         it("should sort", () => {
-            const rands = getRands();
-            const sorted = merge.sort(copyFromList, (a, b) => compare.number(a.val, b.val), rands);
+            const list = getRands();
+            merge.sort(copyFromList, (a, b) => compare.number(a.val, b.val), list);
             for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
+                expect(list[i].val).to.equal(expected[i].val);
             }
         });
     });
 
     describe("Quick Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = quick.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+        testSort(quick.sort);
     });
 
     xdescribe("Heap Sort", () => {

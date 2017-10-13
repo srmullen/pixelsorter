@@ -34,7 +34,6 @@ export const sort = curry((exchange, compare, list) => {
         // Check if the list is sorted.
         if (exchanges === 0) sorted = true;
     }
-    return list;
 });
 
 function* demo_gen (exchange, compare, list) {

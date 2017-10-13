@@ -84,7 +84,7 @@ export const sort = curry((exchange, compare, list) => {
     }
 
     splitMerge(list, 0, list.length);
-    return list;
+    // return list;
 });
 
 function* demo_gen (exchange, compare, list) {

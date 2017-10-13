@@ -21,8 +21,6 @@ export const sort = curry((shuffle, compare, list) => {
         shuffle(list);
         sorted = isSorted(list);
     }
-
-    return list;
 });
 
 function* demo_gen (shuffle, compare, list) {

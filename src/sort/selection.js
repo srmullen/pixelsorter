@@ -16,8 +16,6 @@ export const sort = curry((exchange, compare, list) => {
         // Exchange positions if not already in the correct location.
         if (min !== i) exchange(list, min, i);
     }
-    // Return the list even though it's mutatated so algorithms can be easily interchanged in pixel sorter.
-    return list;
 });
 
 // Using generators to observe Sorts in action.
