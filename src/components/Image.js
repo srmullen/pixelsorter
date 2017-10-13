@@ -6,7 +6,7 @@ import * as record from "utils/record";
 import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
-import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, MERGE, QUICK} from "root/constants";
+import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
 const algorithms = {
@@ -15,6 +15,7 @@ const algorithms = {
     bubble: BUBBLE,
     cocktail: COCKTAIL,
     shell: SHELL,
+    heap: HEAP,
     merge: MERGE,
     quick: QUICK
 };
@@ -77,6 +78,7 @@ class Image extends Component {
                             <option value="selection">Selection Sort</option>
                             <option value="insertion">Insertion Sort</option>
                             <option value="shell">Shell Sort</option>
+                            <option value="heap">Heap Sort</option>
                             <option value="merge">Merge Sort</option>
                             <option value="quick">Quick Sort</option>
                         </select>

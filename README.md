@@ -12,12 +12,8 @@ TODO
 - Implement Sort options
     Direction, sortRate, area, algorithm, scale. What else?
 
-Sorts
+Sorts to implement
 -----
-- Heap Sort - Not sure this will produce good visualizations.
-- Quick Sort
-- Cocktail Sort
-- Odd Even sort
 
 Distributed Sorts
 -----------------

@@ -3,10 +3,11 @@ import * as insertion from "sort/insertion";
 import * as bubble from "sort/bubble";
 import * as cocktail from "sort/cocktail";
 import * as shell from "sort/shell";
+import * as heap from "sort/heap";
 import * as merge from "sort/merge";
 import * as quick from "sort/quick";
 import * as exchange from "sort/exchange";
-import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, MERGE, QUICK} from "root/constants";
+import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
 
 const algorithms = {
     [SELECTION]: selection,
@@ -14,6 +15,7 @@ const algorithms = {
     [BUBBLE]: bubble,
     [COCKTAIL]: cocktail,
     [SHELL]: shell,
+    [HEAP]: heap,
     [MERGE]: merge,
     [QUICK]: quick
 };
