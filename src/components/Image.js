@@ -39,7 +39,7 @@ class Image extends Component {
                         this.pixel = new PixelSorter(this.raster);
                         record.time(() => (
                             this.pixel.sort(
-                                (a, b) => compare.number(a.blue, b.blue),
+                                (a, b) => compare.number(a.red, b.red),
                                 this.raster,
                                 {algorithm: algorithms[this.state.sortAlgorithm]}
                             )));

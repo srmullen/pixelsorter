@@ -76,7 +76,7 @@ class Main extends Component {
                     compare={compare.number}
                     sort={shell.demo} /> */}
 
-                <Image image={image} scale={0.3} />
+                <Image image={image} scale={0.5} />
             </div>
         );
     }

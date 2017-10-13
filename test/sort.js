@@ -142,13 +142,7 @@ describe("Sorting", () => {
         testSort(quick.sort);
     });
 
-    xdescribe("Heap Sort", () => {
-        it("should sort", () => {
-            const rands = getRands();
-            const sorted = heap.sort(exchange, (a, b) => compare.number(a.val, b.val), rands);
-            for(let i = 0; i < expected.length; i++) {
-                expect(sorted[i].val).to.equal(expected[i].val);
-            }
-        });
+    describe("Heap Sort", () => {
+        testSort(heap.sort);
     });
 });

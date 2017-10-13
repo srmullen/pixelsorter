@@ -21,33 +21,33 @@ import * as bogo from "../src/sort/bogo";
 
 export const bogosort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = bogo.sort(exchange.shuffle, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    bogo.sort(exchange.shuffle, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = selection.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    selection.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const insertionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = insertion.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    insertion.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 
 export const bubblesort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = bubble.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    bubble.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const shellsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = shell.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    shell.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const mergesort = () => {
@@ -73,14 +73,14 @@ export const mergesort = () => {
                   { val: 5 },
                   { val: 5 },
                   { val: 9 } ];
-    const sorted = merge.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    merge.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const heapsort = () => {
-    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    const sorted = heap.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}, {val: 6}];
+    heap.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
 
 export const quicksort = () => {
@@ -107,6 +107,6 @@ export const quicksort = () => {
                   { val: 5 },
                   { val: 6 }
               ];
-    const sorted = quick.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
-    return sorted;
+    quick.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
 }
