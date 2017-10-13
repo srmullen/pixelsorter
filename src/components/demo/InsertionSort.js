@@ -3,19 +3,14 @@ import {Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
-import * as sort from "sort/cocktail";
+import * as sort from "sort/insertion";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
 
 const list = [3, 2, 6, 0, 4, 5, 1];
 
-// Talk about turtles turning to hares.
 const descriptions = [
-    `Cocktail sort begins the same way as bubble sort, by passing through the list
-    comparing adjacent elements and swapping when they are out of order.`,
-
-    `Now rather than going back to the beginning of the list to start the next pass, it
-    will work its way through the list in the opposite direction. Notice `
+    <p>Insertion Sort</p>
 ];
 
 function defaultSortState () {
@@ -24,9 +19,7 @@ function defaultSortState () {
         exchanges: 0,
         compare: [],
         description: descriptions[0],
-        sorted: false,
-        sortedRight: undefined,
-        sortedLeft: undefined
+        sorted: false
     };
 }
 
@@ -42,7 +35,7 @@ const sortStates = [...demo].reduce((acc, state) => {
     return acc.concat(nextState);
 }, [defaultSortState()]);
 
-class CocktailSort extends Component {
+class InsertionSort extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -114,7 +107,7 @@ class CocktailSort extends Component {
 
         return (
             <div className="ma3 pa2 avenir dark-gray">
-                <h1 className="ml3">Cocktail Sort</h1>
+                <h1 className="ml3">Insertion Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -159,7 +152,7 @@ class CocktailSort extends Component {
                 </button>
                 <span className="mh3">Swaps: {state.exchanges}</span>
                 {this.props.showSortState ? `Sort State: ${this.state.stateIndex}` : ""}
-                <p className="mh3">{state.description}</p>
+                <div className="mh3">{state.description}</div>
                 <div className="ma3 h4 relative">
                     {blocks}
                 </div>
@@ -168,9 +161,9 @@ class CocktailSort extends Component {
     }
 }
 
-CocktailSort.propTypes = {
+InsertionSort.propTypes = {
     showSortState: PropTypes.bool,
     list: PropTypes.array
 };
 
-export default CocktailSort;
+export default InsertionSort;

@@ -8,6 +8,7 @@ import SortDemo from "components/SortDemo";
 import BogoSort from "components/demo/BogoSort";
 import BubbleSort from "components/demo/BubbleSort";
 import CocktailSort from "components/demo/CocktailSort";
+import InsertionSort from "components/demo/InsertionSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
 import image from "images/six_pack_jason_walker.jpg";
@@ -25,18 +26,23 @@ import * as browser from "../test/browser";
 
 window.browser = browser;
 
+const SHOW_SORT_STATE = true;
+
 class Main extends Component {
     render () {
         return (
             <div>
                 <BogoSort
-                    showSortState={true}/>
+                    showSortState={SHOW_SORT_STATE}/>
 
                 <BubbleSort
-                    showSortState={true} />
+                    showSortState={SHOW_SORT_STATE} />
 
                 <CocktailSort
-                    showSortState={true} />
+                    showSortState={SHOW_SORT_STATE} />
+
+                <InsertionSort
+                    showSortState={SHOW_SORT_STATE} />
 
                 {/* <SortDemo
                     title="Cocktail Sort"
