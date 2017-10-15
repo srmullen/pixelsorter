@@ -9,6 +9,7 @@ import BogoSort from "components/demo/BogoSort";
 import BubbleSort from "components/demo/BubbleSort";
 import CocktailSort from "components/demo/CocktailSort";
 import InsertionSort from "components/demo/InsertionSort";
+import SelectionSort from "components/demo/SelectionSort";
 import HeapSort from "components/demo/HeapSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
@@ -36,9 +37,12 @@ class Main extends Component {
                 <InsertionSort
                     showSortState={SHOW_SORT_STATE} />
 
+                <SelectionSort
+                    showSortState={SHOW_SORT_STATE} />
+
                 <HeapSort
                     showSortState={SHOW_SORT_STATE} />
-                    
+
                 {/* <SortDemo
                     title="Cocktail Sort"
                     exchange={exchange.indices}

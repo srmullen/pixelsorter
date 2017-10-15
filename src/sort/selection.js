@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 
 // Selection Sort
 // Start by finding the element that should be the first in the sorted list and exchange it with the first element.
@@ -32,11 +32,10 @@ function* demo_gen (exchange, compare, list) {
         // Exchange positions if not already in the correct location.
         if (min !== i) {
             exchange(list, min, i);
-            yield {list};
+            yield {list: list.map(identity), compare: [], sortedLeft: i};
         }
     }
-    // Return the list even though it's mutatated so algorithms can be easily interchanged in pixel sorter.
-    return list;
+    yield {sorted: true};
 };
 
 function* step_gen (exchange, compare, list) {
