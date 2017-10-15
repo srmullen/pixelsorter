@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 
 // Shell Sort
 // Similar to insertion sort but instead of only comparing adjacent elements it compares,
@@ -26,7 +26,7 @@ export const sort = curry((exchange, compare, list) => {
 
 function* demo_gen (exchange, compare, list) {
     // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
-    const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
+    const gapSeq = [701, 301, 132, 57, 23, 6, 3, 1];
     // There's no need to sort gaps larger than the list so find the gap to use.
     let gapIndex = gapSeq.findIndex(n => n < list.length);
     while (gapIndex < gapSeq.length) {
@@ -34,12 +34,12 @@ function* demo_gen (exchange, compare, list) {
         for (let i = gap; i < list.length; i++) {
             for (let j = i; j >= gap && (yield {compare: [j, j-gap]}, compare(list[j], list[j - gap]) < 0); j -= gap) {
                 exchange(list, j, j - gap);
-                yield {list};
+                yield {list: list.map(identity)};
             }
         }
         gapIndex++;
     }
-    return list;
+    yield {sorted: true};
 }
 
 function* step_gen (exchange, compare, list) {

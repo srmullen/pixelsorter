@@ -3,14 +3,14 @@ import {Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
-import * as sort from "sort/selection";
+import * as sort from "sort/shell";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
 
-const list = [3, 2, 6, 0, 4, 5, 1];
+const list = [3, 8, 2, 6, 0, 4, 7, 5, 1];
 
 const descriptions = [
-    <p>Selection Sort</p>
+    <p>Shell Sort</p>
 ];
 
 function defaultSortState () {
@@ -35,7 +35,7 @@ const sortStates = [...demo].reduce((acc, state) => {
     return acc.concat(nextState);
 }, [defaultSortState()]);
 
-class SelectionSort extends Component {
+class ShellSort extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -97,7 +97,7 @@ class SelectionSort extends Component {
 
         return (
             <div className="ma3 pa2 avenir dark-gray">
-                <h1 className="ml3">Selection Sort</h1>
+                <h1 className="ml3">Shell Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -151,9 +151,9 @@ class SelectionSort extends Component {
     }
 }
 
-SelectionSort.propTypes = {
+ShellSort.propTypes = {
     showSortState: PropTypes.bool,
     list: PropTypes.array
 };
 
-export default SelectionSort;
+export default ShellSort;
