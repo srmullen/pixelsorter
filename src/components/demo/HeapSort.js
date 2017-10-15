@@ -3,14 +3,14 @@ import {Motion, spring} from "react-motion";
 import PropTypes from "prop-types";
 import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
-import * as sort from "sort/insertion";
+import * as sort from "sort/heap";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
 
 const list = [3, 2, 6, 0, 4, 5, 1];
 
 const descriptions = [
-    <p>Insertion Sort</p>
+    <p>Heap Sort</p>
 ];
 
 function defaultSortState () {
@@ -19,7 +19,8 @@ function defaultSortState () {
         exchanges: 0,
         compare: [],
         description: descriptions[0],
-        sorted: false
+        sorted: false,
+        subtree: null
     };
 }
 
@@ -35,7 +36,7 @@ const sortStates = [...demo].reduce((acc, state) => {
     return acc.concat(nextState);
 }, [defaultSortState()]);
 
-class InsertionSort extends Component {
+class HeapSort extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -44,9 +45,18 @@ class InsertionSort extends Component {
         }
     }
 
-    blockColor ({compare, sorted}, index) {
+    // Need to highlight subtree root and chilren.
+    blockColor ({compare, sorted, sortedRight, subtree}, index) {
         if (sorted) {
             return 'bg-green';
+        } else if (index >= sortedRight) {
+            return 'bg-green';
+        } else if (compare.includes(index)) {
+            return 'bg-blue';
+        } else if (subtree && index === subtree.root) {
+            return 'bg-yellow';
+        } else if (subtree && (index === subtree.left || index === subtree.right)) {
+            return 'bg-red';
         } else {
             return compare.includes(index) ? 'bg-blue' : '';
         }
@@ -55,10 +65,6 @@ class InsertionSort extends Component {
     getState (index) {
         let state = sortStates[index];
         let additional = {description: descriptions[0]};
-
-        if (index >= sortStates.length-1) {
-            additional = {sorted: true};
-        }
 
         return {...state, ...additional};
     }
@@ -99,7 +105,7 @@ class InsertionSort extends Component {
 
         return (
             <div className="ma3 pa2 avenir dark-gray">
-                <h1 className="ml3">Insertion Sort</h1>
+                <h1 className="ml3">Heap Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
@@ -153,9 +159,9 @@ class InsertionSort extends Component {
     }
 }
 
-InsertionSort.propTypes = {
+HeapSort.propTypes = {
     showSortState: PropTypes.bool,
     list: PropTypes.array
 };
 
-export default InsertionSort;
+export default HeapSort;

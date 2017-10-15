@@ -9,18 +9,10 @@ import BogoSort from "components/demo/BogoSort";
 import BubbleSort from "components/demo/BubbleSort";
 import CocktailSort from "components/demo/CocktailSort";
 import InsertionSort from "components/demo/InsertionSort";
+import HeapSort from "components/demo/HeapSort";
 import QuickSort from "components/demo/QuickSort";
 import MergeSort from "components/demo/MergeSort";
 import image from "images/six_pack_jason_walker.jpg";
-import * as compare from "./compare";
-import * as exchange from "sort/exchange";
-import * as bogo from "sort/bogo";
-import * as selection from "sort/selection";
-import * as bubble from "sort/bubble";
-import * as cocktail from "sort/cocktail";
-import * as insertion from "sort/insertion";
-import * as shell from "sort/shell";
-import * as merge from "sort/merge";
 
 import * as browser from "../test/browser";
 
@@ -44,6 +36,9 @@ class Main extends Component {
                 <InsertionSort
                     showSortState={SHOW_SORT_STATE} />
 
+                <HeapSort
+                    showSortState={SHOW_SORT_STATE} />
+                    
                 {/* <SortDemo
                     title="Cocktail Sort"
                     exchange={exchange.indices}
