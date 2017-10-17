@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 
 // Quick Sort
 // Divide-and-Conquer algorithm. Choose an element from the list, called a pivot, and
@@ -77,7 +77,7 @@ function* demo_gen (exchange, compare, list) {
             }
 
             // Find a high element to swap.
-            while (yield {compare: [i, pivot]}, compare(list[j], list[pivot]) >= 0) {
+            while (yield {compare: [j, pivot]}, compare(list[j], list[pivot]) >= 0) {
                 if (j === low) break;
                 j -= 1;
             }
@@ -89,12 +89,12 @@ function* demo_gen (exchange, compare, list) {
 
             // Swap the low and high elements.
             exchange(list, i, j);
-            yield {list};
+            yield {list: list.map(identity)};
         }
 
         // Put the pivot between the partitions
         exchange(list, i, pivot);
-        yield {list};
+        yield {list: list.map(identity)};
 
         // Partition the list smaller than the pivot.
         for (let v of partition(list, low, i-1)) {
@@ -110,7 +110,8 @@ function* demo_gen (exchange, compare, list) {
     for (let v of partition(list, 0, list.length - 1)) {
         yield v;
     }
-    return list;
+
+    yield {sorted: true};
 }
 
 function* step_gen (exchange, compare, list) {

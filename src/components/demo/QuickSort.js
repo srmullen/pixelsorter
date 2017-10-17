@@ -1,42 +1,93 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {range} from "ramda";
 import {Motion, spring} from "react-motion";
-import * as quick from "sort/quick";
+import PropTypes from "prop-types";
+import {range, assoc, last} from "ramda";
 import {shuffle} from "sort/exchange";
+import * as sort from "sort/quick";
+import * as exchange from "sort/exchange";
+import * as compare from "root/compare";
+
+const list = [3, 2, 6, 0, 4, 5, 1];
+
+const descriptions = [
+    <p>Quick Sort</p>
+];
+
+function defaultSortState () {
+    return {
+        list,
+        exchanges: 0,
+        compare: [],
+        description: descriptions[0],
+        sorted: false
+    };
+}
+
+// copy the list before sorting because sort is in-place.
+const demo = new sort.demo(
+    exchange.indices,
+    compare.number,
+    list.map(n => n));
+
+const sortStates = [...demo].reduce((acc, state) => {
+    const previousState = last(acc);
+    const nextState = Object.assign({}, previousState, state);
+    return acc.concat(nextState);
+}, [defaultSortState()]);
 
 class QuickSort extends Component {
     constructor (props) {
         super(props);
-        let list;
-        if (!props.list) {
-            list = range(0, 10);
-            shuffle(list);
-        } else {
-            list = props.list;
-        }
         this.state = {
-            list,
-            pivot: null,
-            compare: []
-        };
+            running: false,
+            stateIndex: 0
+        }
     }
 
-    blockColor (i) {
-        if (i === this.state.pivot) {
-            return "bg-red";
+    // Need to highlight subtree root and chilren.
+    blockColor ({compare, sorted, pivot}, index) {
+        if (sorted) {
+            return 'bg-green';
+        } else if (pivot === index) {
+            return 'bg-red';
         } else {
-            return this.state.compare.includes(i) ? 'bg-blue' : '';
+            return compare.includes(index) ? 'bg-blue' : '';
         }
     }
+
+    getState (index) {
+        let state = sortStates[index];
+        let additional = {description: descriptions[0]};
+
+        return {...state, ...additional};
+    }
+
+    incSortState () {
+        this.setState(previous => {
+            const stateIndex = previous.stateIndex < sortStates.length-1 ?
+                previous.stateIndex + 1 : previous.stateIndex;
+            return {stateIndex};
+        });
+    }
+
+    decSortState () {
+        this.setState(previous => {
+            const stateIndex = previous.stateIndex > 0 ?
+                previous.stateIndex - 1 : previous.stateIndex;
+            return {stateIndex};
+        });
+    }
+
+    interval: null
 
     render () {
-        const blocks = this.state.list.map((n, i) => {
+        const state = this.getState(this.state.stateIndex);
+        const blocks = state.list.map((n, i) => {
             return (
                 <Motion key={n} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
                     {styles => (
                         <div
-                            className={`m1 f2 pa4 ba absolute dib ${this.blockColor(i)}`}
+                            className={`m1 f2 pa4 ba absolute dib ${this.blockColor(state, i)}`}
                             style={{left: styles.left}}>
                             {n}
                         </div>
@@ -46,35 +97,53 @@ class QuickSort extends Component {
         });
 
         return (
-            <div className="ma3 pa2">
+            <div className="ma3 pa2 avenir dark-gray">
                 <h1 className="ml3">Quick Sort</h1>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                    // copy the list before sorting because sort is in-place.
-                    const sortGen = new quick.demo(
-                        this.props.exchange,
-                        this.props.compare,
-                        this.state.list.map(n => n));
-
-                    const interval = setInterval(() => {
-                        const {value, done} = sortGen.next();
-                        if (done) {
-                            clearInterval(interval);
-                            this.setState({compare: []});
+                        if (!this.state.running) {
+                            this.setState({running: true});
+                            this.interval = setInterval(() => {
+                                if (this.state.stateIndex >= sortStates.length-1) {
+                                    clearInterval(this.interval);
+                                } else {
+                                    this.incSortState();
+                                }
+                            }, 1000);
                         } else {
-                            this.setState(value);
+                            clearInterval(this.interval);
+                            this.setState({running: false})
                         }
-                    }, 500);
-                }}>Sort</button>
+                    }}
+                >
+                    {this.state.running ? "Pause" : "Run"}
+                </button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={this.decSortState.bind(this)}>
+                    -
+                </button>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={this.incSortState.bind(this)}>
+                    +
+                </button>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                    this.setState(({list}) => {
-                        shuffle(list);
-                        return {list, comparison: []};
-                    });
-                }}>Shuffle</button>
+                        clearInterval(this.interval);
+                        this.setState({
+                            stateIndex: 0,
+                            running: false
+                        });
+                    }}
+                >
+                    Reset
+                </button>
+                <span className="mh3">Swaps: {state.exchanges}</span>
+                {this.props.showSortState ? `Sort State: ${this.state.stateIndex}` : ""}
+                <div className="mh3">{state.description}</div>
                 <div className="ma3 h4 relative">
                     {blocks}
                 </div>
@@ -84,8 +153,8 @@ class QuickSort extends Component {
 }
 
 QuickSort.propTypes = {
-    compare: PropTypes.func.isRequired,
-    exchange: PropTypes.func.isRequired
+    showSortState: PropTypes.bool,
+    list: PropTypes.array
 };
 
 export default QuickSort;

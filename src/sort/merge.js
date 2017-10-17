@@ -1,4 +1,4 @@
-import {curry} from "ramda";
+import {curry, identity} from "ramda";
 import {sort as insertion} from "./insertion";
 
 // Merge Sort
@@ -84,7 +84,6 @@ export const sort = curry((exchange, compare, list) => {
     }
 
     splitMerge(list, 0, list.length);
-    // return list;
 });
 
 function* demo_gen (exchange, compare, list) {
@@ -95,10 +94,13 @@ function* demo_gen (exchange, compare, list) {
             copy[i] = list[i];
         }
 
+        yield {copy: [low, high]};
+
         let i1 = low; // first sorted list index.
         let i2 = mid; // second sorted list index.
         for (let i = low; i < high; i++) {
             // When the mid/high list is exhausted can just take the rest of the low/mid list...
+            yield {compare: [i1, i2]};
             if (i2 >= high) {
                 exchange(copy, list, i1, i);
                 i1++;
@@ -106,7 +108,8 @@ function* demo_gen (exchange, compare, list) {
             } else if (i1 >= mid) {
                 exchange(copy, list, i2, i);
                 i2++;
-            } else if (yield {compare: [i1, i2]}, compare(copy[i1], copy[i2]) <= 0) {
+            // } else if (yield {compare: [i1, i2]}, compare(copy[i1], copy[i2]) <= 0) {
+            } else if (compare(copy[i1], copy[i2]) <= 0) {
                 // take the smaller element and place it at position i.
                 exchange(copy, list, i1, i);
                 // The element from the first list is now used to increase its index.
@@ -116,7 +119,7 @@ function* demo_gen (exchange, compare, list) {
                 i2++;
             }
         }
-        yield {list};
+        yield {list: list.map(identity)};
     }
 
     function* splitMerge (list, low, high) {
@@ -139,7 +142,8 @@ function* demo_gen (exchange, compare, list) {
     for (let v of splitMerge(list, 0, list.length)) {
         yield v;
     }
-    return list;
+
+    yield {sorted: true, copy: []};
 };
 
 function* step_gen (exchange, compare, list) {

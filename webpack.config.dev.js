@@ -5,18 +5,25 @@ const DashboardPlugin = require("webpack-dashboard/plugin");
 
 module.exports = {
     devtool: "source-map",
-    entry: [
-        "./src/main"
-    ],
+    entry: {
+        "demo": "./src/pages/demo",
+        "pixelsorter": "./src/pages/pixelsorter"
+    },
     output: {
         path: path.join(__dirname, "dist"),
-        filename: "bundle.js"
+        filename: "[name].js"
     },
     plugins:[
         new DashboardPlugin(),
         new HtmlWebpackPlugin({
-            filename: "index.html",
-            template: "./index.html"
+            filename: "demo.html",
+            template: "./index.html",
+            chunks: ["demo"]
+        }),
+        new HtmlWebpackPlugin({
+            filename: "pixelsorter.html",
+            template: "./index.html",
+            chunks: ["pixelsorter"]
         })
     ],
     resolve: {
@@ -25,7 +32,8 @@ module.exports = {
             utils: path.resolve(__dirname, "src/utils"),
             sort: path.resolve(__dirname, "src/sort"),
             images: path.resolve(__dirname, "images"),
-            root: path.resolve(__dirname, "src")
+            root: path.resolve(__dirname, "src"),
+            styles: path.resolve(__dirname, "src/styles")
         }
     },
     module: {
@@ -48,6 +56,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, "dist"),
+        index: "pixelsorter.html",
         port: 5000
     }
 }

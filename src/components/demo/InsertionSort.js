@@ -6,8 +6,12 @@ import {shuffle} from "sort/exchange";
 import * as sort from "sort/insertion";
 import * as exchange from "sort/exchange";
 import * as compare from "root/compare";
+import * as block from "components/demo/Block";
 
-const list = [3, 2, 6, 0, 4, 5, 1];
+// const list = [3, 2, 6, 0, 4, 5, 1];
+const list = [3, 2, 6, 0, 4, 5, 1].map(block.create);
+// const list = range(0, 10).map(block.create);
+// shuffle(list);
 
 const descriptions = [
     <p>Insertion Sort</p>
@@ -26,7 +30,7 @@ function defaultSortState () {
 // copy the list before sorting because sort is in-place.
 const demo = new sort.demo(
     exchange.indices,
-    compare.number,
+    (a, b) => compare.number(a.val, b.val),
     list.map(n => n));
 
 const sortStates = [...demo].reduce((acc, state) => {
@@ -85,12 +89,12 @@ class InsertionSort extends Component {
         const state = this.getState(this.state.stateIndex);
         const blocks = state.list.map((n, i) => {
             return (
-                <Motion key={n} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
+                <Motion key={n.id} defaultStyle={{left: i * 100}} style={{left: spring(i * 100)}}>
                     {styles => (
                         <div
                             className={`m1 f2 pa4 ba absolute dib ${this.blockColor(state, i)}`}
                             style={{left: styles.left}}>
-                            {n}
+                            {n.val}
                         </div>
                     )}
                 </Motion>
