@@ -52,4 +52,34 @@ function* demo_gen (shuffle, compare, list) {
     yield {list};
 }
 
+function* step_gen (shuffle, compare, list) {
+    let sorted = false;
+
+    for (let i = 0; i < list.length-1; i++) {
+        yield {compare: [i, i+1]};
+        if (compare(list[i], list[i+1]) > 0) {
+            sorted = false;
+            break;
+        }
+        // if it gets through the whole list then the list is sorted
+        sorted = true;
+    }
+    while (!sorted) {
+        shuffle(list);
+        yield {list};
+
+        for (let i = 0; i < list.length-1; i++) {
+            yield {compare: [i, i+1]};
+            if (compare(list[i], list[i+1]) > 0) {
+                sorted = false;
+                break;
+            }
+            // if it gets through the whole list then the list is sorted
+            sorted = true;
+        }
+    }
+    yield {list};
+}
+
 export const demo = curry(demo_gen);
+export const step = curry(step_gen);

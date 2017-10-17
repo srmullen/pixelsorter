@@ -6,10 +6,11 @@ import * as record from "utils/record";
 import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
-import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
+import {BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
 const algorithms = {
+    bogo: BOGO,
     selection: SELECTION,
     insertion: INSERTION,
     bubble: BUBBLE,
@@ -73,6 +74,7 @@ class Image extends Component {
                                 this.setState({sortAlgorithm: e.target.value});
                             }}
                         >
+                            <option value="bogo">Bogo Sort</option>
                             <option value="bubble">Bubble Sort</option>
                             <option value="cocktail">Cocktail Sort</option>
                             <option value="selection">Selection Sort</option>

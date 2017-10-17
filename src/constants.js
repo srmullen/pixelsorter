@@ -1,3 +1,4 @@
+export const BOGO = Symbol("BOGO");
 export const BUBBLE = Symbol("BUBBLE");
 export const COCKTAIL = Symbol("COCKTAIL");
 export const HEAP = Symbol("HEAP");

@@ -1,3 +1,4 @@
+import * as bogo from "sort/bogo";
 import * as selection from "sort/selection";
 import * as insertion from "sort/insertion";
 import * as bubble from "sort/bubble";
@@ -7,9 +8,10 @@ import * as heap from "sort/heap";
 import * as merge from "sort/merge";
 import * as quick from "sort/quick";
 import * as exchange from "sort/exchange";
-import {SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
+import {BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK} from "root/constants";
 
 const algorithms = {
+    [BOGO]: bogo,
     [SELECTION]: selection,
     [INSERTION]: insertion,
     [BUBBLE]: bubble,
@@ -32,7 +34,7 @@ function PixelSorter (raster) {
 // Why does this run faster with a timeout than with a 'for' loop?
 PixelSorter.prototype.sort = function sort (compare, raster, options = {algorithm: INSERTION}) {
     let row = 0;
-    const exchangeFn = options.algorithm === MERGE ? exchange.copyFromList : exchange.indices;
+    const exchangeFn = getExchangeFunc(options.algorithm);
     this[ROW_INTERVAL] = setInterval(() => {
         this.sortRow(options, exchange.pixels(exchangeFn, raster, row), compare, raster, row);
         if (row > raster.height) {
@@ -59,6 +61,16 @@ PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, ro
         }
     }, 1);
     this[STEP_INTERVALS].push(interval);
+}
+
+function getExchangeFunc (algorithm) {
+    if (algorithm === MERGE) {
+        return exchange.copyFromList;
+    } else if (algorithm === BOGO) {
+        return exchange.shuffle;
+    } else {
+        return exchange.indices;
+    }
 }
 
 function getRow (row, raster) {
