@@ -36,9 +36,6 @@ export const pixels = curry((exchange, raster, row) => {
     } else if (exchange === shuffle) {
         return (arr) => {
             exchange(arr);
-            // const temp = raster.getPixel(a, row);
-            // raster.setPixel(a, row, raster.getPixel(b, row));
-            // raster.setPixel(b, row, temp);
             arr.forEach((pixel, i) => {
                 raster.setPixel(i, row, pixel);
             });
