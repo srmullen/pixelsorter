@@ -13,3 +13,6 @@ export const MERGE = Symbol("MERGE");
 export const RUNNING = Symbol("RUNNING");
 export const PAUSED = Symbol("PAUSED");
 export const NOT_RUNNING = Symbol("NOT_RUNNING");
+
+export const HORIZONTAL = "HORIZONTAL";
+export const VERTICAL = "VERTICAL";

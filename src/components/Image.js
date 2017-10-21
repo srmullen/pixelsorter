@@ -8,7 +8,7 @@ import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {
     BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
-    RUNNING, PAUSED, NOT_RUNNING
+    RUNNING, PAUSED, NOT_RUNNING, HORIZONTAL, VERTICAL
 } from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
@@ -30,6 +30,7 @@ class Image extends Component {
         super(props);
         this.state = {
             sortState: NOT_RUNNING,
+            sortDirection: HORIZONTAL,
             sortAlgorithm: "shell"
         };
     }
@@ -56,10 +57,13 @@ class Image extends Component {
                                 this.pixel.pause();
                                 return {sortState: PAUSED};
                             } else if (sortState === NOT_RUNNING) {
-                                this.pixel.sort(
+                                this.pixel.run(
                                     (a, b) => compare.number(a.red, b.red),
                                     this.raster,
-                                    {algorithm: algorithms[this.state.sortAlgorithm]}
+                                    {
+                                        algorithm: algorithms[this.state.sortAlgorithm],
+                                        direction: this.state.sortDirection
+                                    }
                                 );
                                 paper.view.update();
                                 return {sortState: RUNNING};
@@ -107,6 +111,19 @@ class Image extends Component {
                             <option value="heap">Heap Sort</option>
                             <option value="merge">Merge Sort</option>
                             <option value="quick">Quick Sort</option>
+                        </select>
+                    </label>
+                    <label>
+                        Direction
+                        <select
+                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                            value={this.state.sortDirection}
+                            onChange={(e) => {
+                                this.setState({sortDirection: e.target.value});
+                            }}
+                        >
+                            <option value={HORIZONTAL}>Horizontal</option>
+                            <option value={VERTICAL}>Vertical</option>
                         </select>
                     </label>
                 <canvas ref="canvas" className="w-100"></canvas>

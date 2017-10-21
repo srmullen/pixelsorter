@@ -10,7 +10,7 @@ import * as quick from "sort/quick";
 import * as exchange from "sort/exchange";
 import {
     BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
-    RUNNING, PAUSED, NOT_RUNNING
+    RUNNING, PAUSED, NOT_RUNNING, HORIZONTAL, VERTICAL
 } from "root/constants";
 
 const algorithms = {
@@ -25,61 +25,75 @@ const algorithms = {
     [QUICK]: quick
 };
 
-const ROW_INTERVAL = Symbol("ROW_INTERVAL");
+const AREA_INTERVAL = Symbol("AREA_INTERVAL");
 const STEP_INTERVALS = Symbol("STEP_INTERVALS");
 const CURRENT_SORT = Symbol("CURRENT_SORT");
 
 function PixelSorter (raster) {
     this.raster = raster;
-    this[ROW_INTERVAL] = null;
+    this[AREA_INTERVAL] = null;
     this[STEP_INTERVALS] = [];
     this[CURRENT_SORT] = null;
 }
 
 // Why does this run faster with a timeout than with a 'for' loop?
-PixelSorter.prototype.sort = function sort (compare, raster, options = {algorithm: INSERTION}) {
-    let row = 0;
+PixelSorter.prototype.run = function run (compare, raster, options = {algorithm: INSERTION, direction: HORIZONTAL}) {
+    let listIndex = 0;
+    let size;
+    let sort;
+    if (options.direction === HORIZONTAL) {
+        size = raster.height;
+        sort = this.sortRow;
+    } else {
+        size = raster.width;
+        sort = this.sortColumn;
+    }
     const exchangeFn = getExchangeFunc(options.algorithm);
     this[CURRENT_SORT] = {options, exchangeFn, compare, raster};
-    this[ROW_INTERVAL] = setInterval(() => {
-        this[STEP_INTERVALS].push(this.sortRow(options, exchange.pixels(exchangeFn, raster, row), compare, raster, row));
-        if (row > raster.height) {
-            clearInterval(this[ROW_INTERVAL]);
+    this[AREA_INTERVAL] = setInterval(() => {
+        this[STEP_INTERVALS].push(
+            sort(options, exchange.pixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex)
+        );
+        if (listIndex > size) {
+            clearInterval(this[AREA_INTERVAL]);
         }
-        row++;
+        listIndex++;
     }, 1);
 }
 
 PixelSorter.prototype.pause = function () {
-    clearInterval(this[ROW_INTERVAL]);
+    clearInterval(this[AREA_INTERVAL]);
     this[STEP_INTERVALS].forEach(({interval}) => clearInterval(interval));
 }
 
 PixelSorter.prototype.continue = function () {
-    let row = 0;
+    let listIndex = 0;
     const {options, exchangeFn, compare, raster} = this[CURRENT_SORT];
-    this[ROW_INTERVAL] = setInterval(() => {
-        if (this[STEP_INTERVALS][row]) {
-            const {gen} = this[STEP_INTERVALS][row];
+    const size = options.direction === HORIZONTAL ? this.raster.height : this.raster.width;
+    this[AREA_INTERVAL] = setInterval(() => {
+        if (this[STEP_INTERVALS][listIndex]) {
+            const {gen} = this[STEP_INTERVALS][listIndex];
             const interval = setInterval(() => {
                 const {value, done} = gen.next();
                 if (done) {
                     clearInterval(interval);
                 }
             }, 1);
-            this[STEP_INTERVALS][row] = {gen, interval};
+            this[STEP_INTERVALS][listIndex] = {gen, interval};
         } else {
-            this[STEP_INTERVALS][row] = this.sortRow(options, exchange.pixels(exchangeFn, raster, row), compare, raster, row);
+            this[STEP_INTERVALS][listIndex] = this.sortRow(
+                options, exchange.pixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex
+            );
         }
-        if (row > this.raster.height) {
-            clearInterval(this[ROW_INTERVAL]);
+        if (listIndex > size) {
+            clearInterval(this[AREA_INTERVAL]);
         }
-        row++;
+        listIndex++;
     }, 1);
 }
 
 PixelSorter.prototype.stop = function stop () {
-    clearInterval(this[ROW_INTERVAL]);
+    clearInterval(this[AREA_INTERVAL]);
     this[STEP_INTERVALS].forEach(({interval}) => clearInterval(interval));
     this[STEP_INTERVALS] = [];
     this[CURRENT_SORT] = null;
@@ -87,8 +101,19 @@ PixelSorter.prototype.stop = function stop () {
 
 PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, rowIndex) {
     const row = getRow(rowIndex, raster);
-    // selection.sort(exchange, compare, row);
     const gen = new algorithms[options.algorithm].step(exchange, compare, row);
+    const interval = setInterval(() => {
+        const {value, done} = gen.next();
+        if (done) {
+            clearInterval(interval);
+        }
+    }, 1);
+    return {gen, interval};
+}
+
+PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster, columnIndex) {
+    const column = getColumn(columnIndex, raster);
+    const gen = new algorithms[options.algorithm].step(exchange, compare, column);
     const interval = setInterval(() => {
         const {value, done} = gen.next();
         if (done) {
@@ -112,6 +137,14 @@ function getRow (row, raster) {
     const ret = []
     for (let i = 0; i < raster.width; i++) {
         ret.push(raster.getPixel(i, row));
+    }
+    return ret;
+}
+
+function getColumn (column, raster) {
+    const ret = []
+    for (let i = 0; i < raster.height; i++) {
+        ret.push(raster.getPixel(column, i));
     }
     return ret;
 }

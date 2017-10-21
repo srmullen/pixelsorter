@@ -1,4 +1,5 @@
 import {curry} from "ramda";
+import {HORIZONTAL, VERTICAL} from "root/constants";
 /*
  * Exchange position of two elements in an array.
  */
@@ -20,25 +21,48 @@ export function copyFromList(copy, into, copyIndex, intoIndex) {
  * Wrap the exchange function so that the pixel of the raster change everytime there
  * is and exchange.
  */
-export const pixels = curry((exchange, raster, row) => {
-    if (exchange === indices) {
-        return (arr, a, b) => {
-            exchange(arr, a, b);
-            const temp = raster.getPixel(a, row);
-            raster.setPixel(a, row, raster.getPixel(b, row));
-            raster.setPixel(b, row, temp);
+export const pixels = curry((exchange, raster, direction, index) => {
+    if (direction === HORIZONTAL) {
+        if (exchange === indices) {
+            return (arr, a, b) => {
+                exchange(arr, a, b);
+                const temp = raster.getPixel(a, index);
+                raster.setPixel(a, index, raster.getPixel(b, index));
+                raster.setPixel(b, index, temp);
+            }
+        } else if (exchange === copyFromList) {
+            return (copy, arr, a, b) => {
+                exchange(copy, arr, a, b);
+                raster.setPixel(b, index, arr[b]);
+            }
+        } else if (exchange === shuffle) {
+            return (arr) => {
+                exchange(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(i, index, pixel);
+                });
+            }
         }
-    } else if (exchange === copyFromList) {
-        return (copy, arr, a, b) => {
-            exchange(copy, arr, a, b);
-            raster.setPixel(b, row, arr[b]);
-        }
-    } else if (exchange === shuffle) {
-        return (arr) => {
-            exchange(arr);
-            arr.forEach((pixel, i) => {
-                raster.setPixel(i, row, pixel);
-            });
+    } else if (direction === VERTICAL) {
+        if (exchange === indices) {
+            return (arr, a, b) => {
+                exchange(arr, a, b);
+                const temp = raster.getPixel(index, a);
+                raster.setPixel(index, a, raster.getPixel(index, b));
+                raster.setPixel(index, b, temp);
+            }
+        } else if (exchange === copyFromList) {
+            return (copy, arr, a, b) => {
+                exchange(copy, arr, a, b);
+                raster.setPixel(index, b, arr[b]);
+            }
+        } else if (exchange === shuffle) {
+            return (arr) => {
+                exchange(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(index, i, pixel);
+                });
+            }
         }
     }
 });
