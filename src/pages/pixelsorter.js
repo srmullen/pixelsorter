@@ -6,13 +6,30 @@ import ReactDOM from "react-dom";
 import Image from "components/Image";
 import image from "images/six_pack_jason_walker.jpg";
 
-const SHOW_SORT_STATE = true;
-
 class Main extends Component {
+    constructor () {
+        super();
+        this.state = {image};
+    }
+
     render () {
         return (
             <div>
-                <Image image={image} scale={0.5} />
+                <form>
+                    <input
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        type="file"
+                        name="file"
+                        onChange={(event) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                this.setState({image: e.target.result});
+                            }
+                            reader.readAsDataURL(event.target.files[0]);
+                        }}
+                    />
+                </form>
+                <Image image={this.state.image} scale={0.5} />
             </div>
         );
     }

@@ -135,8 +135,21 @@ class Image extends Component {
 
     raster: null
 
+
+
+    componentDidUpdate (prevProps) {
+        if (prevProps.image !== this.props.image) {
+            this.raster.remove();
+            this.displayImage();
+        }
+    }
+
     componentDidMount () {
         paper.setup(this.refs.canvas);
+        this.displayImage();
+    }
+
+    displayImage () {
         this.raster = new paper.Raster(this.props.image);
         this.raster.onLoad = () => {
             this.pixel = new PixelSorter(this.raster);
