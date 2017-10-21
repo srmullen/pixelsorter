@@ -10,7 +10,8 @@ import * as quick from "sort/quick";
 import * as exchange from "sort/exchange";
 import {
     BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
-    RUNNING, PAUSED, NOT_RUNNING, HORIZONTAL, VERTICAL
+    RUNNING, PAUSED, NOT_RUNNING,
+    HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
 
 const algorithms = {
@@ -37,15 +38,13 @@ function PixelSorter (raster) {
 }
 
 // Why does this run faster with a timeout than with a 'for' loop?
-PixelSorter.prototype.run = function run (compare, raster, options = {algorithm: INSERTION, direction: HORIZONTAL}) {
+PixelSorter.prototype.run = function run (compare, raster, options = {algorithm: INSERTION, direction: LEFT_TO_RIGHT}) {
     let listIndex = 0;
-    let size;
+    const size = getSize(this.raster, options.direction);
     let sort;
-    if (options.direction === HORIZONTAL) {
-        size = raster.height;
+    if (options.direction === LEFT_TO_RIGHT || options.direction === RIGHT_TO_LEFT) {
         sort = this.sortRow;
     } else {
-        size = raster.width;
         sort = this.sortColumn;
     }
     const exchangeFn = getExchangeFunc(options.algorithm);
@@ -69,7 +68,7 @@ PixelSorter.prototype.pause = function () {
 PixelSorter.prototype.continue = function () {
     let listIndex = 0;
     const {options, exchangeFn, compare, raster} = this[CURRENT_SORT];
-    const size = options.direction === HORIZONTAL ? this.raster.height : this.raster.width;
+    const size = getSize(this.raster, options.direction);
     this[AREA_INTERVAL] = setInterval(() => {
         if (this[STEP_INTERVALS][listIndex]) {
             const {gen} = this[STEP_INTERVALS][listIndex];
@@ -101,6 +100,9 @@ PixelSorter.prototype.stop = function stop () {
 
 PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, rowIndex) {
     const row = getRow(rowIndex, raster);
+    if (options.direction === RIGHT_TO_LEFT) {
+        row.reverse();
+    }
     const gen = new algorithms[options.algorithm].step(exchange, compare, row);
     const interval = setInterval(() => {
         const {value, done} = gen.next();
@@ -113,6 +115,9 @@ PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, ro
 
 PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster, columnIndex) {
     const column = getColumn(columnIndex, raster);
+    if (options.direction === BOTTOM_TO_TOP) {
+        column.reverse();
+    }
     const gen = new algorithms[options.algorithm].step(exchange, compare, column);
     const interval = setInterval(() => {
         const {value, done} = gen.next();
@@ -130,6 +135,14 @@ function getExchangeFunc (algorithm) {
         return exchange.shuffle;
     } else {
         return exchange.indices;
+    }
+}
+
+function getSize (raster, direction) {
+    if (direction === LEFT_TO_RIGHT || direction === RIGHT_TO_LEFT) {
+        return raster.height;
+    } else {
+        return raster.width;
     }
 }
 

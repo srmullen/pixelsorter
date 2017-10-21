@@ -8,7 +8,8 @@ import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {
     BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
-    RUNNING, PAUSED, NOT_RUNNING, HORIZONTAL, VERTICAL
+    RUNNING, PAUSED, NOT_RUNNING,
+    HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
@@ -30,7 +31,7 @@ class Image extends Component {
         super(props);
         this.state = {
             sortState: NOT_RUNNING,
-            sortDirection: HORIZONTAL,
+            sortDirection: LEFT_TO_RIGHT,
             sortAlgorithm: "shell"
         };
     }
@@ -51,7 +52,6 @@ class Image extends Component {
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
-                        // const sortState = this.state.sortState;
                         this.setState(({sortState}) => {
                             if (sortState === RUNNING) {
                                 this.pixel.pause();
@@ -122,8 +122,10 @@ class Image extends Component {
                                 this.setState({sortDirection: e.target.value});
                             }}
                         >
-                            <option value={HORIZONTAL}>Horizontal</option>
-                            <option value={VERTICAL}>Vertical</option>
+                            <option value={LEFT_TO_RIGHT}>Left to Right</option>
+                            <option value={RIGHT_TO_LEFT}>Right to Left</option>
+                            <option value={TOP_TO_BOTTOM}>Top to Bottom</option>
+                            <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
                         </select>
                     </label>
                 <canvas ref="canvas" className="w-100"></canvas>

@@ -1,5 +1,7 @@
 import {curry} from "ramda";
-import {HORIZONTAL, VERTICAL} from "root/constants";
+import {
+    HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
+} from "root/constants";
 /*
  * Exchange position of two elements in an array.
  */
@@ -22,7 +24,7 @@ export function copyFromList(copy, into, copyIndex, intoIndex) {
  * is and exchange.
  */
 export const pixels = curry((exchange, raster, direction, index) => {
-    if (direction === HORIZONTAL) {
+    if (direction === LEFT_TO_RIGHT) {
         if (exchange === indices) {
             return (arr, a, b) => {
                 exchange(arr, a, b);
@@ -43,7 +45,31 @@ export const pixels = curry((exchange, raster, direction, index) => {
                 });
             }
         }
-    } else if (direction === VERTICAL) {
+    } else if (direction === RIGHT_TO_LEFT) {
+        if (exchange === indices) {
+            return (arr, a, b) => {
+                const length = arr.length - 1;
+                exchange(arr, a, b);
+                const temp = raster.getPixel(length - a, index);
+                raster.setPixel(length - a, index, raster.getPixel(length - b, index));
+                raster.setPixel(length - b, index, temp);
+            }
+        } else if (exchange === copyFromList) {
+            return (copy, arr, a, b) => {
+                const length = arr.length - 1;
+                exchange(copy, arr, a, b);
+                raster.setPixel(length - b, index, arr[b]);
+            }
+        } else if (exchange === shuffle) {
+            return (arr) => {
+                const length = arr.length - 1;
+                exchange(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(length - i, index, pixel);
+                });
+            }
+        }
+    } else if (direction === TOP_TO_BOTTOM) {
         if (exchange === indices) {
             return (arr, a, b) => {
                 exchange(arr, a, b);
@@ -61,6 +87,29 @@ export const pixels = curry((exchange, raster, direction, index) => {
                 exchange(arr);
                 arr.forEach((pixel, i) => {
                     raster.setPixel(index, i, pixel);
+                });
+            }
+        }
+    } else if (direction === BOTTOM_TO_TOP) {
+        if (exchange === indices) {
+            return (arr, a, b) => {
+                const length = arr.length - 1;
+                exchange(arr, a, b);
+                const temp = raster.getPixel(index, length - a);
+                raster.setPixel(index, length - a, raster.getPixel(index, length - b));
+                raster.setPixel(index, length - b, temp);
+            }
+        } else if (exchange === copyFromList) {
+            return (copy, arr, a, b) => {
+                exchange(copy, arr, a, b);
+                raster.setPixel(index, arr.length - 1 - b, arr[b]);
+            }
+        } else if (exchange === shuffle) {
+            return (arr) => {
+                const length = arr.length - 1;
+                exchange(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(index, length - i, pixel);
                 });
             }
         }
