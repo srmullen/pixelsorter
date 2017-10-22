@@ -20,11 +20,13 @@ class Main extends Component {
                     type="file"
                     name="file"
                     onChange={(event) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            this.setState({image: e.target.result});
+                        if (event.target.files && event.target.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                this.setState({image: e.target.result});
+                            }
+                            reader.readAsDataURL(event.target.files[0]);
                         }
-                        reader.readAsDataURL(event.target.files[0]);
                     }}
                 />
                 <Image image={this.state.image} scale={0.5} />
