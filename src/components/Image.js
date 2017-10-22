@@ -10,7 +10,8 @@ import * as exchange from "sort/exchange";
 import {
     BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
     RUNNING, PAUSED, NOT_RUNNING,
-    HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
+    HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
+    RED, GREEN, BLUE, GRAY
 } from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
@@ -34,7 +35,8 @@ class Image extends Component {
             sortState: NOT_RUNNING,
             sortDirection: LEFT_TO_RIGHT,
             sortAlgorithm: "shell",
-            scale: 1
+            scale: 1,
+            color: RED
         };
     }
 
@@ -62,7 +64,7 @@ class Image extends Component {
                             } else if (sortState === NOT_RUNNING) {
                                 paper.view.autoUpdate = true;
                                 this.pixel.run(
-                                    (a, b) => compare.number(a.red, b.red),
+                                    createComparator(this.state.color),
                                     this.raster,
                                     {
                                         algorithm: algorithms[this.state.sortAlgorithm],
@@ -135,6 +137,21 @@ class Image extends Component {
                     </select>
                 </label>
                 <label>
+                    Color:
+                    <select
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        value={this.state.color}
+                        onChange={(e) => {
+                            this.setState({color: e.target.value});
+                        }}
+                    >
+                        <option value={RED}>Red</option>
+                        <option value={GREEN}>Green</option>
+                        <option value={BLUE}>Blue</option>
+                        <option value={GRAY}>Gray</option>
+                    </select>
+                </label>
+                <label>
                     Scale:
                     <input type="number" value={this.state.scale}
                         step="0.01"
@@ -177,6 +194,7 @@ class Image extends Component {
 
     displayImage () {
         this.raster = new paper.Raster(this.props.image);
+        window.raster = this.raster;
         this.raster.onLoad = () => {
             this.defaultImageSize = this.raster.size;
             this.pixel = new PixelSorter(this.raster);
@@ -187,13 +205,12 @@ class Image extends Component {
     }
 }
 
-Image.propTypes = {
-    src: PropTypes.string,
-    // scale: PropTypes.number
-};
+function createComparator (color) {
+    return (a, b) => compare.number(a[color], b[color]);
+}
 
-// Image.defaultProps = {
-//     scale: 1
-// };
+Image.propTypes = {
+    src: PropTypes.string
+};
 
 export default Image;

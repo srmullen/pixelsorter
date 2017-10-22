@@ -20,3 +20,9 @@ export const TOP_TO_BOTTOM = "TOP_TO_BOTTOM";
 export const BOTTOM_TO_TOP = "BOTTOM_TO_TOP";
 export const LEFT_TO_RIGHT = "LEFT_TO_RIGHT";
 export const RIGHT_TO_LEFT = "RIGHT_TO_LEFT";
+
+// Colors
+export const RED = "red";
+export const GREEN = "green";
+export const BLUE = "blue";
+export const GRAY = "gray";
