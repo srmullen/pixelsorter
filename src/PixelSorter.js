@@ -1,3 +1,4 @@
+import {curry} from "ramda";
 import * as bogo from "sort/bogo";
 import * as selection from "sort/selection";
 import * as insertion from "sort/insertion";
@@ -51,7 +52,7 @@ PixelSorter.prototype.run = function run (compare, raster, options = {algorithm:
     this[CURRENT_SORT] = {options, exchangeFn, compare, raster};
     this[AREA_INTERVAL] = setInterval(() => {
         this[STEP_INTERVALS].push(
-            sort(options, exchange.pixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex)
+            sort(options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex)
         );
         if (listIndex > size) {
             clearInterval(this[AREA_INTERVAL]);
@@ -81,7 +82,7 @@ PixelSorter.prototype.continue = function () {
             this[STEP_INTERVALS][listIndex] = {gen, interval};
         } else {
             this[STEP_INTERVALS][listIndex] = this.sortRow(
-                options, exchange.pixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex
+                options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex
             );
         }
         if (listIndex > size) {
@@ -161,5 +162,102 @@ function getColumn (column, raster) {
     }
     return ret;
 }
+
+/*
+ * Wrap the exchange function so that the pixel of the raster change everytime there
+ * is and exchange.
+ */
+const exchangePixels = curry((exchangeFn, raster, direction, index) => {
+    if (direction === LEFT_TO_RIGHT) {
+        if (exchangeFn === exchange.indices) {
+            return (arr, a, b) => {
+                exchangeFn(arr, a, b);
+                const temp = raster.getPixel(a, index);
+                raster.setPixel(a, index, raster.getPixel(b, index));
+                raster.setPixel(b, index, temp);
+            }
+        } else if (exchangeFn === exchange.copyFromList) {
+            return (copy, arr, a, b) => {
+                exchangeFn(copy, arr, a, b);
+                raster.setPixel(b, index, arr[b]);
+            }
+        } else if (exchangeFn === exchange.shuffle) {
+            return (arr) => {
+                exchangeFn(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(i, index, pixel);
+                });
+            }
+        }
+    } else if (direction === RIGHT_TO_LEFT) {
+        if (exchangeFn === exchange.indices) {
+            return (arr, a, b) => {
+                const length = arr.length - 1;
+                exchangeFn(arr, a, b);
+                const temp = raster.getPixel(length - a, index);
+                raster.setPixel(length - a, index, raster.getPixel(length - b, index));
+                raster.setPixel(length - b, index, temp);
+            }
+        } else if (exchangeFn === exchange.copyFromList) {
+            return (copy, arr, a, b) => {
+                const length = arr.length - 1;
+                exchangeFn(copy, arr, a, b);
+                raster.setPixel(length - b, index, arr[b]);
+            }
+        } else if (exchangeFn === exchange.shuffle) {
+            return (arr) => {
+                const length = arr.length - 1;
+                exchangeFn(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(length - i, index, pixel);
+                });
+            }
+        }
+    } else if (direction === TOP_TO_BOTTOM) {
+        if (exchangeFn === exchange.indices) {
+            return (arr, a, b) => {
+                exchangeFn(arr, a, b);
+                const temp = raster.getPixel(index, a);
+                raster.setPixel(index, a, raster.getPixel(index, b));
+                raster.setPixel(index, b, temp);
+            }
+        } else if (exchangeFn === exchange.copyFromList) {
+            return (copy, arr, a, b) => {
+                exchangeFn(copy, arr, a, b);
+                raster.setPixel(index, b, arr[b]);
+            }
+        } else if (exchangeFn === exchange.shuffle) {
+            return (arr) => {
+                exchangeFn(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(index, i, pixel);
+                });
+            }
+        }
+    } else if (direction === BOTTOM_TO_TOP) {
+        if (exchangeFn === exchange.indices) {
+            return (arr, a, b) => {
+                const length = arr.length - 1;
+                exchangeFn(arr, a, b);
+                const temp = raster.getPixel(index, length - a);
+                raster.setPixel(index, length - a, raster.getPixel(index, length - b));
+                raster.setPixel(index, length - b, temp);
+            }
+        } else if (exchangeFn === exchange.copyFromList) {
+            return (copy, arr, a, b) => {
+                exchangeFn(copy, arr, a, b);
+                raster.setPixel(index, arr.length - 1 - b, arr[b]);
+            }
+        } else if (exchangeFn === exchange.shuffle) {
+            return (arr) => {
+                const length = arr.length - 1;
+                exchangeFn(arr);
+                arr.forEach((pixel, i) => {
+                    raster.setPixel(index, length - i, pixel);
+                });
+            }
+        }
+    }
+});
 
 export default PixelSorter;
