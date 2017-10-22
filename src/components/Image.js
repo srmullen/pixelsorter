@@ -13,7 +13,6 @@ import {
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
 
-window.download = download;
 // Unfortunately symbols can't be passed as value to <select>.
 const algorithms = {
     bogo: BOGO,
@@ -34,7 +33,8 @@ class Image extends Component {
         this.state = {
             sortState: NOT_RUNNING,
             sortDirection: LEFT_TO_RIGHT,
-            sortAlgorithm: "shell"
+            sortAlgorithm: "shell",
+            scale: 1
         };
     }
 
@@ -56,9 +56,11 @@ class Image extends Component {
                     onClick={() => {
                         this.setState(({sortState}) => {
                             if (sortState === RUNNING) {
+                                paper.view.autoUpdate = false;
                                 this.pixel.pause();
                                 return {sortState: PAUSED};
                             } else if (sortState === NOT_RUNNING) {
+                                paper.view.autoUpdate = true;
                                 this.pixel.run(
                                     (a, b) => compare.number(a.red, b.red),
                                     this.raster,
@@ -67,9 +69,9 @@ class Image extends Component {
                                         direction: this.state.sortDirection
                                     }
                                 );
-                                paper.view.update();
                                 return {sortState: RUNNING};
                             } else if (sortState === PAUSED) {
+                                paper.view.autoUpdate = true;
                                 this.pixel.continue();
                                 return {sortState: RUNNING};
                             }
@@ -79,6 +81,7 @@ class Image extends Component {
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={() => {
                         this.pixel.stop();
+                        paper.view.autoUpdate = false;
                         this.setState({sortState: NOT_RUNNING});
                     }}>Stop</button>
                 <button
@@ -86,10 +89,11 @@ class Image extends Component {
                     onClick={() => {
                         this.setState({sortState: NOT_RUNNING}, () => {
                             this.pixel.stop();
+                            paper.view.autoUpdate = false;
                             this.raster.remove();
                             this.raster = new paper.Raster(this.props.image);
                             this.raster.onLoad = () => {
-                                this.raster.size = this.raster.size.multiply(this.props.scale);
+                                this.raster.size = this.raster.size.multiply(this.state.scale);
                                 this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
                                 paper.view.update();
                             }
@@ -130,6 +134,16 @@ class Image extends Component {
                         <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
                     </select>
                 </label>
+                <label>
+                    Scale:
+                    <input type="number" value={this.state.scale}
+                        step="0.01"
+                        min="0"
+                        onChange={(e) => {
+                            this.setState({scale: e.target.value});
+                        }}
+                    />
+                </label>
                 <button
                     className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
                     onClick={(e) => {
@@ -143,11 +157,13 @@ class Image extends Component {
     }
 
     raster: null
+    defaultImageSize: null
 
-
-
-    componentDidUpdate (prevProps) {
+    componentDidUpdate (prevProps, prevState) {
         if (prevProps.image !== this.props.image) {
+            this.raster.remove();
+            this.displayImage();
+        } else if (prevState.scale !== this.state.scale) {
             this.raster.remove();
             this.displayImage();
         }
@@ -155,16 +171,17 @@ class Image extends Component {
 
     componentDidMount () {
         paper.setup(this.refs.canvas);
+        paper.view.autoUpdate = false;
         this.displayImage();
     }
 
     displayImage () {
         this.raster = new paper.Raster(this.props.image);
-        window.raster = this.raster;
         this.raster.onLoad = () => {
+            this.defaultImageSize = this.raster.size;
             this.pixel = new PixelSorter(this.raster);
-            this.raster.size = this.raster.size.multiply(this.props.scale);
-            this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
+            this.raster.size = this.defaultImageSize.multiply(this.state.scale);
+            this.raster.bounds.topLeft = [20, 20];
             paper.view.update();
         }
     }
@@ -172,11 +189,11 @@ class Image extends Component {
 
 Image.propTypes = {
     src: PropTypes.string,
-    scale: PropTypes.number
+    // scale: PropTypes.number
 };
 
-Image.defaultProps = {
-    scale: 1
-};
+// Image.defaultProps = {
+//     scale: 1
+// };
 
 export default Image;

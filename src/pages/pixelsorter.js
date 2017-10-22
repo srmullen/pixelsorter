@@ -9,7 +9,9 @@ import image from "images/six_pack_jason_walker.jpg";
 class Main extends Component {
     constructor () {
         super();
-        this.state = {image};
+        this.state = {
+            image
+        };
     }
 
     render () {
@@ -29,7 +31,7 @@ class Main extends Component {
                         }
                     }}
                 />
-                <Image image={this.state.image} scale={0.5} />
+                <Image image={this.state.image} />
             </div>
         );
     }
