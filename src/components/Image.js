@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import paper from "paper";
 import {prop} from "ramda";
+import download from "downloadjs";
 import * as record from "utils/record";
 import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
@@ -12,6 +13,7 @@ import {
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
 
+window.download = download;
 // Unfortunately symbols can't be passed as value to <select>.
 const algorithms = {
     bogo: BOGO,
@@ -93,41 +95,48 @@ class Image extends Component {
                             }
                         });
                     }}>Reset</button>
-                    <label>
-                        Algorithm
-                        <select
-                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                            value={this.state.sortAlgorithm}
-                            onChange={(e) => {
-                                this.setState({sortAlgorithm: e.target.value});
-                            }}
-                        >
-                            <option value="bogo">Bogo Sort</option>
-                            <option value="bubble">Bubble Sort</option>
-                            <option value="cocktail">Cocktail Sort</option>
-                            <option value="selection">Selection Sort</option>
-                            <option value="insertion">Insertion Sort</option>
-                            <option value="shell">Shell Sort</option>
-                            <option value="heap">Heap Sort</option>
-                            <option value="merge">Merge Sort</option>
-                            <option value="quick">Quick Sort</option>
-                        </select>
-                    </label>
-                    <label>
-                        Direction
-                        <select
-                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                            value={this.state.sortDirection}
-                            onChange={(e) => {
-                                this.setState({sortDirection: e.target.value});
-                            }}
-                        >
-                            <option value={LEFT_TO_RIGHT}>Left to Right</option>
-                            <option value={RIGHT_TO_LEFT}>Right to Left</option>
-                            <option value={TOP_TO_BOTTOM}>Top to Bottom</option>
-                            <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
-                        </select>
-                    </label>
+                <label>
+                    Algorithm
+                    <select
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        value={this.state.sortAlgorithm}
+                        onChange={(e) => {
+                            this.setState({sortAlgorithm: e.target.value});
+                        }}
+                    >
+                        <option value="bogo">Bogo Sort</option>
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="cocktail">Cocktail Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="shell">Shell Sort</option>
+                        <option value="heap">Heap Sort</option>
+                        <option value="merge">Merge Sort</option>
+                        <option value="quick">Quick Sort</option>
+                    </select>
+                </label>
+                <label>
+                    Direction
+                    <select
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        value={this.state.sortDirection}
+                        onChange={(e) => {
+                            this.setState({sortDirection: e.target.value});
+                        }}
+                    >
+                        <option value={LEFT_TO_RIGHT}>Left to Right</option>
+                        <option value={RIGHT_TO_LEFT}>Right to Left</option>
+                        <option value={TOP_TO_BOTTOM}>Top to Bottom</option>
+                        <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
+                    </select>
+                </label>
+                <button
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    onClick={(e) => {
+                        download(raster.toDataURL());
+                    }}>
+                    Download
+                </button>
                 <canvas ref="canvas" className="w-100"></canvas>
             </div>
         );
@@ -151,6 +160,7 @@ class Image extends Component {
 
     displayImage () {
         this.raster = new paper.Raster(this.props.image);
+        window.raster = this.raster;
         this.raster.onLoad = () => {
             this.pixel = new PixelSorter(this.raster);
             this.raster.size = this.raster.size.multiply(this.props.scale);

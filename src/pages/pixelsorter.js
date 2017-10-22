@@ -15,20 +15,18 @@ class Main extends Component {
     render () {
         return (
             <div>
-                <form>
-                    <input
-                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        type="file"
-                        name="file"
-                        onChange={(event) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                                this.setState({image: e.target.result});
-                            }
-                            reader.readAsDataURL(event.target.files[0]);
-                        }}
-                    />
-                </form>
+                <input
+                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                    type="file"
+                    name="file"
+                    onChange={(event) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.setState({image: e.target.result});
+                        }
+                        reader.readAsDataURL(event.target.files[0]);
+                    }}
+                />
                 <Image image={this.state.image} scale={0.5} />
             </div>
         );
