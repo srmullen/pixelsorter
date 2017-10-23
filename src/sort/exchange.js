@@ -10,6 +10,16 @@ export function indices (arr, a, b) {
 }
 
 /*
+ * Places the item at the given position in the array and returns the item
+ * that was previously at the position.
+ */
+export function swapOut (arr, pos, item) {
+    const prev = arr[pos];
+    arr[pos] = item;
+    return prev;
+}
+
+/*
  * Copys the index from one list into another list.
  * Does not mutate the copy list.
  */

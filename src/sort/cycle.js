@@ -12,9 +12,6 @@ export const sort = curry((exchange, compare, list) => {
         let item = list[cycle];
         let pos = cycle;
 
-        // while (compare(item, list[pos]) < 0) {
-        //     pos++;
-        // }
         for (let i = cycle + 1; i < list.length; i++) {
             if (compare(item, list[i]) > 0) {
                 pos++;
@@ -25,16 +22,12 @@ export const sort = curry((exchange, compare, list) => {
         if (pos === cycle) continue;
 
         // Skip over duplicate items
-        while(pos < list.length && compare(item, list[pos]) === 0) {
+        while (pos < list.length && compare(item, list[pos]) === 0) {
             pos++;
         }
 
         if (pos !== cycle) {
-            // This probably needs its own exchange function.
-            // exchange()
-            const temp = list[pos];
-            list[pos] = item;
-            item = temp;
+            item = exchange(list, pos, item);
 
             while (pos !== cycle) {
                 pos = cycle;
@@ -50,10 +43,7 @@ export const sort = curry((exchange, compare, list) => {
                 }
 
                 if (compare(item, list[pos]) !== 0) {
-                    // exchange()
-                    const temp = list[pos];
-                    list[pos] = item;
-                    item = temp;
+                    item = exchange(list, pos, item);
                 }
             }
         }

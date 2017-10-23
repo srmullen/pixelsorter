@@ -53,7 +53,7 @@ export const cyclesort = () => {
                   { val: 8 },
                   { val: 8 },
                   { val: 9 }];
-    cycle.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    cycle.sort(exchange.swapOut, (a, b) => compare.number(a.val, b.val), list);
     return list.map(({val}) => val);
 }
 
