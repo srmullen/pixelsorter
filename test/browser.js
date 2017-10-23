@@ -11,6 +11,7 @@ import {prop, map, identity, compose} from "ramda";
 import * as compare from "../src/compare";
 import * as exchange from "../src/sort/exchange";
 import * as selection from "../src/sort/selection";
+import * as cycle from "../src/sort/cycle";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as shell from "../src/sort/shell";
@@ -28,6 +29,31 @@ export const bogosort = () => {
 export const selectionsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
     selection.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
+}
+
+export const cyclesort = () => {
+    const list = [{ val: 7 },
+                  { val: 1 },
+                  { val: 4 },
+                  { val: 5 },
+                  { val: 1 },
+                  { val: 6 },
+                  { val: 1 },
+                  { val: 0 },
+                  { val: 1 },
+                  { val: 4 },
+                  { val: 3 },
+                  { val: 0 },
+                  { val: 4 },
+                  { val: 3 },
+                  { val: 6 },
+                  { val: 0 },
+                  { val: 1 },
+                  { val: 8 },
+                  { val: 8 },
+                  { val: 9 }];
+    cycle.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return list.map(({val}) => val);
 }
 

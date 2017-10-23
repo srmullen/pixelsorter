@@ -1,0 +1,61 @@
+import {curry, identity} from 'ramda';
+
+// In-place unstable sorting algorithm that is theoretically optimal in terms of
+// the total number of writes to the original array.
+// It is based on the idea that the sorting can be broken into cycles. A cycle is
+// comprised of a set of items that move to take each others place.
+// A cycle is created by moving an element to its correct position. The element
+// that was in that position is then moved to its correct position. This continues
+// until the elements of the cycle are all correct. Then move on to the next cycle.
+export const sort = curry((exchange, compare, list) => {
+    for (let cycle = 0; cycle < list.length - 2; cycle++) {
+        let item = list[cycle];
+        let pos = cycle;
+
+        // while (compare(item, list[pos]) < 0) {
+        //     pos++;
+        // }
+        for (let i = cycle + 1; i < list.length; i++) {
+            if (compare(item, list[i]) > 0) {
+                pos++;
+            }
+        }
+
+        // Item is in correct position.
+        if (pos === cycle) continue;
+
+        // Skip over duplicate items
+        while(pos < list.length && compare(item, list[pos]) === 0) {
+            pos++;
+        }
+
+        if (pos !== cycle) {
+            // This probably needs its own exchange function.
+            // exchange()
+            const temp = list[pos];
+            list[pos] = item;
+            item = temp;
+
+            while (pos !== cycle) {
+                pos = cycle;
+                for (let i = cycle + 1; i < list.length; i++) {
+                    if (compare(item, list[i]) > 0) {
+                        pos++;
+                    }
+                }
+
+                // Skip over duplicate items
+                while(pos < list.length && compare(item, list[pos]) === 0) {
+                    pos++;
+                }
+
+                if (compare(item, list[pos]) !== 0) {
+                    // exchange()
+                    const temp = list[pos];
+                    list[pos] = item;
+                    item = temp;
+                }
+            }
+        }
+    }
+});

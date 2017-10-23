@@ -3,6 +3,7 @@ import {prop, map, identity, sortBy} from "ramda";
 import {indices as exchange, copyFromList} from "../src/sort/exchange";
 import * as compare from "../src/compare";
 import * as selection from "../src/sort/selection";
+import * as cycle from "../src/sort/cycle";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as cocktail from "../src/sort/cocktail";
@@ -110,6 +111,10 @@ describe("Sorting", () => {
     describe("Selection Sort", () => {
         testSort(selection.sort);
     });
+
+    describe("Cycle sort", () => {
+        testSort(cycle.sort);
+    })
 
     describe("Insertion Sort", () => {
         testSort(insertion.sort);
