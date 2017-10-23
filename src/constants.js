@@ -5,6 +5,7 @@ export const COCKTAIL = Symbol("COCKTAIL");
 export const HEAP = Symbol("HEAP");
 export const INSERTION = Symbol("INSERTION");
 export const SELECTION = Symbol("SELECTION");
+export const CYCLE = Symbol("CYCLE");
 export const SHELL = Symbol("SHELL");
 export const QUICK = Symbol("QUICK");
 export const MERGE = Symbol("MERGE");

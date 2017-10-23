@@ -8,7 +8,7 @@ import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {
-    BOGO, SELECTION, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
+    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
     RED, GREEN, BLUE, GRAY
@@ -18,6 +18,7 @@ import {
 const algorithms = {
     bogo: BOGO,
     selection: SELECTION,
+    cycle: CYCLE,
     insertion: INSERTION,
     bubble: BUBBLE,
     cocktail: COCKTAIL,
@@ -115,6 +116,7 @@ class Image extends Component {
                         <option value="cocktail">Cocktail Sort</option>
                         <option value="selection">Selection Sort</option>
                         <option value="insertion">Insertion Sort</option>
+                        <option value="cycle">Cycle Sort</option>
                         <option value="shell">Shell Sort</option>
                         <option value="heap">Heap Sort</option>
                         <option value="merge">Merge Sort</option>

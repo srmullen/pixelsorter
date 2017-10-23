@@ -49,3 +49,50 @@ export const sort = curry((exchange, compare, list) => {
         }
     }
 });
+
+function* step_gen (exchange, compare, list) {
+    for (let cycle = 0; cycle < list.length - 2; cycle++) {
+        let item = list[cycle];
+        let pos = cycle;
+
+        for (let i = cycle + 1; i < list.length; i++) {
+            if (compare(item, list[i]) > 0) {
+                pos++;
+            }
+        }
+
+        // Item is in correct position.
+        if (pos === cycle) continue;
+
+        // Skip over duplicate items
+        while (pos < list.length && compare(item, list[pos]) === 0) {
+            pos++;
+        }
+
+        if (pos !== cycle) {
+            item = exchange(list, pos, item);
+            yield {list};
+
+            while (pos !== cycle) {
+                pos = cycle;
+                for (let i = cycle + 1; i < list.length; i++) {
+                    if (compare(item, list[i]) > 0) {
+                        pos++;
+                    }
+                }
+
+                // Skip over duplicate items
+                while(pos < list.length && compare(item, list[pos]) === 0) {
+                    pos++;
+                }
+
+                if (compare(item, list[pos]) !== 0) {
+                    item = exchange(list, pos, item);
+                    yield {list};
+                }
+            }
+        }
+    }
+}
+
+export const step = curry(step_gen);
