@@ -14,6 +14,7 @@ import * as selection from "../src/sort/selection";
 import * as cycle from "../src/sort/cycle";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
+import * as comb from "../src/sort/comb";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
@@ -67,6 +68,12 @@ export const insertionsort = () => {
 export const bubblesort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
     bubble.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
+}
+
+export const combsort = () => {
+    const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    comb.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
     return list.map(({val}) => val);
 }
 

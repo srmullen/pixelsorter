@@ -7,6 +7,7 @@ import * as cycle from "../src/sort/cycle";
 import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as cocktail from "../src/sort/cocktail";
+import * as comb from "../src/sort/comb";
 import * as shell from "../src/sort/shell";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
@@ -132,6 +133,10 @@ describe("Sorting", () => {
 
     describe("Cocktail Sort", () => {
         testSort(cocktail.sort);
+    });
+
+    describe("Comb Sort", () => {
+        testSort(comb.sort);
     });
 
     describe("Shell Sort", () => {
