@@ -5,13 +5,14 @@ import * as cycle from "sort/cycle";
 import * as insertion from "sort/insertion";
 import * as bubble from "sort/bubble";
 import * as cocktail from "sort/cocktail";
+import * as comb from "sort/comb";
 import * as shell from "sort/shell";
 import * as heap from "sort/heap";
 import * as merge from "sort/merge";
 import * as quick from "sort/quick";
 import * as exchange from "sort/exchange";
 import {
-    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
+    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
@@ -23,6 +24,7 @@ const algorithms = {
     [INSERTION]: insertion,
     [BUBBLE]: bubble,
     [COCKTAIL]: cocktail,
+    [COMB]: comb,
     [SHELL]: shell,
     [HEAP]: heap,
     [MERGE]: merge,

@@ -8,7 +8,7 @@ import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {
-    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, SHELL, HEAP, MERGE, QUICK,
+    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
     RED, GREEN, BLUE, GRAY
@@ -22,6 +22,7 @@ const algorithms = {
     insertion: INSERTION,
     bubble: BUBBLE,
     cocktail: COCKTAIL,
+    comb: COMB,
     shell: SHELL,
     heap: HEAP,
     merge: MERGE,
@@ -54,123 +55,129 @@ class Image extends Component {
     render () {
         return (
             <div className="w-100 mt3 avenir dark-gray">
-                <button
-                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                    onClick={() => {
-                        this.setState(({sortState}) => {
-                            if (sortState === RUNNING) {
-                                paper.view.autoUpdate = false;
-                                this.pixel.pause();
-                                return {sortState: PAUSED};
-                            } else if (sortState === NOT_RUNNING) {
-                                paper.view.autoUpdate = true;
-                                this.pixel.run(
-                                    createComparator(this.state.color),
-                                    this.raster,
-                                    {
-                                        algorithm: algorithms[this.state.sortAlgorithm],
-                                        direction: this.state.sortDirection
+                <div>
+                    <button
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        onClick={() => {
+                            this.setState(({sortState}) => {
+                                if (sortState === RUNNING) {
+                                    paper.view.autoUpdate = false;
+                                    this.pixel.pause();
+                                    return {sortState: PAUSED};
+                                } else if (sortState === NOT_RUNNING) {
+                                    paper.view.autoUpdate = true;
+                                    paper.view.onFrame = (event) => {
+                                        console.log("frame");
                                     }
-                                );
-                                return {sortState: RUNNING};
-                            } else if (sortState === PAUSED) {
-                                paper.view.autoUpdate = true;
-                                this.pixel.continue();
-                                return {sortState: RUNNING};
-                            }
-                        });
-                    }}>{this.getSortButtonText()}</button>
-                <button
-                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                    onClick={() => {
-                        this.pixel.stop();
-                        paper.view.autoUpdate = false;
-                        this.setState({sortState: NOT_RUNNING});
-                    }}>Stop</button>
-                <button
-                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                    onClick={() => {
-                        this.setState({sortState: NOT_RUNNING}, () => {
+                                    this.pixel.run(
+                                        createComparator(this.state.color),
+                                        this.raster,
+                                        {
+                                            algorithm: algorithms[this.state.sortAlgorithm],
+                                            direction: this.state.sortDirection
+                                        }
+                                    );
+                                    return {sortState: RUNNING};
+                                } else if (sortState === PAUSED) {
+                                    paper.view.autoUpdate = true;
+                                    this.pixel.continue();
+                                    return {sortState: RUNNING};
+                                }
+                            });
+                        }}>{this.getSortButtonText()}</button>
+                    <button
+                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                        onClick={() => {
                             this.pixel.stop();
                             paper.view.autoUpdate = false;
-                            this.raster.remove();
-                            this.raster = new paper.Raster(this.props.image);
-                            this.raster.onLoad = () => {
-                                this.raster.size = this.raster.size.multiply(this.state.scale);
-                                this.raster.translate((this.raster.width / 2) + 20, (this.raster.height / 2) + 20);
-                                paper.view.update();
-                            }
-                        });
-                    }}>Reset</button>
-                <label>
-                    Algorithm
-                    <select
+                            this.setState({sortState: NOT_RUNNING});
+                        }}>Stop</button>
+                    <button
                         className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        value={this.state.sortAlgorithm}
-                        onChange={(e) => {
-                            this.setState({sortAlgorithm: e.target.value});
-                        }}
-                    >
-                        <option value="bogo">Bogo Sort</option>
-                        <option value="bubble">Bubble Sort</option>
-                        <option value="cocktail">Cocktail Sort</option>
-                        <option value="selection">Selection Sort</option>
-                        <option value="insertion">Insertion Sort</option>
-                        <option value="cycle">Cycle Sort</option>
-                        <option value="shell">Shell Sort</option>
-                        <option value="heap">Heap Sort</option>
-                        <option value="merge">Merge Sort</option>
-                        <option value="quick">Quick Sort</option>
-                    </select>
-                </label>
-                <label>
-                    Direction
-                    <select
+                        onClick={() => {
+                            this.setState({sortState: NOT_RUNNING}, () => {
+                                this.pixel.stop();
+                                paper.view.autoUpdate = false;
+                                this.raster.remove();
+                                this.raster = new paper.Raster(this.props.image);
+                                this.raster.onLoad = () => {
+                                    this.raster.size = this.raster.size.multiply(this.state.scale);
+                                    this.raster.bounds.topLeft = [0, 0];
+                                    paper.view.update();
+                                }
+                            });
+                        }}>Reset</button>
+                    <label>
+                        Algorithm
+                        <select
+                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                            value={this.state.sortAlgorithm}
+                            onChange={(e) => {
+                                this.setState({sortAlgorithm: e.target.value});
+                            }}
+                        >
+                            <option value="bogo">Bogo Sort</option>
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="cocktail">Cocktail Sort</option>
+                            <option value="comb">Comb Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="cycle">Cycle Sort</option>
+                            <option value="shell">Shell Sort</option>
+                            <option value="heap">Heap Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="quick">Quick Sort</option>
+                        </select>
+                    </label>
+                    <label>
+                        Direction
+                        <select
+                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                            value={this.state.sortDirection}
+                            onChange={(e) => {
+                                this.setState({sortDirection: e.target.value});
+                            }}
+                        >
+                            <option value={LEFT_TO_RIGHT}>Left to Right</option>
+                            <option value={RIGHT_TO_LEFT}>Right to Left</option>
+                            <option value={TOP_TO_BOTTOM}>Top to Bottom</option>
+                            <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
+                        </select>
+                    </label>
+                    <label>
+                        Color:
+                        <select
+                            className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
+                            value={this.state.color}
+                            onChange={(e) => {
+                                this.setState({color: e.target.value});
+                            }}
+                        >
+                            <option value={RED}>Red</option>
+                            <option value={GREEN}>Green</option>
+                            <option value={BLUE}>Blue</option>
+                            <option value={GRAY}>Gray</option>
+                        </select>
+                    </label>
+                    <label>
+                        Scale:
+                        <input type="number" value={this.state.scale}
+                            step="0.01"
+                            min="0"
+                            onChange={(e) => {
+                                this.setState({scale: e.target.value});
+                            }}
+                        />
+                    </label>
+                    <button
                         className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        value={this.state.sortDirection}
-                        onChange={(e) => {
-                            this.setState({sortDirection: e.target.value});
-                        }}
-                    >
-                        <option value={LEFT_TO_RIGHT}>Left to Right</option>
-                        <option value={RIGHT_TO_LEFT}>Right to Left</option>
-                        <option value={TOP_TO_BOTTOM}>Top to Bottom</option>
-                        <option value={BOTTOM_TO_TOP}>Bottom to Top</option>
-                    </select>
-                </label>
-                <label>
-                    Color:
-                    <select
-                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        value={this.state.color}
-                        onChange={(e) => {
-                            this.setState({color: e.target.value});
-                        }}
-                    >
-                        <option value={RED}>Red</option>
-                        <option value={GREEN}>Green</option>
-                        <option value={BLUE}>Blue</option>
-                        <option value={GRAY}>Gray</option>
-                    </select>
-                </label>
-                <label>
-                    Scale:
-                    <input type="number" value={this.state.scale}
-                        step="0.01"
-                        min="0"
-                        onChange={(e) => {
-                            this.setState({scale: e.target.value});
-                        }}
-                    />
-                </label>
-                <button
-                    className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                    onClick={(e) => {
-                        download(raster.toDataURL());
-                    }}>
-                    Download
-                </button>
-                <canvas ref="canvas" className="w-100"></canvas>
+                        onClick={(e) => {
+                            download(raster.toDataURL());
+                        }}>
+                        Download
+                    </button>
+                </div>
+                <canvas ref="canvas" className="ma2 w-100 h-100"></canvas>
             </div>
         );
     }
@@ -201,7 +208,7 @@ class Image extends Component {
             this.defaultImageSize = this.raster.size;
             this.pixel = new PixelSorter(this.raster);
             this.raster.size = this.defaultImageSize.multiply(this.state.scale);
-            this.raster.bounds.topLeft = [20, 20];
+            this.raster.bounds.topLeft = [0, 0];
             paper.view.update();
         }
     }

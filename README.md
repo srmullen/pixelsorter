@@ -15,8 +15,7 @@ TODO
 
 Sorts to implement
 -----
-- Comb sort
-- Cycle sort
+- Radix Sort
 
 Distributed Sorts
 -----------------

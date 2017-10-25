@@ -2,6 +2,7 @@
 export const BOGO = Symbol("BOGO");
 export const BUBBLE = Symbol("BUBBLE");
 export const COCKTAIL = Symbol("COCKTAIL");
+export const COMB = Symbol("COMB");
 export const HEAP = Symbol("HEAP");
 export const INSERTION = Symbol("INSERTION");
 export const SELECTION = Symbol("SELECTION");
