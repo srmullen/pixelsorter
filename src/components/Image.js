@@ -66,9 +66,9 @@ class Image extends Component {
                                     return {sortState: PAUSED};
                                 } else if (sortState === NOT_RUNNING) {
                                     paper.view.autoUpdate = true;
-                                    paper.view.onFrame = (event) => {
-                                        console.log("frame");
-                                    }
+                                    // paper.view.onFrame = (event) => {
+                                    //     console.log("frame");
+                                    // }
                                     this.pixel.run(
                                         createComparator(this.state.color),
                                         this.raster,
@@ -76,11 +76,21 @@ class Image extends Component {
                                             algorithm: algorithms[this.state.sortAlgorithm],
                                             direction: this.state.sortDirection
                                         }
-                                    );
+                                    ).then((promises) => {
+                                        Promise.all(promises).then(() => {
+                                            paper.view.autoUpdate = false;
+                                            this.setState({sortState: NOT_RUNNING});
+                                        });
+                                    });
                                     return {sortState: RUNNING};
                                 } else if (sortState === PAUSED) {
                                     paper.view.autoUpdate = true;
-                                    this.pixel.continue();
+                                    this.pixel.continue().then((promises) => {
+                                        Promise.all(promises).then(() => {
+                                            paper.view.autoUpdate = false;
+                                            this.setState({sortState: NOT_RUNNING});
+                                        });
+                                    });
                                     return {sortState: RUNNING};
                                 }
                             });

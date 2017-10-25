@@ -54,15 +54,19 @@ PixelSorter.prototype.run = function run (compare, raster, options = {algorithm:
     }
     const exchangeFn = getExchangeFunc(options.algorithm);
     this[CURRENT_SORT] = {options, exchangeFn, compare, raster};
-    this[AREA_INTERVAL] = setInterval(() => {
-        this[STEP_INTERVALS].push(
-            sort(options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex)
-        );
-        if (listIndex > size) {
-            clearInterval(this[AREA_INTERVAL]);
-        }
-        listIndex++;
-    }, 1);
+    return new Promise((resolve, reject) => {
+        this[AREA_INTERVAL] = setInterval(() => {
+            this[STEP_INTERVALS].push(
+                sort(options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex)
+            );
+            if (listIndex > size) {
+                clearInterval(this[AREA_INTERVAL]);
+                const promises = this[STEP_INTERVALS].map(({promise}) => promise);
+                resolve(promises);
+            }
+            listIndex++;
+        }, 1);
+    });
 }
 
 PixelSorter.prototype.pause = function () {
@@ -74,26 +78,40 @@ PixelSorter.prototype.continue = function () {
     let listIndex = 0;
     const {options, exchangeFn, compare, raster} = this[CURRENT_SORT];
     const size = getSize(this.raster, options.direction);
-    this[AREA_INTERVAL] = setInterval(() => {
-        if (this[STEP_INTERVALS][listIndex]) {
-            const {gen} = this[STEP_INTERVALS][listIndex];
-            const interval = setInterval(() => {
-                const {value, done} = gen.next();
-                if (done) {
-                    clearInterval(interval);
-                }
-            }, 1);
-            this[STEP_INTERVALS][listIndex] = {gen, interval};
-        } else {
-            this[STEP_INTERVALS][listIndex] = this.sortRow(
-                options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex
-            );
-        }
-        if (listIndex > size) {
-            clearInterval(this[AREA_INTERVAL]);
-        }
-        listIndex++;
-    }, 1);
+    let sort;
+    if (options.direction === LEFT_TO_RIGHT || options.direction === RIGHT_TO_LEFT) {
+        sort = this.sortRow;
+    } else {
+        sort = this.sortColumn;
+    }
+    return new Promise((resolve, reject) => {
+        this[AREA_INTERVAL] = setInterval(() => {
+            if (this[STEP_INTERVALS][listIndex]) {
+                const {gen} = this[STEP_INTERVALS][listIndex];
+                let interval;
+                const promise = new Promise((resolve) => {
+                    interval = setInterval(() => {
+                        const {value, done} = gen.next();
+                        if (done) {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, 1);
+                });
+                this[STEP_INTERVALS][listIndex] = {gen, interval, promise};
+            } else {
+                this[STEP_INTERVALS][listIndex] = sort(
+                    options, exchangePixels(exchangeFn, raster, options.direction, listIndex), compare, raster, listIndex
+                );
+            }
+            if (listIndex > size) {
+                clearInterval(this[AREA_INTERVAL]);
+                const promises = this[STEP_INTERVALS].map(({promise}) => promise);
+                resolve(promises);
+            }
+            listIndex++;
+        }, 1);
+    });
 }
 
 PixelSorter.prototype.stop = function stop () {
@@ -108,14 +126,18 @@ PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, ro
     if (options.direction === RIGHT_TO_LEFT) {
         row.reverse();
     }
-    const gen = new algorithms[options.algorithm].step(exchange, compare, row);
-    const interval = setInterval(() => {
-        const {value, done} = gen.next();
-        if (done) {
-            clearInterval(interval);
-        }
-    }, 1);
-    return {gen, interval};
+    let gen, interval;
+    const promise = new Promise((resolve, reject) => {
+        gen = new algorithms[options.algorithm].step(exchange, compare, row);
+        interval = setInterval(() => {
+            const {value, done} = gen.next();
+            if (done) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 1);
+    });
+    return {gen, interval, promise};
 }
 
 PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster, columnIndex) {
@@ -123,14 +145,17 @@ PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster,
     if (options.direction === BOTTOM_TO_TOP) {
         column.reverse();
     }
-    const gen = new algorithms[options.algorithm].step(exchange, compare, column);
-    const interval = setInterval(() => {
-        const {value, done} = gen.next();
-        if (done) {
-            clearInterval(interval);
-        }
-    }, 1);
-    return {gen, interval};
+    let gen, interval;
+    const promise = new Promise((resolve, reject) => {
+        gen = new algorithms[options.algorithm].step(exchange, compare, column);
+        interval = setInterval(() => {
+            const {value, done} = gen.next();
+            if (done) {
+                clearInterval(interval);
+            }
+        }, 1);
+    });
+    return {gen, interval, promise};
 }
 
 function getExchangeFunc (algorithm) {
