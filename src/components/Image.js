@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import paper from "paper";
 import {prop} from "ramda";
 import download from "downloadjs";
+// import CCapture from "ccapture.js";
 import * as record from "utils/record";
 import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
@@ -38,11 +39,20 @@ class Image extends Component {
             sortDirection: LEFT_TO_RIGHT,
             sortAlgorithm: "shell",
             scale: 1,
-            color: RED
+            color: RED,
+            recording: false
         };
+        this.capturer = new CCapture({
+            format: 'gif',
+            workersPath: "node_modules/ccapture.js/src/",
+            framerate: 60
+        });
     }
 
     pixel: null
+    capturer: null
+    raster: null
+    defaultImageSize: null
 
     getSortButtonText () {
         if (this.state.sortState === PAUSED || this.state.sortState === NOT_RUNNING) {
@@ -52,71 +62,97 @@ class Image extends Component {
         }
     }
 
+    onRunPauseButtonClick () {
+        this.setState(({sortState}) => {
+            if (sortState === RUNNING) {
+                paper.view.autoUpdate = false;
+                this.pixel.pause();
+                return {sortState: PAUSED};
+            } else if (sortState === NOT_RUNNING) {
+                paper.view.autoUpdate = true;
+                this.pixel.run(
+                    createComparator(this.state.color),
+                    this.raster,
+                    {
+                        algorithm: algorithms[this.state.sortAlgorithm],
+                        direction: this.state.sortDirection
+                    }
+                ).then((promises) => {
+                    Promise.all(promises).then(() => {
+                        paper.view.autoUpdate = false;
+                        this.setState({sortState: NOT_RUNNING});
+                    });
+                });
+                return {sortState: RUNNING};
+            } else if (sortState === PAUSED) {
+                paper.view.autoUpdate = true;
+                this.pixel.continue().then((promises) => {
+                    Promise.all(promises).then(() => {
+                        paper.view.autoUpdate = false;
+                        this.setState({sortState: NOT_RUNNING});
+                    });
+                });
+                return {sortState: RUNNING};
+            }
+        });
+    }
+
+    onStopButtonClick () {
+        this.pixel.stop();
+        paper.view.autoUpdate = false;
+        this.setState({sortState: NOT_RUNNING});
+    }
+
+    onResetButtonClick () {
+        this.setState({sortState: NOT_RUNNING}, () => {
+            this.pixel.stop();
+            paper.view.autoUpdate = false;
+            this.raster.remove();
+            this.raster = new paper.Raster(this.props.image);
+            this.raster.onLoad = () => {
+                this.raster.size = this.raster.size.multiply(this.state.scale);
+                this.raster.bounds.topLeft = [0, 0];
+                paper.view.update();
+            }
+        });
+    }
+
+    onRecordClick () {
+        if (!this.state.recording) {
+            paper.view.onFrame = (event) => {
+                this.capturer.capture(this.refs.canvas);
+            }
+            this.capturer.start();
+        } else {
+            paper.view.onFrame = null;
+            this.capturer.stop();
+            this.capturer.save();
+        }
+        this.setState(({recording}) => {
+            return {recording: !recording};
+        });
+    }
+
     render () {
         return (
             <div className="w-100 mt3 avenir dark-gray">
-                <div>
+                <div className="pa3">
                     <button
-                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        onClick={() => {
-                            this.setState(({sortState}) => {
-                                if (sortState === RUNNING) {
-                                    paper.view.autoUpdate = false;
-                                    this.pixel.pause();
-                                    return {sortState: PAUSED};
-                                } else if (sortState === NOT_RUNNING) {
-                                    paper.view.autoUpdate = true;
-                                    // paper.view.onFrame = (event) => {
-                                    //     console.log("frame");
-                                    // }
-                                    this.pixel.run(
-                                        createComparator(this.state.color),
-                                        this.raster,
-                                        {
-                                            algorithm: algorithms[this.state.sortAlgorithm],
-                                            direction: this.state.sortDirection
-                                        }
-                                    ).then((promises) => {
-                                        Promise.all(promises).then(() => {
-                                            paper.view.autoUpdate = false;
-                                            this.setState({sortState: NOT_RUNNING});
-                                        });
-                                    });
-                                    return {sortState: RUNNING};
-                                } else if (sortState === PAUSED) {
-                                    paper.view.autoUpdate = true;
-                                    this.pixel.continue().then((promises) => {
-                                        Promise.all(promises).then(() => {
-                                            paper.view.autoUpdate = false;
-                                            this.setState({sortState: NOT_RUNNING});
-                                        });
-                                    });
-                                    return {sortState: RUNNING};
-                                }
-                            });
-                        }}>{this.getSortButtonText()}</button>
+                        className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mr3"
+                        onClick={this.onRunPauseButtonClick.bind(this)}>{this.getSortButtonText()}</button>
                     <button
-                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        onClick={() => {
-                            this.pixel.stop();
-                            paper.view.autoUpdate = false;
-                            this.setState({sortState: NOT_RUNNING});
-                        }}>Stop</button>
+                        className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mh3"
+                        onClick={this.onStopButtonClick.bind(this)}>Stop</button>
                     <button
-                        className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
-                        onClick={() => {
-                            this.setState({sortState: NOT_RUNNING}, () => {
-                                this.pixel.stop();
-                                paper.view.autoUpdate = false;
-                                this.raster.remove();
-                                this.raster = new paper.Raster(this.props.image);
-                                this.raster.onLoad = () => {
-                                    this.raster.size = this.raster.size.multiply(this.state.scale);
-                                    this.raster.bounds.topLeft = [0, 0];
-                                    paper.view.update();
-                                }
-                            });
-                        }}>Reset</button>
+                        className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mh3"
+                        onClick={this.onResetButtonClick.bind(this)}>Reset</button>
+                    <button
+                        className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mh3"
+                        onClick={this.onRecordClick.bind(this)}>
+                        {this.state.recording ? 'Stop Recording' : 'Start Recording'}
+                    </button>
+                </div>
+                <div className="ma3">
                     <label>
                         Algorithm
                         <select
@@ -191,9 +227,6 @@ class Image extends Component {
             </div>
         );
     }
-
-    raster: null
-    defaultImageSize: null
 
     componentDidUpdate (prevProps, prevState) {
         if (prevProps.image !== this.props.image) {
