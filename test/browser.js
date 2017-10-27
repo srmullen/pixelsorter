@@ -16,6 +16,7 @@ import * as insertion from "../src/sort/insertion";
 import * as bubble from "../src/sort/bubble";
 import * as comb from "../src/sort/comb";
 import * as shell from "../src/sort/shell";
+import * as counting from "../src/sort/counting";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
 import * as quick from "../src/sort/quick";
@@ -80,6 +81,12 @@ export const combsort = () => {
 export const shellsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
     shell.sort(exchange.indices, (a, b) => compare.number(a.val, b.val), list);
+    return list.map(({val}) => val);
+}
+
+export const countingsort = () => {
+    const list = [{val: 4}, {val: 3}, {val: 4}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
+    counting.sort((el) => el.val, list);
     return list.map(({val}) => val);
 }
 

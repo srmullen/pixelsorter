@@ -9,6 +9,8 @@ import * as bubble from "../src/sort/bubble";
 import * as cocktail from "../src/sort/cocktail";
 import * as comb from "../src/sort/comb";
 import * as shell from "../src/sort/shell";
+import * as counting from "../src/sort/counting";
+import * as radix from "../src/sort/radix";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
 import * as quick from "../src/sort/quick";
@@ -141,6 +143,20 @@ describe("Sorting", () => {
 
     describe("Shell Sort", () => {
         testSort(shell.sort);
+    });
+
+    describe("Counting Sort", () => {
+        it("should sort", () => {
+            const list = getRands();
+            counting.sort((a) => a.val, list);
+            for(let i = 0; i < expected.length; i++) {
+                expect(list[i].val).to.equal(expected[i].val);
+            }
+        });
+    });
+
+    describe("Radix Sort", () => {
+        testSort(radix.sort);
     });
 
     describe("Merge Sort", () => {
