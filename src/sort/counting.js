@@ -1,12 +1,10 @@
-import {curry, identity, last, reduce, filter} from 'ramda';
+import {curry, identity} from 'ramda';
 
 // Counting sort deals with sorting of keys in a specific range.
 // Rather than using a traditional comparator here, the key (compare) function
 // should return the key of the item in the list. The key should be an
 // index into the counts array.
-export const sort = curry((key, list) => {
-    // get the max key
-    const max = Math.max(...list.map(key));
+export const sort = curry((max, key, list) => {
     // Store the count of each unique object in the list.
     let counts = [];
     for (let i = 0; i <= max; i++) {

@@ -24,6 +24,7 @@ function listOf (randFn, length) {
 }
 
 const RANDS_LENGTH = 20;
+const RANDS_RANGE = 100;
 
 const getRands = (() => {
     // Save the list in a closure to avoid modifying it.
@@ -35,7 +36,7 @@ const getRands = (() => {
             return map(identity, list);
         } else {
             // Assign the list and return a copy.
-            list = listOf(() => ({val: Math.floor(Math.random() * 10)}), RANDS_LENGTH);
+            list = listOf(() => ({val: Math.floor(Math.random() * RANDS_RANGE)}), RANDS_LENGTH);
             return map(identity, list);
         }
     }
@@ -148,7 +149,7 @@ describe("Sorting", () => {
     describe("Counting Sort", () => {
         it("should sort", () => {
             const list = getRands();
-            counting.sort((a) => a.val, list);
+            counting.sort(RANDS_RANGE, (a) => a.val, list);
             for(let i = 0; i < expected.length; i++) {
                 expect(list[i].val).to.equal(expected[i].val);
             }
@@ -156,7 +157,13 @@ describe("Sorting", () => {
     });
 
     describe("Radix Sort", () => {
-        testSort(radix.sort);
+        it("should sort", () => {
+            const list = getRands();
+            radix.sort(RANDS_RANGE, (a) => a.val, list);
+            for(let i = 0; i < expected.length; i++) {
+                expect(list[i].val).to.equal(expected[i].val);
+            }
+        });
     });
 
     describe("Merge Sort", () => {

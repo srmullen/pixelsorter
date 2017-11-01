@@ -17,6 +17,7 @@ import * as bubble from "../src/sort/bubble";
 import * as comb from "../src/sort/comb";
 import * as shell from "../src/sort/shell";
 import * as counting from "../src/sort/counting";
+import * as radix from "../src/sort/radix";
 import * as merge from "../src/sort/merge";
 import * as heap from "../src/sort/heap";
 import * as quick from "../src/sort/quick";
@@ -86,7 +87,17 @@ export const shellsort = () => {
 
 export const countingsort = () => {
     const list = [{val: 4}, {val: 3}, {val: 4}, {val: 7}, {val: 8}, {val: 2}, {val: 10}];
-    counting.sort((el) => el.val, list);
+    const key = el => el.val;
+    const max = Math.max(...list.map(key));
+    counting.sort(max, key, list);
+    return list.map(({val}) => val);
+}
+
+export const radixsort = () => {
+    const list = [{val: 400}, {val: 3}, {val: 34}, {val: 7}, {val: 18}, {val: 2}, {val: 11}];
+    const key = el => el.val;
+    const max = Math.max(...list.map(key));
+    radix.sort(max, key, list);
     return list.map(({val}) => val);
 }
 
