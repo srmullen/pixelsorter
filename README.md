@@ -9,12 +9,11 @@ TODO
 - Use picture URLs.
 - Investigate Ads.
 - Implement Sort options
-    sortRate, area. What else?
+    sortRate, area, HSB comparators. What else?
 - Indicate sorting has completed.
 
 Sorts to implement
 -----
-- Radix Sort
 
 Distributed Sorts
 -----------------

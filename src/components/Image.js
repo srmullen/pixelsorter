@@ -11,7 +11,7 @@ import {
     BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK, RADIX,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
-    RED, GREEN, BLUE, GRAY
+    RED, GREEN, BLUE, GRAY, HUE, SATURATION, BRIGHTNESS
 } from "root/constants";
 
 // Unfortunately symbols can't be passed as value to <select>.
@@ -204,6 +204,9 @@ class Image extends Component {
                             <option value={GREEN}>Green</option>
                             <option value={BLUE}>Blue</option>
                             <option value={GRAY}>Gray</option>
+                            <option value={HUE}>Hue</option>
+                            <option value={SATURATION}>Saturation</option>
+                            <option value={BRIGHTNESS}>Brightness</option>
                         </select>
                     </label>
                     <label>

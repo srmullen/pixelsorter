@@ -30,3 +30,6 @@ export const RED = "red";
 export const GREEN = "green";
 export const BLUE = "blue";
 export const GRAY = "gray";
+export const HUE = "hue";
+export const SATURATION = "saturation";
+export const BRIGHTNESS = "brightness";
