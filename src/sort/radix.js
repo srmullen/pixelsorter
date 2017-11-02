@@ -32,11 +32,12 @@ function* step_gen (max, exchange, key, list) {
         }
     }, 0));
     for (let i = 1; Math.floor((max * mult)/i) > 0; i = i * 10) {
-        counting.sort(10, exchange, (el) => {
+        for(let v of counting.step(10, exchange, (el) => {
             const n = key(el) * mult;
             return Math.floor(n/i) % 10;
-        }, list);
-        yield {list};
+        }, list)) {
+            yield v;
+        }
     }
 }
 

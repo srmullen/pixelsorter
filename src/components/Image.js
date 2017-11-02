@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import paper from "paper";
 import {prop} from "ramda";
 import download from "downloadjs";
-// import CCapture from "ccapture.js";
 import * as record from "utils/record";
 import * as compare from "../compare";
 import PixelSorter from "../PixelSorter";
 import * as exchange from "sort/exchange";
 import {
-    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK,
+    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK, RADIX,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP,
     RED, GREEN, BLUE, GRAY
@@ -27,7 +26,8 @@ const algorithms = {
     shell: SHELL,
     heap: HEAP,
     merge: MERGE,
-    quick: QUICK
+    quick: QUICK,
+    radix: RADIX
 };
 
 class Image extends Component {
@@ -71,7 +71,7 @@ class Image extends Component {
             } else if (sortState === NOT_RUNNING) {
                 paper.view.autoUpdate = true;
                 this.pixel.run(
-                    createComparator(this.state.color),
+                    createComparator(this.state.color, this.state.sortAlgorithm),
                     this.raster,
                     {
                         algorithm: algorithms[this.state.sortAlgorithm],
@@ -173,6 +173,7 @@ class Image extends Component {
                             <option value="heap">Heap Sort</option>
                             <option value="merge">Merge Sort</option>
                             <option value="quick">Quick Sort</option>
+                            <option value="radix">Radix Sort</option>
                         </select>
                     </label>
                     <label>
@@ -257,8 +258,12 @@ class Image extends Component {
     }
 }
 
-function createComparator (color) {
-    return (a, b) => compare.number(a[color], b[color]);
+function createComparator (color, algorithm) {
+    if (algorithm === "radix") {
+        return (a) => a[color];
+    } else {
+        return (a, b) => compare.number(a[color], b[color]);
+    }
 }
 
 Image.propTypes = {

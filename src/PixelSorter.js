@@ -10,9 +10,10 @@ import * as shell from "sort/shell";
 import * as heap from "sort/heap";
 import * as merge from "sort/merge";
 import * as quick from "sort/quick";
+import * as radix from "sort/radix";
 import * as exchange from "sort/exchange";
 import {
-    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK,
+    BOGO, SELECTION, CYCLE, INSERTION, BUBBLE, COCKTAIL, COMB, SHELL, HEAP, MERGE, QUICK, RADIX,
     RUNNING, PAUSED, NOT_RUNNING,
     HORIZONTAL, VERTICAL, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP
 } from "root/constants";
@@ -28,7 +29,8 @@ const algorithms = {
     [SHELL]: shell,
     [HEAP]: heap,
     [MERGE]: merge,
-    [QUICK]: quick
+    [QUICK]: quick,
+    [RADIX]: radix
 };
 
 const AREA_INTERVAL = Symbol("AREA_INTERVAL");
@@ -128,7 +130,7 @@ PixelSorter.prototype.sortRow = function (options, exchange, compare, raster, ro
     }
     let gen, interval;
     const promise = new Promise((resolve, reject) => {
-        gen = new algorithms[options.algorithm].step(exchange, compare, row);
+        gen = getStepGenerator(options.algorithm, exchange, compare, row);
         interval = setInterval(() => {
             const {value, done} = gen.next();
             if (done) {
@@ -147,7 +149,7 @@ PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster,
     }
     let gen, interval;
     const promise = new Promise((resolve, reject) => {
-        gen = new algorithms[options.algorithm].step(exchange, compare, column);
+        gen = getStepGenerator(options.algorithm, exchange, compare, column);
         interval = setInterval(() => {
             const {value, done} = gen.next();
             if (done) {
@@ -158,8 +160,17 @@ PixelSorter.prototype.sortColumn = function (options, exchange, compare, raster,
     return {gen, interval, promise};
 }
 
+function getStepGenerator (algorithm, exchange, compare, row) {
+    if (algorithm === RADIX) {
+        const max = Math.max(...row.map(compare));
+        return new algorithms[algorithm].step(max, exchange, compare, row);
+    } else {
+        return new algorithms[algorithm].step(exchange, compare, row);
+    }
+}
+
 function getExchangeFunc (algorithm) {
-    if (algorithm === MERGE) {
+    if (algorithm === MERGE || algorithm === RADIX) {
         return exchange.copyFromList;
     } else if (algorithm === BOGO) {
         return exchange.shuffle;

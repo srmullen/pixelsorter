@@ -10,6 +10,8 @@ export const CYCLE = Symbol("CYCLE");
 export const SHELL = Symbol("SHELL");
 export const QUICK = Symbol("QUICK");
 export const MERGE = Symbol("MERGE");
+export const COUNTING = Symbol("COUNTING");
+export const RADIX = Symbol("RADIX");
 
 // Sort state
 export const RUNNING = Symbol("RUNNING");
