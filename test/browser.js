@@ -7,7 +7,7 @@
 // console.log("tests");
 //
 // mocha.run();
-import {prop, map, identity, compose} from "ramda";
+import {prop, map, identity, compose, range} from "ramda";
 import * as compare from "../src/compare";
 import * as exchange from "../src/sort/exchange";
 import * as selection from "../src/sort/selection";
@@ -94,10 +94,11 @@ export const countingsort = () => {
 }
 
 export const radixsort = () => {
-    const list = [{val: 400}, {val: 3}, {val: 34}, {val: 7}, {val: 18}, {val: 2}, {val: 11}];
+    // const list = [{val: 400}, {val: 3}, {val: 34}, {val: 7}, {val: 18}, {val: 2}, {val: 11}];
+    const list = range(0, 10).map(() => ({val: Math.random()}));
     const key = el => el.val;
     const max = Math.max(...list.map(key));
-    radix.sort(max, key, list);
+    radix.sort(max, exchange.copyFromList, key, list);
     return list.map(({val}) => val);
 }
 

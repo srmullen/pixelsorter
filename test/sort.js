@@ -42,6 +42,22 @@ const getRands = (() => {
     }
 })();
 
+const getRandFloats = (() => {
+    // Save the list in a closure to avoid modifying it.
+    let list = null;
+    return () => {
+        if (list) {
+            // Copy the list and return it. Safe to just return references to list contents rather than copying them
+            // because we are only sorting and not modifying list elements.
+            return map(identity, list);
+        } else {
+            // Assign the list and return a copy.
+            list = listOf(() => ({val: Math.random() * RANDS_RANGE}), RANDS_LENGTH);
+            return map(identity, list);
+        }
+    }
+})();
+
 const ramdaSort = (comparator, list) => {
     return sortBy(comparator, list);
 }
@@ -101,8 +117,10 @@ function testSort(sort) {
 }
 
 const rands = getRands();
+const randFloats = getRandFloats();
 console.log(rands);
 const expected = ramdaSort(prop("val"), rands);
+const expectedFloats = ramdaSort(prop("val"), randFloats);
 describe("Sorting", () => {
     describe("ramda sort", () => {
         it("should sort", function () {
@@ -149,7 +167,7 @@ describe("Sorting", () => {
     describe("Counting Sort", () => {
         it("should sort", () => {
             const list = getRands();
-            counting.sort(RANDS_RANGE, (a) => a.val, list);
+            counting.sort(RANDS_RANGE, copyFromList, (a) => a.val, list);
             for(let i = 0; i < expected.length; i++) {
                 expect(list[i].val).to.equal(expected[i].val);
             }
@@ -157,11 +175,19 @@ describe("Sorting", () => {
     });
 
     describe("Radix Sort", () => {
-        it("should sort", () => {
+        it("should sort integers", () => {
             const list = getRands();
-            radix.sort(RANDS_RANGE, (a) => a.val, list);
+            radix.sort(RANDS_RANGE, copyFromList, (a) => a.val, list);
             for(let i = 0; i < expected.length; i++) {
                 expect(list[i].val).to.equal(expected[i].val);
+            }
+        });
+
+        it("should sort decimals", () => {
+            const list = getRandFloats();
+            radix.sort(RANDS_RANGE, copyFromList, (a) => a.val, list);
+            for(let i = 0; i < expected.length; i++) {
+                expect(list[i].val).to.equal(expectedFloats[i].val);
             }
         });
     });
