@@ -146,11 +146,11 @@ class Image extends Component {
                     <button
                         className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mh3"
                         onClick={this.onResetButtonClick.bind(this)}>Reset</button>
-                    <button
+                    {/* <button
                         className="input-reset ba b--black-20 black-70 bg-transparent hover-bg-black hover--white hover f6 mh3"
                         onClick={this.onRecordClick.bind(this)}>
                         {this.state.recording ? 'Stop Recording' : 'Start Recording'}
-                    </button>
+                    </button> */}
                 </div>
                 <div className="ma3">
                     <label>

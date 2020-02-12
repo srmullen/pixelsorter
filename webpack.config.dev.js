@@ -57,6 +57,6 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, "./"),
         index: "pixelsorter.html",
-        port: 5000
+        port: 3400
     }
 }
