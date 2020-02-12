@@ -1,5 +1,5 @@
-import { curry, identity } from "ramda";
-import * as counting from "./counting";
+import { curry, identity } from 'ramda';
+import * as counting from './counting';
 
 // This radix sort only works for whole numbers.
 // Need to fix to also work on decimals.
@@ -10,7 +10,7 @@ export const sort = curry((max, exchange, key, list) => {
     list.reduce((acc, el) => {
       const [n, f] = key(el)
         .toString()
-        .split(".");
+        .split('.');
       if (f && f.length > acc) {
         return f.length;
       } else {
@@ -38,7 +38,7 @@ function* step_gen(max, exchange, key, list) {
     list.reduce((acc, el) => {
       const [n, f] = key(el)
         .toString()
-        .split(".");
+        .split('.');
       if (f && f.length > acc) {
         return f.length;
       } else {

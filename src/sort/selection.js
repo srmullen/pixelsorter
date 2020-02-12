@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Selection Sort
 // Start by finding the element that should be the first in the sorted list and exchange it with the first element.

@@ -1,9 +1,9 @@
-import "tachyons";
-import "styles/styles.css";
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import Image from "components/Image";
-import image from "images/six_pack_jason_walker.jpg";
+import 'tachyons';
+import 'styles/styles.css';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Image from 'components/Image';
+import image from 'images/six_pack_jason_walker.jpg';
 
 class Main extends Component {
   constructor() {
@@ -36,4 +36,4 @@ class Main extends Component {
   }
 }
 
-ReactDOM.render(<Main />, document.getElementById("root"));
+ReactDOM.render(<Main />, document.getElementById('root'));

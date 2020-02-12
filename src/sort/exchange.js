@@ -1,4 +1,4 @@
-import { curry } from "ramda";
+import { curry } from 'ramda';
 
 /*
  * Exchange position of two elements in an array.

@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Motion, spring } from "react-motion";
-import PropTypes from "prop-types";
-import { range, assoc, last } from "ramda";
-import { shuffle } from "sort/exchange";
-import * as sort from "sort/merge";
-import * as exchange from "sort/exchange";
-import * as compare from "root/compare";
-import * as block from "components/demo/Block";
+import React, { Component } from 'react';
+import { Motion, spring } from 'react-motion';
+import PropTypes from 'prop-types';
+import { range, assoc, last } from 'ramda';
+import { shuffle } from 'sort/exchange';
+import * as sort from 'sort/merge';
+import * as exchange from 'sort/exchange';
+import * as compare from 'root/compare';
+import * as block from 'components/demo/Block';
 
 // const list = [3, 2, 6, 0, 4, 5, 1];
 const list = range(0, 10).map(block.create);
@@ -53,11 +53,11 @@ class MergeSort extends Component {
   // Need to highlight subtree root and chilren.
   blockColor({ compare, sorted, copy }, index) {
     if (sorted) {
-      return "bg-green";
+      return 'bg-green';
       // } else if (index >= copy[0] && index < copy[1]) {
       //     return 'bg-red';
     } else {
-      return compare.includes(index) ? "bg-blue" : "";
+      return compare.includes(index) ? 'bg-blue' : '';
     }
   }
 
@@ -148,7 +148,7 @@ class MergeSort extends Component {
             }
           }}
         >
-          {this.state.running ? "Pause" : "Run"}
+          {this.state.running ? 'Pause' : 'Run'}
         </button>
         <button
           className="input-reset ba b--black-20 black-70 pa1 bg-transparent mh3 hover-bg-black hover--white hover f6"
@@ -175,7 +175,7 @@ class MergeSort extends Component {
           Reset
         </button>
         <span className="mh3">Swaps: {state.exchanges}</span>
-        {this.props.showSortState ? `Sort State: ${this.state.stateIndex}` : ""}
+        {this.props.showSortState ? `Sort State: ${this.state.stateIndex}` : ''}
         <div className="mh3">{state.description}</div>
         <div className="ma3 h5 relative">
           {blocks}

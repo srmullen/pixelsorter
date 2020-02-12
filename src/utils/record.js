@@ -1,4 +1,4 @@
-import uuid from "uuid/v1";
+import uuid from 'uuid/v1';
 
 export function time(fn) {
   const startTime = new Date().getTime();

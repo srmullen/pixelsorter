@@ -1,5 +1,5 @@
-import { curry, identity } from "ramda";
-import { sort as insertion } from "./insertion";
+import { curry, identity } from 'ramda';
+import { sort as insertion } from './insertion';
 
 // Merge Sort
 // The first sort algorithm which we'll look at that is not 'in place'. It is a recursive

@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Not Testing this because it is not deterministic or gauranteed to finish.
 // Bogo sort

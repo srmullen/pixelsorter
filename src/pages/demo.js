@@ -1,20 +1,20 @@
-import "tachyons";
-import "styles/styles.css";
+import 'tachyons';
+import 'styles/styles.css';
 // import "babel-polyfill";
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import SortDemo from "components/SortDemo";
-import BogoSort from "components/demo/BogoSort";
-import BubbleSort from "components/demo/BubbleSort";
-import CocktailSort from "components/demo/CocktailSort";
-import InsertionSort from "components/demo/InsertionSort";
-import SelectionSort from "components/demo/SelectionSort";
-import ShellSort from "components/demo/ShellSort";
-import HeapSort from "components/demo/HeapSort";
-import QuickSort from "components/demo/QuickSort";
-import MergeSort from "components/demo/MergeSort";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import SortDemo from 'components/SortDemo';
+import BogoSort from 'components/demo/BogoSort';
+import BubbleSort from 'components/demo/BubbleSort';
+import CocktailSort from 'components/demo/CocktailSort';
+import InsertionSort from 'components/demo/InsertionSort';
+import SelectionSort from 'components/demo/SelectionSort';
+import ShellSort from 'components/demo/ShellSort';
+import HeapSort from 'components/demo/HeapSort';
+import QuickSort from 'components/demo/QuickSort';
+import MergeSort from 'components/demo/MergeSort';
 
-import * as browser from "../../test/browser";
+import * as browser from '../../test/browser';
 
 window.browser = browser;
 
@@ -59,4 +59,4 @@ class Main extends Component {
   }
 }
 
-ReactDOM.render(<Main />, document.getElementById("root"));
+ReactDOM.render(<Main />, document.getElementById('root'));

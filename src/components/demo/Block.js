@@ -1,4 +1,4 @@
-import uuid from "uuid/v1";
+import uuid from 'uuid/v1';
 
 export function create(val) {
   return { id: uuid(), val };

@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Counting sort deals with sorting of keys in a specific range.
 // Rather than using a traditional comparator here, the key (compare) function

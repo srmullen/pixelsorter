@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Quick Sort
 // Divide-and-Conquer algorithm. Choose an element from the list, called a pivot, and

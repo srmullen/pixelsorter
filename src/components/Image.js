@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import paper from "paper";
-import { prop } from "ramda";
-import download from "downloadjs";
-import * as record from "utils/record";
-import * as compare from "../compare";
-import PixelSorter from "../PixelSorter";
-import * as exchange from "sort/exchange";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import paper from 'paper';
+import { prop } from 'ramda';
+import download from 'downloadjs';
+import * as record from 'utils/record';
+import * as compare from '../compare';
+import PixelSorter from '../PixelSorter';
+import * as exchange from 'sort/exchange';
 import ControlPanel from './ControlPanel';
 import {
   BOGO,
@@ -37,7 +37,7 @@ import {
   HUE,
   SATURATION,
   BRIGHTNESS
-} from "root/constants";
+} from 'root/constants';
 
 // Unfortunately symbols can't be passed as value to <select>.
 // const algorithms = {
@@ -61,14 +61,14 @@ class Image extends Component {
     this.state = {
       sortState: NOT_RUNNING,
       sortDirection: LEFT_TO_RIGHT,
-      sortAlgorithm: "shell",
+      sortAlgorithm: 'shell',
       scale: 1,
       color: RED,
       recording: false
     };
     this.capturer = new CCapture({
-      format: "gif",
-      workersPath: "node_modules/ccapture.js/src/",
+      format: 'gif',
+      workersPath: 'node_modules/ccapture.js/src/',
       framerate: 60
     });
   }
@@ -83,9 +83,9 @@ class Image extends Component {
       this.state.sortState === PAUSED ||
       this.state.sortState === NOT_RUNNING
     ) {
-      return "Sort";
+      return 'Sort';
     } else {
-      return "Pause";
+      return 'Pause';
     }
   }
 
@@ -165,8 +165,8 @@ class Image extends Component {
   render() {
     return (
       <div className="w-100 mt3 avenir dark-gray">
-        <ControlPanel 
-          {...this.state} 
+        <ControlPanel
+          {...this.state}
           onPropChange={prop => {
             this.setState(prop);
           }}
@@ -209,7 +209,7 @@ class Image extends Component {
 }
 
 function createComparator(color, algorithm) {
-  if (algorithm === "radix") {
+  if (algorithm === 'radix') {
     return a => a[color];
   } else {
     return (a, b) => compare.number(a[color], b[color]);

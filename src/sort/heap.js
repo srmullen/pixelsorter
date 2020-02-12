@@ -1,5 +1,5 @@
-import { curry, identity } from "ramda";
-import { exchange } from "./exchange";
+import { curry, identity } from 'ramda';
+import { exchange } from './exchange';
 
 // Heap Sort
 // Heap sort works similarly to selection sort but uses a data structure called a heap to

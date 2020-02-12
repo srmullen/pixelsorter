@@ -1,17 +1,17 @@
-import { curry } from "ramda";
-import * as bogo from "sort/bogo";
-import * as selection from "sort/selection";
-import * as cycle from "sort/cycle";
-import * as insertion from "sort/insertion";
-import * as bubble from "sort/bubble";
-import * as cocktail from "sort/cocktail";
-import * as comb from "sort/comb";
-import * as shell from "sort/shell";
-import * as heap from "sort/heap";
-import * as merge from "sort/merge";
-import * as quick from "sort/quick";
-import * as radix from "sort/radix";
-import * as exchange from "sort/exchange";
+import { curry } from 'ramda';
+import * as bogo from 'sort/bogo';
+import * as selection from 'sort/selection';
+import * as cycle from 'sort/cycle';
+import * as insertion from 'sort/insertion';
+import * as bubble from 'sort/bubble';
+import * as cocktail from 'sort/cocktail';
+import * as comb from 'sort/comb';
+import * as shell from 'sort/shell';
+import * as heap from 'sort/heap';
+import * as merge from 'sort/merge';
+import * as quick from 'sort/quick';
+import * as radix from 'sort/radix';
+import * as exchange from 'sort/exchange';
 import {
   BOGO,
   SELECTION,
@@ -34,7 +34,7 @@ import {
   RIGHT_TO_LEFT,
   TOP_TO_BOTTOM,
   BOTTOM_TO_TOP
-} from "root/constants";
+} from 'root/constants';
 
 const algorithms = {
   [BOGO]: bogo,
@@ -51,9 +51,9 @@ const algorithms = {
   [RADIX]: radix
 };
 
-const AREA_INTERVAL = Symbol("AREA_INTERVAL");
-const STEP_INTERVALS = Symbol("STEP_INTERVALS");
-const CURRENT_SORT = Symbol("CURRENT_SORT");
+const AREA_INTERVAL = Symbol('AREA_INTERVAL');
+const STEP_INTERVALS = Symbol('STEP_INTERVALS');
+const CURRENT_SORT = Symbol('CURRENT_SORT');
 
 function PixelSorter(raster) {
   this.raster = raster;

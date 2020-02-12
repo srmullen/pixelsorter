@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Comb sort works similar to bubble sort, but instead of
 // only comparing adjacent elements it also compares elements

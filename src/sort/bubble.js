@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Bubble Sort
 // I wasn't going to include this originally because Obama says it's not

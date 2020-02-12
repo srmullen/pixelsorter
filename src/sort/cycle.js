@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // In-place unstable sorting algorithm that is theoretically optimal in terms of
 // the total number of writes to the original array.

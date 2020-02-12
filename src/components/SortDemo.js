@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { TransitionMotion, Motion, spring } from "react-motion";
-import PropTypes from "prop-types";
-import { range } from "ramda";
-import { shuffle } from "sort/exchange";
+import React, { Component } from 'react';
+import { TransitionMotion, Motion, spring } from 'react-motion';
+import PropTypes from 'prop-types';
+import { range } from 'ramda';
+import { shuffle } from 'sort/exchange';
 
 const REMS = 4;
 
@@ -33,7 +33,7 @@ class SortDemo extends Component {
           {styles => (
             <div
               className={`m1 f2 pa4 ba absolute dib ${
-                this.state.compare.includes(i) ? "bg-blue" : ""
+                this.state.compare.includes(i) ? 'bg-blue' : ''
               }`}
               style={{ left: styles.left }}
             >

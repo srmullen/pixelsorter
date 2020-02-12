@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Insertion Sort
 // Iterate through the list. For each element place it in the correct place in a new list.

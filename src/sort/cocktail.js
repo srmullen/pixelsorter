@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Cocktail Sort
 // Similar to bubble sort but bounces back and forth through the list (like a cocktail shaker I guess)

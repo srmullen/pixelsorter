@@ -1,4 +1,4 @@
-import { curry, identity } from "ramda";
+import { curry, identity } from 'ramda';
 
 // Shell Sort
 // Similar to insertion sort but instead of only comparing adjacent elements it compares,
