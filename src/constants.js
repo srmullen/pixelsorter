@@ -1,22 +1,22 @@
 // Sort types
-export const BOGO = Symbol("BOGO");
-export const BUBBLE = Symbol("BUBBLE");
-export const COCKTAIL = Symbol("COCKTAIL");
-export const COMB = Symbol("COMB");
-export const HEAP = Symbol("HEAP");
-export const INSERTION = Symbol("INSERTION");
-export const SELECTION = Symbol("SELECTION");
-export const CYCLE = Symbol("CYCLE");
-export const SHELL = Symbol("SHELL");
-export const QUICK = Symbol("QUICK");
-export const MERGE = Symbol("MERGE");
-export const COUNTING = Symbol("COUNTING");
-export const RADIX = Symbol("RADIX");
+export const BOGO = "BOGO";
+export const BUBBLE = "BUBBLE";
+export const COCKTAIL = "COCKTAIL";
+export const COMB = "COMB";
+export const HEAP = "HEAP";
+export const INSERTION = "INSERTION";
+export const SELECTION = "SELECTION";
+export const CYCLE = "CYCLE";
+export const SHELL = "SHELL";
+export const QUICK = "QUICK";
+export const MERGE = "MERGE";
+export const COUNTING = "COUNTING";
+export const RADIX = "RADIX";
 
 // Sort state
-export const RUNNING = Symbol("RUNNING");
-export const PAUSED = Symbol("PAUSED");
-export const NOT_RUNNING = Symbol("NOT_RUNNING");
+export const RUNNING = "RUNNING";
+export const PAUSED = "PAUSED";
+export const NOT_RUNNING = "NOT_RUNNING";
 
 export const HORIZONTAL = "HORIZONTAL";
 export const VERTICAL = "VERTICAL";
