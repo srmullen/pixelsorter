@@ -5,6 +5,7 @@ const DashboardPlugin = require("webpack-dashboard/plugin");
 
 module.exports = {
     devtool: "source-map",
+    mode: 'development',
     entry: {
         "demo": "./src/pages/demo",
         "pixelsorter": "./src/pages/pixelsorter"
@@ -14,7 +15,6 @@ module.exports = {
         filename: "[name].js"
     },
     plugins:[
-        new DashboardPlugin(),
         new HtmlWebpackPlugin({
             filename: "demo.html",
             template: "./index.html",
@@ -37,22 +37,30 @@ module.exports = {
         }
     },
     module: {
-        loaders: [{
-            test: /\.css$/,
-            loaders: ["style-loader", "css-loader"]
-        },
-        {
-            test: /\.js$/,
-            loaders: ["babel-loader"],
-            exclude: /node_modules/
-        },
-        {
-            test: /\.(jpg|png|svg)$/,
-            loader: "url-loader",
-            options: {
-                limit: 25000
-            }
-        }]
+        rules: [
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.js$/,
+                use: ["babel-loader"],
+                exclude: /node_modules/
+            },
+            // {
+            //     test: /\.(jpg|png|svg)$/,
+            //     use: ["url-loader"],
+            //     options: {
+            //         limit: 25000
+            //     }
+            // }
+          {
+            test: /\.(png|svg|jpg|jpeg|gif)$/,
+            use: [
+              'file-loader'
+            ]
+          }
+        ]
     },
     devServer: {
         contentBase: path.join(__dirname, "./"),

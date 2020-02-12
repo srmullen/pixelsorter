@@ -49,10 +49,10 @@ class Image extends Component {
         });
     }
 
-    pixel: null
-    capturer: null
-    raster: null
-    defaultImageSize: null
+    pixel = null
+    capturer = null
+    raster = null
+    defaultImageSize = null
 
     getSortButtonText () {
         if (this.state.sortState === PAUSED || this.state.sortState === NOT_RUNNING) {

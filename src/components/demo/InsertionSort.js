@@ -83,7 +83,7 @@ class InsertionSort extends Component {
         });
     }
 
-    interval: null
+    interval = null
 
     render () {
         const state = this.getState(this.state.stateIndex);
