@@ -17,12 +17,12 @@ module.exports = {
     plugins:[
         new HtmlWebpackPlugin({
             filename: "demo.html",
-            template: "./index.html",
+            template: "./src/index.html",
             chunks: ["demo"]
         }),
         new HtmlWebpackPlugin({
             filename: "pixelsorter.html",
-            template: "./index.html",
+            template: "./src/index.html",
             chunks: ["pixelsorter"]
         })
     ],
@@ -46,14 +46,7 @@ module.exports = {
                 test: /\.js$/,
                 use: ["babel-loader"],
                 exclude: /node_modules/
-            },
-            // {
-            //     test: /\.(jpg|png|svg)$/,
-            //     use: ["url-loader"],
-            //     options: {
-            //         limit: 25000
-            //     }
-            // }
+            }
           {
             test: /\.(png|svg|jpg|jpeg|gif)$/,
             use: [
@@ -63,7 +56,7 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: path.join(__dirname, "./"),
+        contentBase: __dirname,
         index: "pixelsorter.html",
         port: 3400
     }

@@ -1,6 +1,6 @@
 import "tachyons";
 import "styles/styles.css";
-import "babel-polyfill";
+// import "babel-polyfill";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import SortDemo from "components/SortDemo";
