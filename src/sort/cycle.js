@@ -1,4 +1,4 @@
-import {curry, identity} from 'ramda';
+import { curry, identity } from "ramda";
 
 // In-place unstable sorting algorithm that is theoretically optimal in terms of
 // the total number of writes to the original array.
@@ -8,91 +8,91 @@ import {curry, identity} from 'ramda';
 // that was in that position is then moved to its correct position. This continues
 // until the elements of the cycle are all correct. Then move on to the next cycle.
 export const sort = curry((exchange, compare, list) => {
-    for (let cycle = 0; cycle < list.length - 2; cycle++) {
-        let item = list[cycle];
-        let pos = cycle;
+  for (let cycle = 0; cycle < list.length - 2; cycle++) {
+    let item = list[cycle];
+    let pos = cycle;
 
+    for (let i = cycle + 1; i < list.length; i++) {
+      if (compare(item, list[i]) > 0) {
+        pos++;
+      }
+    }
+
+    // Item is in correct position.
+    if (pos === cycle) continue;
+
+    // Skip over duplicate items
+    while (pos < list.length && compare(item, list[pos]) === 0) {
+      pos++;
+    }
+
+    if (pos !== cycle) {
+      item = exchange(list, pos, item);
+
+      while (pos !== cycle) {
+        pos = cycle;
         for (let i = cycle + 1; i < list.length; i++) {
-            if (compare(item, list[i]) > 0) {
-                pos++;
-            }
+          if (compare(item, list[i]) > 0) {
+            pos++;
+          }
         }
-
-        // Item is in correct position.
-        if (pos === cycle) continue;
 
         // Skip over duplicate items
         while (pos < list.length && compare(item, list[pos]) === 0) {
-            pos++;
+          pos++;
         }
 
-        if (pos !== cycle) {
-            item = exchange(list, pos, item);
-
-            while (pos !== cycle) {
-                pos = cycle;
-                for (let i = cycle + 1; i < list.length; i++) {
-                    if (compare(item, list[i]) > 0) {
-                        pos++;
-                    }
-                }
-
-                // Skip over duplicate items
-                while(pos < list.length && compare(item, list[pos]) === 0) {
-                    pos++;
-                }
-
-                if (compare(item, list[pos]) !== 0) {
-                    item = exchange(list, pos, item);
-                }
-            }
+        if (compare(item, list[pos]) !== 0) {
+          item = exchange(list, pos, item);
         }
+      }
     }
+  }
 });
 
-function* step_gen (exchange, compare, list) {
-    for (let cycle = 0; cycle < list.length - 2; cycle++) {
-        let item = list[cycle];
-        let pos = cycle;
+function* step_gen(exchange, compare, list) {
+  for (let cycle = 0; cycle < list.length - 2; cycle++) {
+    let item = list[cycle];
+    let pos = cycle;
 
+    for (let i = cycle + 1; i < list.length; i++) {
+      if (compare(item, list[i]) > 0) {
+        pos++;
+      }
+    }
+
+    // Item is in correct position.
+    if (pos === cycle) continue;
+
+    // Skip over duplicate items
+    while (pos < list.length && compare(item, list[pos]) === 0) {
+      pos++;
+    }
+
+    if (pos !== cycle) {
+      item = exchange(list, pos, item);
+      yield { list };
+
+      while (pos !== cycle) {
+        pos = cycle;
         for (let i = cycle + 1; i < list.length; i++) {
-            if (compare(item, list[i]) > 0) {
-                pos++;
-            }
+          if (compare(item, list[i]) > 0) {
+            pos++;
+          }
         }
-
-        // Item is in correct position.
-        if (pos === cycle) continue;
 
         // Skip over duplicate items
         while (pos < list.length && compare(item, list[pos]) === 0) {
-            pos++;
+          pos++;
         }
 
-        if (pos !== cycle) {
-            item = exchange(list, pos, item);
-            yield {list};
-
-            while (pos !== cycle) {
-                pos = cycle;
-                for (let i = cycle + 1; i < list.length; i++) {
-                    if (compare(item, list[i]) > 0) {
-                        pos++;
-                    }
-                }
-
-                // Skip over duplicate items
-                while(pos < list.length && compare(item, list[pos]) === 0) {
-                    pos++;
-                }
-
-                if (compare(item, list[pos]) !== 0) {
-                    item = exchange(list, pos, item);
-                    yield {list};
-                }
-            }
+        if (compare(item, list[pos]) !== 0) {
+          item = exchange(list, pos, item);
+          yield { list };
         }
+      }
     }
+  }
 }
 
 export const step = curry(step_gen);

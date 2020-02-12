@@ -1,4 +1,4 @@
-import {curry, identity} from "ramda";
+import { curry, identity } from "ramda";
 
 // Bubble Sort
 // I wasn't going to include this originally because Obama says it's not
@@ -17,62 +17,62 @@ import {curry, identity} from "ramda";
 // Insertion sort ~236ms.
 // Selection sort ~245ms.
 export const sort = curry((exchange, compare, list) => {
-    let sorted = false;
-    let bubbleTo = list.length - 1;
-    while (!sorted) {
-        let exchanges = 0;
-        for (let i = 0; i < bubbleTo; i++) {
-            if (compare(list[i], list[i+1]) > 0) {
-                exchange(list, i, i+1);
-                exchanges++;
-            }
-        }
-        if (exchanges === 0) sorted = true;
-        bubbleTo--;
+  let sorted = false;
+  let bubbleTo = list.length - 1;
+  while (!sorted) {
+    let exchanges = 0;
+    for (let i = 0; i < bubbleTo; i++) {
+      if (compare(list[i], list[i + 1]) > 0) {
+        exchange(list, i, i + 1);
+        exchanges++;
+      }
     }
+    if (exchanges === 0) sorted = true;
+    bubbleTo--;
+  }
 });
 
-function* demo_gen (exchange, compare, list) {
-    let sorted = false;
-    // The largest element will bubble to the top of the list on each pass,
-    // so each pass requires less bubbling.
-    let bubbleTo = list.length - 1;
-    while (!sorted) {
-        let exchanges = 0;
-        // yield {exchanges};
-        for (let i = 0; i < bubbleTo; i++) {
-            yield {compare: [i, i+1]};
-            if (compare(list[i], list[i+1]) > 0) {
-                exchange(list, i, i+1);
-                exchanges++;
-                // Copy the list before yielding so future changes don't affect saved list state.
-                yield {list: list.map(identity), exchanges};
-            }
-        }
-        if (exchanges === 0) sorted = true;
-        bubbleTo--;
-        yield {bubbleTo, exchanges: 0, compare: []};
+function* demo_gen(exchange, compare, list) {
+  let sorted = false;
+  // The largest element will bubble to the top of the list on each pass,
+  // so each pass requires less bubbling.
+  let bubbleTo = list.length - 1;
+  while (!sorted) {
+    let exchanges = 0;
+    // yield {exchanges};
+    for (let i = 0; i < bubbleTo; i++) {
+      yield { compare: [i, i + 1] };
+      if (compare(list[i], list[i + 1]) > 0) {
+        exchange(list, i, i + 1);
+        exchanges++;
+        // Copy the list before yielding so future changes don't affect saved list state.
+        yield { list: list.map(identity), exchanges };
+      }
     }
-    yield {list: list.map(identity)};
-};
+    if (exchanges === 0) sorted = true;
+    bubbleTo--;
+    yield { bubbleTo, exchanges: 0, compare: [] };
+  }
+  yield { list: list.map(identity) };
+}
 
-function* step_gen (exchange, compare, list) {
-    let sorted = false;
-    let bubbleTo = list.length - 1;
-    while (!sorted) {
-        let exchanges = 0;
-        for (let i = 0; i < bubbleTo; i++) {
-            if (compare(list[i], list[i+1]) > 0) {
-                exchange(list, i, i+1);
-                yield {list};
-                exchanges++;
-            }
-        }
-        if (exchanges === 0) sorted = true;
-        bubbleTo--;
+function* step_gen(exchange, compare, list) {
+  let sorted = false;
+  let bubbleTo = list.length - 1;
+  while (!sorted) {
+    let exchanges = 0;
+    for (let i = 0; i < bubbleTo; i++) {
+      if (compare(list[i], list[i + 1]) > 0) {
+        exchange(list, i, i + 1);
+        yield { list };
+        exchanges++;
+      }
     }
-    return list;
-};
+    if (exchanges === 0) sorted = true;
+    bubbleTo--;
+  }
+  return list;
+}
 
 export const demo = curry(demo_gen);
 export const step = curry(step_gen);

@@ -1,7 +1,7 @@
 import "tachyons";
 import "styles/styles.css";
 // import "babel-polyfill";
-import React, {Component} from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import SortDemo from "components/SortDemo";
 import BogoSort from "components/demo/BogoSort";
@@ -21,44 +21,42 @@ window.browser = browser;
 const SHOW_SORT_STATE = true;
 
 class Main extends Component {
-    render () {
-        return (
-            <div>
-                {/* <BogoSort
+  render() {
+    return (
+      <div>
+        {/* <BogoSort
                     showSortState={SHOW_SORT_STATE}/> */}
 
-                {/* <BubbleSort
+        {/* <BubbleSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                {/* <CocktailSort
+        {/* <CocktailSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                {/* <SelectionSort
+        {/* <SelectionSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                <InsertionSort
-                    showSortState={SHOW_SORT_STATE} />
+        <InsertionSort showSortState={SHOW_SORT_STATE} />
 
-                {/* <ShellSort
+        {/* <ShellSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                {/* <HeapSort
+        {/* <HeapSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                <MergeSort
-                    showSortState={SHOW_SORT_STATE} />
+        <MergeSort showSortState={SHOW_SORT_STATE} />
 
-                {/* <QuickSort
+        {/* <QuickSort
                     showSortState={SHOW_SORT_STATE} /> */}
 
-                {/* <SortDemo
+        {/* <SortDemo
                     title="Cocktail Sort"
                     exchange={exchange.indices}
                     compare={compare.number}
                     sort={cocktail.demo} /> */}
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 ReactDOM.render(<Main />, document.getElementById("root"));

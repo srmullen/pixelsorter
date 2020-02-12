@@ -1,4 +1,4 @@
-import {curry, identity} from "ramda";
+import { curry, identity } from "ramda";
 
 // Shell Sort
 // Similar to insertion sort but instead of only comparing adjacent elements it compares,
@@ -9,55 +9,68 @@ import {curry, identity} from "ramda";
 // Choosing gap sequences is a problem I won't look at. Try a couple popular ones and look
 // for asthetically pleasing sequences when animating the sort.
 export const sort = curry((exchange, compare, list) => {
-    // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
-    const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
-    // There's no need to sort gaps larger than the list so find the gap to use.
-    let gapIndex = gapSeq.findIndex(n => n < list.length);
-    while (gapIndex < gapSeq.length) {
-        const gap = gapSeq[gapIndex];
-        for (let i = gap; i < list.length; i++) {
-            for (let j = i; j >= gap && compare(list[j], list[j - gap]) < 0; j -= gap) {
-                exchange(list, j, j - gap);
-            }
-        }
-        gapIndex++;
+  // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
+  const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
+  // There's no need to sort gaps larger than the list so find the gap to use.
+  let gapIndex = gapSeq.findIndex(n => n < list.length);
+  while (gapIndex < gapSeq.length) {
+    const gap = gapSeq[gapIndex];
+    for (let i = gap; i < list.length; i++) {
+      for (
+        let j = i;
+        j >= gap && compare(list[j], list[j - gap]) < 0;
+        j -= gap
+      ) {
+        exchange(list, j, j - gap);
+      }
     }
+    gapIndex++;
+  }
 });
 
-function* demo_gen (exchange, compare, list) {
-    // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
-    const gapSeq = [701, 301, 132, 57, 23, 6, 3, 1];
-    // There's no need to sort gaps larger than the list so find the gap to use.
-    let gapIndex = gapSeq.findIndex(n => n < list.length);
-    while (gapIndex < gapSeq.length) {
-        const gap = gapSeq[gapIndex];
-        for (let i = gap; i < list.length; i++) {
-            for (let j = i; j >= gap && (yield {compare: [j, j-gap]}, compare(list[j], list[j - gap]) < 0); j -= gap) {
-                exchange(list, j, j - gap);
-                yield {list: list.map(identity)};
-            }
-        }
-        gapIndex++;
+function* demo_gen(exchange, compare, list) {
+  // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
+  const gapSeq = [701, 301, 132, 57, 23, 6, 3, 1];
+  // There's no need to sort gaps larger than the list so find the gap to use.
+  let gapIndex = gapSeq.findIndex(n => n < list.length);
+  while (gapIndex < gapSeq.length) {
+    const gap = gapSeq[gapIndex];
+    for (let i = gap; i < list.length; i++) {
+      for (
+        let j = i;
+        j >= gap &&
+        (yield { compare: [j, j - gap] }, compare(list[j], list[j - gap]) < 0);
+        j -= gap
+      ) {
+        exchange(list, j, j - gap);
+        yield { list: list.map(identity) };
+      }
     }
-    yield {sorted: true};
+    gapIndex++;
+  }
+  yield { sorted: true };
 }
 
-function* step_gen (exchange, compare, list) {
-    // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
-    const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
-    // There's no need to sort gaps larger than the list so find the gap to use.
-    let gapIndex = gapSeq.findIndex(n => n < list.length);
-    while (gapIndex < gapSeq.length) {
-        const gap = gapSeq[gapIndex];
-        for (let i = gap; i < list.length; i++) {
-            for (let j = i; j >= gap && compare(list[j], list[j - gap]) < 0; j -= gap) {
-                exchange(list, j, j - gap);
-                yield {list};
-            }
-        }
-        gapIndex++;
+function* step_gen(exchange, compare, list) {
+  // Use the experimentally derived Ciura sequence, from the Shell Sort Wikipedia entry.
+  const gapSeq = [701, 301, 132, 57, 23, 10, 4, 1];
+  // There's no need to sort gaps larger than the list so find the gap to use.
+  let gapIndex = gapSeq.findIndex(n => n < list.length);
+  while (gapIndex < gapSeq.length) {
+    const gap = gapSeq[gapIndex];
+    for (let i = gap; i < list.length; i++) {
+      for (
+        let j = i;
+        j >= gap && compare(list[j], list[j - gap]) < 0;
+        j -= gap
+      ) {
+        exchange(list, j, j - gap);
+        yield { list };
+      }
     }
-    return list;
+    gapIndex++;
+  }
+  return list;
 }
 
 export const demo = curry(demo_gen);
