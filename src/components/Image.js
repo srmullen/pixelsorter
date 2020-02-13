@@ -39,29 +39,13 @@ import {
   BRIGHTNESS
 } from 'root/constants';
 
-// Unfortunately symbols can't be passed as value to <select>.
-// const algorithms = {
-//   bogo: BOGO,
-//   selection: SELECTION,
-//   cycle: CYCLE,
-//   insertion: INSERTION,
-//   bubble: BUBBLE,
-//   cocktail: COCKTAIL,
-//   comb: COMB,
-//   shell: SHELL,
-//   heap: HEAP,
-//   merge: MERGE,
-//   quick: QUICK,
-//   radix: RADIX
-// };
-
 class Image extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sortState: NOT_RUNNING,
       sortDirection: LEFT_TO_RIGHT,
-      sortAlgorithm: 'shell',
+      sortAlgorithm: SHELL,
       scale: 1,
       color: RED,
       recording: false
@@ -209,7 +193,7 @@ class Image extends Component {
 }
 
 function createComparator(color, algorithm) {
-  if (algorithm === 'radix') {
+  if (algorithm === RADIX) {
     return a => a[color];
   } else {
     return (a, b) => compare.number(a[color], b[color]);
